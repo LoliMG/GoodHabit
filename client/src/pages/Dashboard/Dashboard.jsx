@@ -9,6 +9,7 @@ const Dashboard = () => {
     const [selectedDate, setSelectedDate] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isNoteModalOpen, setIsNoteModalOpen] = useState(false);
+    const [isMoodModalOpen, setIsMoodModalOpen] = useState(false);
     const [otName, setOtName] = useState("");
     const [currentNote, setCurrentNote] = useState("");
     const [currentMood, setCurrentMood] = useState("");
@@ -64,6 +65,13 @@ const Dashboard = () => {
         const formattedDate = `${currentYear}-${(viewDate.getMonth() + 1).toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
         setSelectedDate(formattedDate);
         setIsModalOpen(true);
+    };
+
+    const handleMoodClick = (dateStr) => {
+        setSelectedDate(dateStr);
+        const noteObj = notes[dateStr] || {};
+        setCurrentMood(noteObj.mood || "");
+        setIsMoodModalOpen(true);
     };
 
     const handleAddOT = (e) => {
@@ -126,9 +134,9 @@ const Dashboard = () => {
                                     className="day-mood-btn" 
                                     onClick={(e) => {
                                         e.stopPropagation();
-                                        handleDayClick(day);
+                                        handleMoodClick(dateStr);
                                     }}
-                                    title="Sentimiento del día"
+                                    title="Seleccionar estado de ánimo"
                                 >
                                     {moodEmoji ? moodEmoji : <span style={{ opacity: 0.2, fontSize: '0.8rem' }}>+</span>}
                                 </button>
@@ -212,20 +220,6 @@ const Dashboard = () => {
                 }
             >
                 <div className="daily-note-section glass-card" style={{ marginTop: 0 }}>
-                    <div className="mood-picker">
-                        <span className="mood-label">¿Cómo te sientes hoy?</span>
-                        <div className="mood-emojis">
-                            {['😊', '🤩', '😐', '😔', '😫', '😡'].map(emoji => (
-                                <button 
-                                    key={emoji} 
-                                    className={`mood-btn ${currentMood === emoji ? 'active' : ''}`}
-                                    onClick={() => setCurrentMood(emoji)}
-                                >
-                                    {emoji}
-                                </button>
-                            ))}
-                        </div>
-                    </div>
                     <textarea
                         className="note-textarea"
                         placeholder="Escribe una pequeña reflexión..."
@@ -260,6 +254,35 @@ const Dashboard = () => {
                             Guardar Nota
                         </button>
                     </div>
+                </div>
+            </Modal>
+
+            {/* Mood Selection Modal */}
+            <Modal
+                isOpen={isMoodModalOpen}
+                onClose={() => setIsMoodModalOpen(false)}
+                maxWidth="400px"
+                title="¿Cómo te sientes?"
+            >
+                <div className="mood-selection-modal">
+                    <div className="mood-emojis-grid">
+                        {['😊', '🤩', '👍', '😐', '😔', '😫', '😡', '😴', '🧠'].map(emoji => (
+                            <button 
+                                key={emoji} 
+                                className={`mood-btn-large ${currentMood === emoji ? 'active' : ''}`}
+                                onClick={async () => {
+                                    setCurrentMood(emoji);
+                                    await updateDayMood(selectedDate, emoji);
+                                    setIsMoodModalOpen(false);
+                                }}
+                            >
+                                {emoji}
+                            </button>
+                        ))}
+                    </div>
+                    <button className="btn-secondary" style={{ width: '100%', marginTop: '1.5rem' }} onClick={() => setIsMoodModalOpen(false)}>
+                        Cerrar
+                    </button>
                 </div>
             </Modal>
         </div>
