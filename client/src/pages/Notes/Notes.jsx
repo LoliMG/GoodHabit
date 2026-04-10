@@ -14,8 +14,9 @@ const Notes = () => {
     const [modalContent, setModalContent] = useState('');
     const [isEditing, setIsEditing] = useState(false);
 
-    // Convert notes object to sorted array
+    // Convert notes object to sorted array, filtering out entries that only have a mood but no content
     const sortedNotes = Object.entries(notes)
+        .filter(([_, noteObj]) => noteObj.content && noteObj.content.trim() !== '')
         .map(([date, noteObj]) => ({ date, content: noteObj.content, mood: noteObj.mood }))
         .sort((a, b) => new Date(b.date) - new Date(a.date));
 
