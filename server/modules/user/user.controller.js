@@ -51,7 +51,14 @@ class UserController {
                     const oneTimeHabits = await habitDal.getOneTimeHabits(userId); 
                     const progress = await progressDal.getProgressByDateRange(userId, '1970-01-01', '2100-01-01');
                     const notes = await noteDal.getNotesByDateRange(userId, '1970-01-01', '2100-01-01');
-                    const moods = await moodDal.getMoodsByUserId(userId);
+                    // Fetch moods safely
+                    let userMoods = {};
+                    try {
+                        const moodsData = await moodDal.getMoodsByUserId(userId);
+                        userMoods = formatMoods(moodsData);
+                    } catch (mErr) {
+                        console.error("Non-critical: Failed to load moods during login", mErr);
+                    }
 
                     res.status(200).json({ 
                         message: 'Login successful', 
@@ -61,7 +68,7 @@ class UserController {
                         oneTimeHabits,
                         progress,
                         notes,
-                        moods: formatMoods(moods)
+                        moods: userMoods
                     });
                 }
             }
@@ -80,7 +87,14 @@ class UserController {
             const oneTimeHabits = await habitDal.getOneTimeHabits(user_id);
             const progress = await progressDal.getProgressByDateRange(user_id, '1970-01-01', '2100-01-01');
             const notes = await noteDal.getNotesByDateRange(user_id, '1970-01-01', '2100-01-01');
-            const moods = await moodDal.getMoodsByUserId(user_id);
+            // Fetch moods safely
+            let userMoods = {};
+            try {
+                const moodsData = await moodDal.getMoodsByUserId(user_id);
+                userMoods = formatMoods(moodsData);
+            } catch (mErr) {
+                console.error("Non-critical: Failed to load moods during userByToken", mErr);
+            }
 
             res.status(200).json({ 
                 message: 'User found', 
@@ -144,7 +158,14 @@ class UserController {
             const progress = await progressDal.getProgressByDateRange(userId, '1970-01-01', '2100-01-01');
             const notes = await noteDal.getNotesByDateRange(userId, '1970-01-01', '2100-01-01');
 
-            const moods = await moodDal.getMoodsByUserId(userId);
+            // Fetch moods safely
+            let userMoods = {};
+            try {
+                const moodsData = await moodDal.getMoodsByUserId(userId);
+                userMoods = formatMoods(moodsData);
+            } catch (mErr) {
+                console.error("Non-critical: Failed to load moods during googleLogin", mErr);
+            }
 
             res.status(200).json({ 
                 message: 'Google Login successful', 
@@ -154,7 +175,7 @@ class UserController {
                 oneTimeHabits,
                 progress,
                 notes,
-                moods: formatMoods(moods)
+                moods: userMoods
             });
         } catch (error) {
             console.error("Google Login Error:", error);
