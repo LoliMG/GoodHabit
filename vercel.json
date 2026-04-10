@@ -17,11 +17,16 @@
       "dest": "server/app.js"
     },
     {
-      "handle": "filesystem"
+      "src": "/assets/(.*)",
+      "dest": "/client/assets/$1"
+    },
+    {
+      "src": "/((?!api|assets|favicon|logo|manifest|robots).*)",
+      "dest": "/client/index.html"
     },
     {
       "src": "/(.*)",
-      "dest": "/index.html"
+      "dest": "/client/$1"
     }
   ]
 }
