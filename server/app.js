@@ -15,12 +15,30 @@ import habitRouter from "./modules/habit/habit.routes.js";
 import progressRouter from "./modules/progress/progress.routes.js";
 import noteRouter from "./modules/note/note.routes.js";
 
+import helmet from 'helmet';
+import rateLimit from 'express-rate-limit';
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
 
-app.use(cors());
+// Security Middlewares
+app.use(helmet()); // Sets various security headers
+app.use(cors({
+    origin: ['http://localhost:5173', 'http://127.0.0.1:5173'], // Restrict to your frontend URL
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization']
+}));
+
+// Rate Limiting: 100 requests per 15 minutes
+const limiter = rateLimit({
+    windowMs: 15 * 60 * 1000,
+    max: 100,
+    message: { message: 'Too many requests from this IP, please try again after 15 minutes' }
+});
+app.use('/api/', limiter);
+
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));

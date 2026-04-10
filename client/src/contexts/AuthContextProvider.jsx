@@ -98,18 +98,7 @@ export const AuthContextProvider = ({ children }) => {
 
     const loginWithGoogle = async (tokenResponse) => {
         try {
-            const userInfo = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
-                headers: { Authorization: `Bearer ${tokenResponse.access_token}` }
-            }).then(res => res.json());
-
-            const userData = {
-                googleId: userInfo.sub,
-                name: userInfo.name,
-                email: userInfo.email,
-                picture: userInfo.picture // not saved in db right now, but optional
-            };
-
-            const res = await fetchData("/user/googleLogin", "POST", userData);
+            const res = await fetchData("/user/googleLogin", "POST", { access_token: tokenResponse.access_token });
             if (res.ok) {
                 setToken(res.data.token);
                 setUser(res.data.user);
@@ -123,7 +112,7 @@ export const AuthContextProvider = ({ children }) => {
             return { success: false, message: res.data.message };
         } catch (error) {
             console.error(error);
-            return { success: false, message: error.response?.data?.message || "Error al conectar con Google o Servidor" };
+            return { success: false, message: error.response?.data?.message || "Error al conectar con el Servidor" };
         }
     };
 

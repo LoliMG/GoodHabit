@@ -87,7 +87,24 @@ class UserController {
 
     googleLogin = async (req, res) => {
         try {
-            const { email, name, googleId } = req.body;
+            const { access_token } = req.body;
+            
+            if (!access_token) {
+                return res.status(400).json({ message: 'Token de Google no proporcionado' });
+            }
+
+            // Verify token with Google API from server-side
+            const googleRes = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
+                headers: { Authorization: `Bearer ${access_token}` }
+            });
+
+            if (!googleRes.ok) {
+                return res.status(401).json({ message: 'Token de Google inválido' });
+            }
+
+            const userInfo = await googleRes.json();
+            const { email, name, sub: googleId } = userInfo;
+
             let result = await userDal.findUserByEmail(email);
             
             let userId;
@@ -125,8 +142,8 @@ class UserController {
                 notes
             });
         } catch (error) {
-            console.error("Google Login Error locally:", error);
-            res.status(500).json({ message: 'Error en el inicio de sesión con Google' });
+            console.error("Google Login Error:", error);
+            res.status(500).json({ message: 'Error en la verificación con Google' });
         }
     };
 
