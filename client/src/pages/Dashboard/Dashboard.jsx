@@ -34,7 +34,7 @@ const Dashboard = () => {
     const getCompletedCount = (dateStr) => {
         const dayHabits = getHabitsForDay(dateStr);
         const dayProgress = progress[dateStr] || {};
-        return dayHabits.filter(h => dayProgress[h.id]).length;
+        return dayHabits.filter(h => h.isOneTime ? h.isCompleted : dayProgress[h.id]).length;
     };
 
     const habitsLeftToday = getHabitsForDay(todayStr).length - getCompletedCount(todayStr);
@@ -154,9 +154,9 @@ const Dashboard = () => {
                     <div className="habits-list">
                         {getHabitsForDay(selectedDate).length === 0 && <p className="no-habits">No hay hábitos registrados para hoy.</p>}
                         {getHabitsForDay(selectedDate).map(habit => {
-                            const isDone = progress[selectedDate]?.[habit.id];
+                            const isDone = habit.isOneTime ? habit.isCompleted : progress[selectedDate]?.[habit.id];
                             return (
-                                <div key={habit.id} className={`habit-item glass-card ${habit.isOneTime ? 'one-time' : ''}`} onClick={() => toggleHabitProgress(selectedDate, habit.id)}>
+                                <div key={habit.isOneTime ? `ot-${habit.id}` : `reg-${habit.id}`} className={`habit-item glass-card ${habit.isOneTime ? 'one-time' : ''}`} onClick={() => toggleHabitProgress(selectedDate, habit.id, habit.isOneTime)}>
                                     <span className="habit-icon">{habit.icon}</span>
                                     <div className="habit-info">
                                         <span className="habit-name">{habit.name}</span>

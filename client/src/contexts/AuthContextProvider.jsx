@@ -185,14 +185,23 @@ export const AuthContextProvider = ({ children }) => {
         }
     };
 
-    const toggleHabitProgress = async (date, habitId) => {
+    const toggleHabitProgress = async (date, habitId, isOneTime = false) => {
         try {
-            await fetchData("/progress/toggle", "POST", { habitId, date }, token);
-            setProgress(prev => {
-                const dayProgress = prev[date] || {};
-                const newDayProgress = { ...dayProgress, [habitId]: !dayProgress[habitId] };
-                return { ...prev, [date]: newDayProgress };
-            });
+            if (isOneTime) {
+                await fetchData(`/habit/one-time/${habitId}`, "PUT", null, token);
+                setOneTimeHabits(prev => {
+                    const dayOT = prev[date] || [];
+                    const newDayOT = dayOT.map(h => h.id === habitId ? { ...h, isCompleted: !h.isCompleted } : h);
+                    return { ...prev, [date]: newDayOT };
+                });
+            } else {
+                await fetchData("/progress/toggle", "POST", { habitId, date }, token);
+                setProgress(prev => {
+                    const dayProgress = prev[date] || {};
+                    const newDayProgress = { ...dayProgress, [habitId]: !dayProgress[habitId] };
+                    return { ...prev, [date]: newDayProgress };
+                });
+            }
         } catch (error) {
             console.error(error);
         }
