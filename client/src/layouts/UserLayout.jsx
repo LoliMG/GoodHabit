@@ -37,6 +37,9 @@ const UserLayout = () => {
                     <NavLink to="/habits" className={({ isActive }) => isActive ? 'active' : ''} onClick={() => setIsMenuOpen(false)}>
                         <span className="icon">🏆</span> Hábitos
                     </NavLink>
+                    <NavLink to="/notes" className={({ isActive }) => isActive ? 'active' : ''} onClick={() => setIsMenuOpen(false)}>
+                        <span className="icon">📝</span> Mis Notas
+                    </NavLink>
                     <NavLink to="/profile" className={({ isActive }) => isActive ? 'active' : ''} onClick={() => setIsMenuOpen(false)}>
                         <span className="icon">👤</span> Perfil
                     </NavLink>

@@ -11,6 +11,7 @@ const Register = lazy(() => import("../pages/Register/Register"));
 const Dashboard = lazy(() => import("../pages/Dashboard/Dashboard"));
 const Habits = lazy(() => import("../pages/Habits/Habits"));
 const Profile = lazy(() => import("../pages/Profile/Profile"));
+const Notes = lazy(() => import("../pages/Notes/Notes"));
 
 const AppRoutes = () => {
     return (
@@ -33,6 +34,7 @@ const AppRoutes = () => {
                             <Route path="/dashboard" element={<Dashboard />} />
                             <Route path="/habits" element={<Habits />} />
                             <Route path="/profile" element={<Profile />} />
+                            <Route path="/notes" element={<Notes />} />
                         </Route>
                     </Route>
                 </Routes>
