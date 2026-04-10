@@ -4,7 +4,7 @@ import Modal from '../../components/Modal/Modal';
 import './Dashboard.css';
 
 const Dashboard = () => {
-    const { habits, oneTimeHabits, addOneTimeHabit, progress, toggleHabitProgress, notes, updateDayNote, deleteDayNote } = useContext(AuthContext);
+    const { habits, oneTimeHabits, addOneTimeHabit, deleteOneTimeHabit, progress, toggleHabitProgress, notes, updateDayNote, deleteDayNote } = useContext(AuthContext);
     const [viewDate, setViewDate] = useState(new Date());
     const [selectedDate, setSelectedDate] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
