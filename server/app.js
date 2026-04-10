@@ -14,6 +14,7 @@ import userRouter from "./modules/user/user.routes.js";
 import habitRouter from "./modules/habit/habit.routes.js";
 import progressRouter from "./modules/progress/progress.routes.js";
 import noteRouter from "./modules/note/note.routes.js";
+import moodRouter from "./modules/mood/mood.routes.js";
 
 import helmet from 'helmet';
 import rateLimit from 'express-rate-limit';
@@ -50,6 +51,7 @@ app.use('/api/user', userRouter);
 app.use('/api/habit', habitRouter);
 app.use('/api/progress', progressRouter);
 app.use('/api/note', noteRouter);
+app.use('/api/mood', moodRouter);
 
 app.use(function (req, res, next) {
   next(createError(404));

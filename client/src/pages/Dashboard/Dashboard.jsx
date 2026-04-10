@@ -4,7 +4,7 @@ import Modal from '../../components/Modal/Modal';
 import './Dashboard.css';
 
 const Dashboard = () => {
-    const { habits, oneTimeHabits, addOneTimeHabit, deleteOneTimeHabit, progress, toggleHabitProgress, notes, updateDayNote, updateDayMood, deleteDayNote } = useContext(AuthContext);
+    const { habits, oneTimeHabits, addOneTimeHabit, deleteOneTimeHabit, progress, toggleHabitProgress, notes, updateDayNote, updateDayMood, deleteDayNote, moods } = useContext(AuthContext);
     const [viewDate, setViewDate] = useState(new Date());
     const [selectedDate, setSelectedDate] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -18,9 +18,9 @@ const Dashboard = () => {
         if (selectedDate) {
             const noteObj = notes[selectedDate] || {};
             setCurrentNote(noteObj.content || "");
-            setCurrentMood(noteObj.mood || "");
+            setCurrentMood(moods[selectedDate] || "");
         }
-    }, [selectedDate, notes]);
+    }, [selectedDate, notes, moods]);
 
     const days = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
     const localeString = 'es-ES';
@@ -69,8 +69,7 @@ const Dashboard = () => {
 
     const handleMoodClick = (dateStr) => {
         setSelectedDate(dateStr);
-        const noteObj = notes[dateStr] || {};
-        setCurrentMood(noteObj.mood || "");
+        setCurrentMood(moods[dateStr] || "");
         setIsMoodModalOpen(true);
     };
 
@@ -125,8 +124,7 @@ const Dashboard = () => {
                         const dateStr = `${currentYear}-${(viewDate.getMonth() + 1).toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
                         const status = getDayStatus(dateStr);
                         const isToday = day === today.getDate() && viewDate.getMonth() === today.getMonth() && currentYear === today.getFullYear();
-
-                        const moodEmoji = notes[dateStr]?.mood;
+                        const moodEmoji = moods[dateStr];
 
                         return (
                             <div key={day} className={`day-cell clickable ${isToday ? 'today' : ''} status-${status}`} onClick={() => handleDayClick(day)}>
@@ -247,7 +245,7 @@ const Dashboard = () => {
                         <button
                             className="btn-save-note"
                             onClick={async () => {
-                                const res = await updateDayNote(selectedDate, currentNote, currentMood);
+                                const res = await updateDayNote(selectedDate, currentNote);
                                 if (res.success) setIsNoteModalOpen(false);
                             }}
                         >

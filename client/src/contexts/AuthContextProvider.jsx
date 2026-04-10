@@ -9,6 +9,7 @@ export const AuthContextProvider = ({ children }) => {
     const [oneTimeHabits, setOneTimeHabits] = useState({});
     const [progress, setProgress] = useState({});
     const [notes, setNotes] = useState({});
+    const [moods, setMoods] = useState({});
     const [isAuthLoading, setIsAuthLoading] = useState(true);
 
     const formatNotes = (notesArray) => {
@@ -16,7 +17,7 @@ export const AuthContextProvider = ({ children }) => {
         const formatted = {};
         notesArray.forEach(n => {
             const dateStr = typeof n.date === 'string' ? n.date.split('T')[0] : n.date.toISOString().split('T')[0];
-            formatted[dateStr] = { content: n.content, mood: n.mood };
+            formatted[dateStr] = { content: n.content };
         });
         return formatted;
     };
@@ -56,6 +57,7 @@ export const AuthContextProvider = ({ children }) => {
                     setOneTimeHabits(formatOneTimeHabits(resUser.data.oneTimeHabits));
                     setProgress(formatProgress(resUser.data.progress));
                     setNotes(formatNotes(resUser.data.notes));
+                    setMoods(resUser.data.moods || {});
                 } catch (error) {
                     console.error("Token checking failed:", error);
                     localStorage.removeItem("token");
@@ -78,6 +80,7 @@ export const AuthContextProvider = ({ children }) => {
             setOneTimeHabits(formatOneTimeHabits(res.data.oneTimeHabits));
             setProgress(formatProgress(res.data.progress));
             setNotes(formatNotes(res.data.notes));
+            setMoods(res.data.moods || {});
             localStorage.setItem("token", res.data.token);
             return { success: true };
         } catch (error) {
@@ -106,6 +109,7 @@ export const AuthContextProvider = ({ children }) => {
                 setOneTimeHabits(formatOneTimeHabits(res.data.oneTimeHabits));
                 setProgress(formatProgress(res.data.progress));
                 setNotes(formatNotes(res.data.notes));
+                setMoods(res.data.moods || {});
                 localStorage.setItem("token", res.data.token);
                 return { success: true };
             }
@@ -120,6 +124,7 @@ export const AuthContextProvider = ({ children }) => {
         setUser();
         setToken();
         setNotes({});
+        setMoods({});
         localStorage.removeItem("token");
     };
 
@@ -208,12 +213,11 @@ export const AuthContextProvider = ({ children }) => {
         }
     };
 
-    const updateDayNote = async (date, content, mood = null) => {
+    const updateDayNote = async (date, content) => {
         try {
-            await fetchData("/note/save", "POST", { date, content, mood }, token);
+            await fetchData("/note/save", "POST", { date, content }, token);
             setNotes(prev => {
-                const current = prev[date] || {};
-                return { ...prev, [date]: { ...current, content, mood: mood || current.mood } };
+                return { ...prev, [date]: { content } };
             });
             return { success: true };
         } catch (error) {
@@ -224,11 +228,8 @@ export const AuthContextProvider = ({ children }) => {
 
     const updateDayMood = async (date, mood) => {
         try {
-            await fetchData("/note/update-mood", "PUT", { date, mood }, token);
-            setNotes(prev => {
-                const current = prev[date] || {};
-                return { ...prev, [date]: { ...current, mood } };
-            });
+            await fetchData("/mood/save", "POST", { date, emoji: mood }, token);
+            setMoods(prev => ({ ...prev, [date]: mood }));
             return { success: true };
         } catch (error) {
             console.error(error);
@@ -260,7 +261,8 @@ export const AuthContextProvider = ({ children }) => {
             habits, setHabits, addHabit, updateHabit, deleteHabit,
             oneTimeHabits, setOneTimeHabits, addOneTimeHabit, deleteOneTimeHabit,
             progress, setProgress, toggleHabitProgress, isAuthLoading,
-            notes, updateDayNote, updateDayMood, deleteDayNote
+            notes, updateDayNote, deleteDayNote,
+            moods, updateDayMood
         }}>
             {children}
         </AuthContext.Provider>

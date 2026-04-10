@@ -45,9 +45,17 @@ CREATE TABLE IF NOT EXISTS daily_notes (
     user_id INT NOT NULL,
     note_date DATE NOT NULL,
     note_content TEXT,
-    note_mood VARCHAR(50),
     UNIQUE (user_id, note_date),
     CONSTRAINT fk_user_notes FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE
+);
+
+-- Daily Moods Table
+CREATE TABLE IF NOT EXISTS daily_moods (
+    mood_id SERIAL PRIMARY KEY,
+    user_id INTEGER REFERENCES users(user_id) ON DELETE CASCADE,
+    mood_date DATE NOT NULL,
+    mood_emoji VARCHAR(50) NOT NULL,
+    UNIQUE (user_id, mood_date)
 );
 
 -- Admin User setup

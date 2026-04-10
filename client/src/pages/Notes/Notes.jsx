@@ -4,7 +4,7 @@ import Modal from '../../components/Modal/Modal';
 import './Notes.css';
 
 const Notes = () => {
-    const { notes, updateDayNote, deleteDayNote } = useContext(AuthContext);
+    const { notes, moods, updateDayNote, deleteDayNote } = useContext(AuthContext);
     const [searchContent, setSearchContent] = useState('');
     const [searchDate, setSearchDate] = useState('');
     
@@ -17,7 +17,7 @@ const Notes = () => {
     // Convert notes object to sorted array, filtering out entries that only have a mood but no content
     const sortedNotes = Object.entries(notes)
         .filter(([_, noteObj]) => noteObj.content && noteObj.content.trim() !== '')
-        .map(([date, noteObj]) => ({ date, content: noteObj.content, mood: noteObj.mood }))
+        .map(([date, noteObj]) => ({ date, content: noteObj.content, mood: moods[date] }))
         .sort((a, b) => new Date(b.date) - new Date(a.date));
 
     // Filter by content and date
@@ -52,8 +52,7 @@ const Notes = () => {
         e.preventDefault();
         if (!modalDate || !modalContent) return;
         
-        const existingNote = notes[modalDate] || {};
-        const res = await updateDayNote(modalDate, modalContent, existingNote.mood);
+        const res = await updateDayNote(modalDate, modalContent);
         if (res.success) {
             setIsModalOpen(false);
         }

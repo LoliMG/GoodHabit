@@ -4,6 +4,14 @@ import userDal from './user.dal.js';
 import habitDal from '../habit/habit.dal.js';
 import progressDal from '../progress/progress.dal.js';
 import noteDal from '../note/note.dal.js';
+import moodDal from '../mood/mood.dal.js';
+
+const formatMoods = (moods) => {
+    return moods.reduce((acc, current) => {
+        acc[current.date] = current.emoji;
+        return acc;
+    }, {});
+};
 
 class UserController {
     register = async (req, res) => {
@@ -43,6 +51,7 @@ class UserController {
                     const oneTimeHabits = await habitDal.getOneTimeHabits(userId); 
                     const progress = await progressDal.getProgressByDateRange(userId, '1970-01-01', '2100-01-01');
                     const notes = await noteDal.getNotesByDateRange(userId, '1970-01-01', '2100-01-01');
+                    const moods = await moodDal.getMoodsByUserId(userId);
 
                     res.status(200).json({ 
                         message: 'Login successful', 
@@ -51,7 +60,8 @@ class UserController {
                         habits,
                         oneTimeHabits,
                         progress,
-                        notes
+                        notes,
+                        moods: formatMoods(moods)
                     });
                 }
             }
@@ -70,6 +80,7 @@ class UserController {
             const oneTimeHabits = await habitDal.getOneTimeHabits(user_id);
             const progress = await progressDal.getProgressByDateRange(user_id, '1970-01-01', '2100-01-01');
             const notes = await noteDal.getNotesByDateRange(user_id, '1970-01-01', '2100-01-01');
+            const moods = await moodDal.getMoodsByUserId(user_id);
 
             res.status(200).json({ 
                 message: 'User found', 
@@ -77,7 +88,8 @@ class UserController {
                 habits, 
                 oneTimeHabits, 
                 progress,
-                notes
+                notes,
+                moods: formatMoods(moods)
             });
         } catch (error) {
             console.error(error);
@@ -132,6 +144,8 @@ class UserController {
             const progress = await progressDal.getProgressByDateRange(userId, '1970-01-01', '2100-01-01');
             const notes = await noteDal.getNotesByDateRange(userId, '1970-01-01', '2100-01-01');
 
+            const moods = await moodDal.getMoodsByUserId(userId);
+
             res.status(200).json({ 
                 message: 'Google Login successful', 
                 token, 
@@ -139,7 +153,8 @@ class UserController {
                 habits,
                 oneTimeHabits,
                 progress,
-                notes
+                notes,
+                moods: formatMoods(moods)
             });
         } catch (error) {
             console.error("Google Login Error:", error);
