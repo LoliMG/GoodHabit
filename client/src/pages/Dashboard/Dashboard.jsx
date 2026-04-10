@@ -257,16 +257,15 @@ const Dashboard = () => {
                 </div>
             </Modal>
 
-            {/* Mood Selection Modal */}
             <Modal
                 isOpen={isMoodModalOpen}
                 onClose={() => setIsMoodModalOpen(false)}
-                maxWidth="400px"
-                title="¿Cómo te sientes?"
+                maxWidth="550px"
+                title="¿CÓMO TE SIENTES HOY?"
             >
                 <div className="mood-selection-modal">
-                    <div className="mood-emojis-grid">
-                        {['😊', '🤩', '👍', '😐', '😔', '😫', '😡', '😴', '🧠'].map(emoji => (
+                    <div className="mood-emojis-row">
+                        {['😊', '🤩', '😐', '😔', '😫', '😡'].map(emoji => (
                             <button 
                                 key={emoji} 
                                 className={`mood-btn-large ${currentMood === emoji ? 'active' : ''}`}
@@ -280,9 +279,6 @@ const Dashboard = () => {
                             </button>
                         ))}
                     </div>
-                    <button className="btn-secondary" style={{ width: '100%', marginTop: '1.5rem' }} onClick={() => setIsMoodModalOpen(false)}>
-                        Cerrar
-                    </button>
                 </div>
             </Modal>
         </div>
