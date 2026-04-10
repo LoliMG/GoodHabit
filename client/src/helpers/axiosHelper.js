@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const apiUrl = import.meta.env.VITE_SERVER_URL;
+const apiUrl = import.meta.env.VITE_SERVER_URL || '/api';
 
 export const fetchData = async(url, method, data=null, token=null) => {
   
