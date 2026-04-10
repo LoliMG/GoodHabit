@@ -1,11 +1,18 @@
 import React, { useContext, useState } from 'react';
 import { AuthContext } from '../../contexts/AuthContext';
+import Modal from '../../components/Modal/Modal';
 import './Notes.css';
 
 const Notes = () => {
-    const { notes } = useContext(AuthContext);
+    const { notes, updateDayNote, deleteDayNote } = useContext(AuthContext);
     const [searchContent, setSearchContent] = useState('');
     const [searchDate, setSearchDate] = useState('');
+    
+    // Modal states
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [modalDate, setModalDate] = useState('');
+    const [modalContent, setModalContent] = useState('');
+    const [isEditing, setIsEditing] = useState(false);
 
     // Convert notes object to sorted array
     const sortedNotes = Object.entries(notes)
@@ -19,11 +26,45 @@ const Notes = () => {
         return matchesContent && matchesDate;
     });
 
+    const handleOpenCreate = () => {
+        const today = new Date().toISOString().split('T')[0];
+        setModalDate(today);
+        setModalContent('');
+        setIsEditing(false);
+        setIsModalOpen(true);
+    };
+
+    const handleOpenEdit = (note) => {
+        setModalDate(note.date);
+        setModalContent(note.content);
+        setIsEditing(true);
+        setIsModalOpen(true);
+    };
+
+    const handleDelete = async (date) => {
+        if (window.confirm('¿Estás seguro de que quieres eliminar esta nota?')) {
+            await deleteDayNote(date);
+        }
+    };
+
+    const handleSave = async (e) => {
+        e.preventDefault();
+        if (!modalDate || !modalContent) return;
+        
+        const res = await updateDayNote(modalDate, modalContent);
+        if (res.success) {
+            setIsModalOpen(false);
+        }
+    };
+
     return (
         <div className="notes-page-container">
             <header className="notes-header">
                 <h2 className="animate-fade-in">Tu Historial de <span className="gradient-text">Reflexiones</span> 📝</h2>
                 <p className="animate-fade-in" style={{ animationDelay: '0.1s' }}>Repasa tus pensamientos y progreso a lo largo del tiempo.</p>
+                <div className="header-actions animate-fade-in" style={{ animationDelay: '0.15s' }}>
+                    <button className="btn-primary" onClick={handleOpenCreate}>+ Crear Nueva Nota</button>
+                </div>
             </header>
 
             <div className="notes-controls glass-card animate-fade-in" style={{ animationDelay: '0.2s' }}>
@@ -70,6 +111,10 @@ const Notes = () => {
                                         year: 'numeric' 
                                     })}
                                 </span>
+                                <div className="note-actions">
+                                    <button className="btn-note-edit" onClick={() => handleOpenEdit(note)}>✏️</button>
+                                    <button className="btn-note-delete" onClick={() => handleDelete(note.date)}>🗑️</button>
+                                </div>
                             </div>
                             <div className="note-content">
                                 {note.content}
@@ -78,6 +123,39 @@ const Notes = () => {
                     ))
                 )}
             </div>
+
+            <Modal
+                isOpen={isModalOpen}
+                onClose={() => setIsModalOpen(false)}
+                title={isEditing ? "Editar Nota" : "Crear Nueva Nota"}
+                maxWidth="600px"
+            >
+                <form className="note-modal-form" onSubmit={handleSave}>
+                    <div className="form-group">
+                        <label>Fecha</label>
+                        <input 
+                            type="date" 
+                            value={modalDate} 
+                            onChange={(e) => setModalDate(e.target.value)}
+                            disabled={isEditing}
+                            required
+                        />
+                    </div>
+                    <div className="form-group">
+                        <label>Tu reflexión</label>
+                        <textarea 
+                            value={modalContent} 
+                            onChange={(e) => setModalContent(e.target.value)}
+                            placeholder="¿Qué tienes en mente hoy?"
+                            required
+                        />
+                    </div>
+                    <div className="modal-actions">
+                        <button type="button" className="btn-secondary" onClick={() => setIsModalOpen(false)}>Cancelar</button>
+                        <button type="submit" className="btn-primary">Guardar Nota</button>
+                    </div>
+                </form>
+            </Modal>
         </div>
     );
 };
