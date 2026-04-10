@@ -13,7 +13,7 @@ export const verifyToken = (req, res, next) => {
     const token = authHeader.replace('Bearer ', '');
 
     try {
-        const decoded = jwt.verify(token, process.env.SECRET_TOKEN_KEY);
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
         // Typical structure in user example uses 'user_id'
         req.user_id = decoded.user_id;
         next();
