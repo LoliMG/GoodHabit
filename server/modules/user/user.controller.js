@@ -11,10 +11,13 @@ class UserController {
             const { name, email, password } = req.body;
             let hashedPass = await hashPassword(password);
             let result = await userDal.register([name, email, hashedPass]);
-            res.status(200).json({ message: 'Registration successful', userId: result.insertId });
+            res.status(200).json({ message: 'Registration successful', userId: result[0].user_id });
         } catch (error) {
             console.error(error);
-            res.status(500).json({ error: 'Failed to register' });
+            if (error.code === '23505') {
+                return res.status(400).json({ message: 'Ese correo electrónico ya está registrado' });
+            }
+            res.status(500).json({ message: 'Error al registrar el usuario' });
         }
     };
 
@@ -54,7 +57,7 @@ class UserController {
             }
         } catch (error) {
             console.error(error);
-            res.status(500).json({ error: 'Login failed' });
+            res.status(500).json({ message: 'Error al iniciar sesión' });
         }
     };
 
@@ -95,7 +98,7 @@ class UserController {
                 // Register the user automatically
                 let hashedPass = await hashPassword(googleId || 'google_auth_placeholder');
                 let insertResult = await userDal.register([name, email, hashedPass]);
-                userId = insertResult.insertId;
+                userId = insertResult[0].user_id;
                 userName = name;
                 userEmail = email;
             } else {
@@ -123,7 +126,7 @@ class UserController {
             });
         } catch (error) {
             console.error("Google Login Error locally:", error);
-            res.status(500).json({ error: 'Google Login failed' });
+            res.status(500).json({ message: 'Error en el inicio de sesión con Google' });
         }
     };
 

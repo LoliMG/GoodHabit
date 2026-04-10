@@ -30,7 +30,7 @@ const Register = () => {
     onError: () => setError("Error al conectar con Google")
   });
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
 
@@ -38,7 +38,7 @@ const Register = () => {
       return setError("Las contraseñas no coinciden");
     }
 
-    const result = register({
+    const result = await register({
       name: formData.name,
       email: formData.email,
       password: formData.password
