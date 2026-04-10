@@ -406,11 +406,8 @@
       display: flex;
       justify-content: center;
       gap: 1.25rem;
-      flex-wrap: nowrap;
-      overflow-x: auto;
+      flex-wrap: wrap; /* Changed from nowrap to wrap */
       padding: 1.5rem 0;
-      
-      &::-webkit-scrollbar { display: none; }
       
       .mood-btn-large {
         background: transparent;
