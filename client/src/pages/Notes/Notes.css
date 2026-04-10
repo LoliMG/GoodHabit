@@ -115,27 +115,33 @@
         border-radius: 32px;
         border: 1px dashed var(--glass-border);
     }
+
+    .note-card-header .note-date {
+        filter: drop-shadow(0 0 10px var(--glass-glow));
+    }
 }
 
 @media (max-width: 768px) {
-    padding: 1rem;
-
-    .notes-header h2 {
-        font-size: 2.2rem;
-        letter-spacing: -1px;
-    }
-
-    .notes-controls {
+    .notes-page-container {
         padding: 1rem;
-        border-radius: 20px;
-    }
 
-    .note-card {
-        padding: 1.8rem;
-        border-radius: 24px;
+        .notes-header h2 {
+            font-size: 2.2rem;
+            letter-spacing: -1px;
+        }
 
-        .note-content {
-            font-size: 1.1rem;
+        .notes-controls {
+            padding: 1rem;
+            border-radius: 20px;
+        }
+
+        .note-card {
+            padding: 1.8rem;
+            border-radius: 24px;
+
+            .note-content {
+                font-size: 1.1rem;
+            }
         }
     }
 }
