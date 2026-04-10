@@ -45,6 +45,7 @@ CREATE TABLE IF NOT EXISTS daily_notes (
     user_id INT NOT NULL,
     note_date DATE NOT NULL,
     note_content TEXT,
+    note_mood VARCHAR(50),
     UNIQUE (user_id, note_date),
     CONSTRAINT fk_user_notes FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE
 );

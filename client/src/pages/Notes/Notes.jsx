@@ -16,12 +16,12 @@ const Notes = () => {
 
     // Convert notes object to sorted array
     const sortedNotes = Object.entries(notes)
-        .map(([date, content]) => ({ date, content }))
+        .map(([date, noteObj]) => ({ date, content: noteObj.content, mood: noteObj.mood }))
         .sort((a, b) => new Date(b.date) - new Date(a.date));
 
     // Filter by content and date
     const filteredNotes = sortedNotes.filter(note => {
-        const matchesContent = note.content.toLowerCase().includes(searchContent.toLowerCase());
+        const matchesContent = (note.content || '').toLowerCase().includes(searchContent.toLowerCase());
         const matchesDate = searchDate ? note.date === searchDate : true;
         return matchesContent && matchesDate;
     });
@@ -36,7 +36,7 @@ const Notes = () => {
 
     const handleOpenEdit = (note) => {
         setModalDate(note.date);
-        setModalContent(note.content);
+        setModalContent(note.content || '');
         setIsEditing(true);
         setIsModalOpen(true);
     };
@@ -51,7 +51,8 @@ const Notes = () => {
         e.preventDefault();
         if (!modalDate || !modalContent) return;
         
-        const res = await updateDayNote(modalDate, modalContent);
+        const existingNote = notes[modalDate] || {};
+        const res = await updateDayNote(modalDate, modalContent, existingNote.mood);
         if (res.success) {
             setIsModalOpen(false);
         }
@@ -103,14 +104,17 @@ const Notes = () => {
                             style={{ animationDelay: `${0.3 + idx * 0.05}s` }}
                         >
                             <div className="note-card-header">
-                                <span className="note-date">
-                                    {new Date(note.date).toLocaleDateString('es-ES', { 
-                                        weekday: 'long', 
-                                        day: 'numeric', 
-                                        month: 'long', 
-                                        year: 'numeric' 
-                                    })}
-                                </span>
+                                <div className="date-mood-row">
+                                    <span className="note-date">
+                                        {new Date(note.date).toLocaleDateString('es-ES', { 
+                                            weekday: 'long', 
+                                            day: 'numeric', 
+                                            month: 'long', 
+                                            year: 'numeric' 
+                                        })}
+                                    </span>
+                                    {note.mood && <span className="note-mood-emoji">{note.mood}</span>}
+                                </div>
                                 <div className="note-actions">
                                     <button className="btn-note-edit" onClick={() => handleOpenEdit(note)}>✏️</button>
                                     <button className="btn-note-delete" onClick={() => handleDelete(note.date)}>🗑️</button>

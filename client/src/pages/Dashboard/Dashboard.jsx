@@ -4,17 +4,20 @@ import Modal from '../../components/Modal/Modal';
 import './Dashboard.css';
 
 const Dashboard = () => {
-    const { habits, oneTimeHabits, addOneTimeHabit, deleteOneTimeHabit, progress, toggleHabitProgress, notes, updateDayNote, deleteDayNote } = useContext(AuthContext);
+    const { habits, oneTimeHabits, addOneTimeHabit, deleteOneTimeHabit, progress, toggleHabitProgress, notes, updateDayNote, updateDayMood, deleteDayNote } = useContext(AuthContext);
     const [viewDate, setViewDate] = useState(new Date());
     const [selectedDate, setSelectedDate] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isNoteModalOpen, setIsNoteModalOpen] = useState(false);
     const [otName, setOtName] = useState("");
     const [currentNote, setCurrentNote] = useState("");
+    const [currentMood, setCurrentMood] = useState("");
 
     React.useEffect(() => {
         if (selectedDate) {
-            setCurrentNote(notes[selectedDate] || "");
+            const noteObj = notes[selectedDate] || {};
+            setCurrentNote(noteObj.content || "");
+            setCurrentMood(noteObj.mood || "");
         }
     }, [selectedDate, notes]);
 
@@ -115,9 +118,12 @@ const Dashboard = () => {
                         const status = getDayStatus(dateStr);
                         const isToday = day === today.getDate() && viewDate.getMonth() === today.getMonth() && currentYear === today.getFullYear();
 
+                        const moodEmoji = notes[dateStr]?.mood;
+
                         return (
                             <div key={day} className={`day-cell clickable ${isToday ? 'today' : ''} status-${status}`} onClick={() => handleDayClick(day)}>
                                 <span>{day}</span>
+                                {moodEmoji && <div className="day-mood-indicator">{moodEmoji}</div>}
                                 <div
                                     className="day-card-note-btn"
                                     onClick={(e) => {
@@ -126,7 +132,7 @@ const Dashboard = () => {
                                         setIsNoteModalOpen(true);
                                     }}
                                 >
-                                    {notes[dateStr] ? '📝' : '+'}
+                                    {notes[dateStr]?.content ? '📝' : '+'}
                                 </div>
                                 {status !== 'none' && <div className="day-indicator"></div>}
                             </div>
@@ -195,22 +201,38 @@ const Dashboard = () => {
                 }
             >
                 <div className="daily-note-section glass-card" style={{ marginTop: 0 }}>
+                    <div className="mood-picker">
+                        <span className="mood-label">¿Cómo te sientes hoy?</span>
+                        <div className="mood-emojis">
+                            {['😊', '🤩', '😐', '😔', '😫', '😡'].map(emoji => (
+                                <button 
+                                    key={emoji} 
+                                    className={`mood-btn ${currentMood === emoji ? 'active' : ''}`}
+                                    onClick={() => setCurrentMood(emoji)}
+                                >
+                                    {emoji}
+                                </button>
+                            ))}
+                        </div>
+                    </div>
                     <textarea
                         className="note-textarea"
-                        placeholder="¿Cómo te sentiste hoy? Escribe una pequeña reflexión..."
+                        placeholder="Escribe una pequeña reflexión..."
                         value={currentNote}
                         onChange={(e) => setCurrentNote(e.target.value)}
                     />
                     <div style={{ display: 'flex', gap: '1rem', justifyContent: 'flex-end' }}>
-                        {notes[selectedDate] && (
+                        {notes[selectedDate]?.content && (
                             <button
                                 className="btn-save-note"
                                 style={{ background: 'hsla(0,84%,60%,0.15)', color: '#ff4757', border: '1px solid hsla(0,84%,60%,0.3)' }}
                                 onClick={async () => {
-                                    const res = await deleteDayNote(selectedDate);
-                                    if (res.success) {
-                                        setCurrentNote("");
-                                        setIsNoteModalOpen(false);
+                                    if(window.confirm('¿Borrar nota?')) {
+                                        const res = await deleteDayNote(selectedDate);
+                                        if (res.success) {
+                                            setCurrentNote("");
+                                            setIsNoteModalOpen(false);
+                                        }
                                     }
                                 }}
                             >
@@ -220,7 +242,7 @@ const Dashboard = () => {
                         <button
                             className="btn-save-note"
                             onClick={async () => {
-                                const res = await updateDayNote(selectedDate, currentNote);
+                                const res = await updateDayNote(selectedDate, currentNote, currentMood);
                                 if (res.success) setIsNoteModalOpen(false);
                             }}
                         >

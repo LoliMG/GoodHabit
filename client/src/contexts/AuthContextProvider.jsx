@@ -16,7 +16,7 @@ export const AuthContextProvider = ({ children }) => {
         const formatted = {};
         notesArray.forEach(n => {
             const dateStr = typeof n.date === 'string' ? n.date.split('T')[0] : n.date.toISOString().split('T')[0];
-            formatted[dateStr] = n.content;
+            formatted[dateStr] = { content: n.content, mood: n.mood };
         });
         return formatted;
     };
@@ -219,10 +219,27 @@ export const AuthContextProvider = ({ children }) => {
         }
     };
 
-    const updateDayNote = async (date, content) => {
+    const updateDayNote = async (date, content, mood = null) => {
         try {
-            await fetchData("/note/save", "POST", { date, content }, token);
-            setNotes(prev => ({ ...prev, [date]: content }));
+            await fetchData("/note/save", "POST", { date, content, mood }, token);
+            setNotes(prev => {
+                const current = prev[date] || {};
+                return { ...prev, [date]: { ...current, content, mood: mood || current.mood } };
+            });
+            return { success: true };
+        } catch (error) {
+            console.error(error);
+            return { success: false };
+        }
+    };
+
+    const updateDayMood = async (date, mood) => {
+        try {
+            await fetchData("/note/update-mood", "PUT", { date, mood }, token);
+            setNotes(prev => {
+                const current = prev[date] || {};
+                return { ...prev, [date]: { ...current, mood } };
+            });
             return { success: true };
         } catch (error) {
             console.error(error);
@@ -254,7 +271,7 @@ export const AuthContextProvider = ({ children }) => {
             habits, setHabits, addHabit, updateHabit, deleteHabit,
             oneTimeHabits, setOneTimeHabits, addOneTimeHabit, deleteOneTimeHabit,
             progress, setProgress, toggleHabitProgress, isAuthLoading,
-            notes, updateDayNote, deleteDayNote
+            notes, updateDayNote, updateDayMood, deleteDayNote
         }}>
             {children}
         </AuthContext.Provider>
