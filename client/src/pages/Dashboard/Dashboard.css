@@ -155,11 +155,12 @@
           position: absolute;
           top: 6px;
           left: 6px;
-          background: none;
-          border: none;
-          color: var(--text-dim);
+          background: hsla(0, 0%, 100%, 0.1);
+          border: 1px solid var(--glass-border);
+          color: white;
           width: 24px;
           height: 24px;
+          border-radius: 50%;
           display: flex;
           align-items: center;
           justify-content: center;
@@ -168,9 +169,21 @@
           transition: var(--transition-fast);
           z-index: 5;
 
+          .mood-plus-placeholder {
+            opacity: 0.6;
+            font-size: 1rem;
+            font-weight: 700;
+          }
+
           &:hover {
+            background: var(--primary);
+            color: #0f172a;
             transform: scale(1.25);
-            filter: drop-shadow(0 0 8px var(--primary));
+            box-shadow: 0 0 15px var(--glass-glow);
+
+            .mood-plus-placeholder {
+              opacity: 1;
+            }
           }
         }
 

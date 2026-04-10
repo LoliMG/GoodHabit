@@ -138,7 +138,7 @@ const Dashboard = () => {
                                     }}
                                     title="Seleccionar estado de ánimo"
                                 >
-                                    {moodEmoji ? moodEmoji : <span style={{ opacity: 0.2, fontSize: '0.8rem' }}>+</span>}
+                                    {moodEmoji ? moodEmoji : <span className="mood-plus-placeholder">+</span>}
                                 </button>
                                 
                                 <span className="day-number">{day}</span>
