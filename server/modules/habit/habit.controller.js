@@ -6,7 +6,7 @@ class HabitController {
             const { name, icon } = req.body;
             const { user_id } = req;
             const result = await habitDal.addHabit([user_id, name, icon]);
-            res.status(200).json({ message: 'Habit created', habitId: result.insertId });
+            res.status(200).json({ message: 'Habit created', habitId: result[0].habit_id });
         } catch (error) {
             res.status(500).json({ error: 'Failed to create habit' });
         }
@@ -49,8 +49,8 @@ class HabitController {
         try {
             const { name, date } = req.body;
             const { user_id } = req;
-            await habitDal.addOneTimeHabit([user_id, name, date]);
-            res.status(200).json({ message: 'One-time habit added' });
+            const result = await habitDal.addOneTimeHabit([user_id, name, date]);
+            res.status(200).json({ message: 'One-time habit added', othId: result[0].oth_id });
         } catch (error) {
             res.status(500).json({ error: 'Failed to add one-time habit' });
         }
