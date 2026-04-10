@@ -103,7 +103,7 @@ class UserController {
                 oneTimeHabits, 
                 progress,
                 notes,
-                moods: formatMoods(moods)
+                moods: userMoods
             });
         } catch (error) {
             console.error(error);
