@@ -42,6 +42,11 @@ class HabitDal {
         let sql = 'UPDATE one_time_habits SET oth_is_completed = NOT oth_is_completed WHERE oth_id = $1 AND user_id = $2';
         return await executeQuery(sql, [otId, userId]);
     };
+
+    deleteOneTimeHabit = async (otId, userId) => {
+        let sql = 'DELETE FROM one_time_habits WHERE oth_id = $1 AND user_id = $2';
+        return await executeQuery(sql, [otId, userId]);
+    };
 }
 
 export default new HabitDal();

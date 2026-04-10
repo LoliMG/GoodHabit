@@ -77,6 +77,17 @@ class HabitController {
             res.status(500).json({ error: 'Failed to toggle status' });
         }
     };
+
+    deleteOneTime = async (req, res) => {
+        try {
+            const { id } = req.params;
+            const { user_id } = req;
+            await habitDal.deleteOneTimeHabit(id, user_id);
+            res.status(200).json({ message: 'One-time habit deleted' });
+        } catch (error) {
+            res.status(500).json({ error: 'Failed to delete one-time habit' });
+        }
+    };
 }
 
 export default new HabitController();

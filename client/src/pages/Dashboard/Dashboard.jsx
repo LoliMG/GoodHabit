@@ -162,7 +162,20 @@ const Dashboard = () => {
                                         <span className="habit-name">{habit.name}</span>
                                         {habit.isOneTime && <span className="ot-badge">Una vez</span>}
                                     </div>
-                                    <div className={`checkbox ${isDone ? 'checked' : ''}`}>{isDone && '✓'}</div>
+                                    <div className="habit-actions">
+                                        <div className={`checkbox ${isDone ? 'checked' : ''}`}>{isDone && '✓'}</div>
+                                        {habit.isOneTime && (
+                                            <button 
+                                                className="btn-delete-ot" 
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    if(window.confirm('¿Borrar tarea?')) deleteOneTimeHabit(selectedDate, habit.id);
+                                                }}
+                                            >
+                                                🗑️
+                                            </button>
+                                        )}
+                                    </div>
                                 </div>
                             );
                         })}

@@ -275,24 +275,53 @@
         }
       }
 
-      .checkbox {
-        width: 30px;
-        height: 30px;
-        border: 2px solid var(--glass-border);
-        border-radius: 9px;
+      .habit-actions {
         display: flex;
         align-items: center;
-        justify-content: center;
+        gap: 1rem;
 
-        &.checked {
-          background: var(--primary);
-          border-color: var(--primary);
-          color: #0f172a;
-          box-shadow: 0 0 20px hsla(174, 100%, 41%, 0.4);
+        .checkbox {
+          width: 30px;
+          height: 30px;
+          border: 2px solid var(--glass-border);
+          border-radius: 9px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+
+          &.checked {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: #0f172a;
+            box-shadow: 0 0 20px hsla(174, 100%, 41%, 0.4);
+          }
+        }
+
+        .btn-delete-ot {
+          background: rgba(255, 71, 87, 0.1);
+          border: 1px solid rgba(255, 71, 87, 0.2);
+          color: #ff4757;
+          border-radius: 8px;
+          width: 32px;
+          height: 32px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          cursor: pointer;
+          transition: var(--transition-fast);
+          font-size: 1rem;
+          padding: 0;
+
+          &:hover {
+            background: #ff4757;
+            color: white;
+            transform: scale(1.1);
+            box-shadow: 0 0 15px rgba(255, 71, 87, 0.4);
+          }
         }
       }
     }
-  }
+}
 
   /* DAILY NOTE JOURNAL SECTION */
   .daily-note-section {

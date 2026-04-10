@@ -184,6 +184,18 @@ export const AuthContextProvider = ({ children }) => {
             console.error(error);
         }
     };
+    
+    const deleteOneTimeHabit = async (date, id) => {
+        try {
+            await fetchData(`/habit/one-time/${id}`, "DELETE", null, token);
+            setOneTimeHabits(prev => ({
+                ...prev,
+                [date]: (prev[date] || []).filter(h => h.id !== id)
+            }));
+        } catch (error) {
+            console.error(error);
+        }
+    };
 
     const toggleHabitProgress = async (date, habitId, isOneTime = false) => {
         try {
@@ -240,7 +252,7 @@ export const AuthContextProvider = ({ children }) => {
         <AuthContext.Provider value={{
             user, setUser, token, setToken, logout, login, loginWithGoogle, register, updateUserProfile,
             habits, setHabits, addHabit, updateHabit, deleteHabit,
-            oneTimeHabits, setOneTimeHabits, addOneTimeHabit,
+            oneTimeHabits, setOneTimeHabits, addOneTimeHabit, deleteOneTimeHabit,
             progress, setProgress, toggleHabitProgress, isAuthLoading,
             notes, updateDayNote, deleteDayNote
         }}>

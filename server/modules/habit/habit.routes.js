@@ -13,5 +13,6 @@ router.delete('/:id', verifyToken, habitController.deleteHabit);
 router.get('/one-time', verifyToken, habitController.getOneTime);
 router.post('/one-time', verifyToken, habitController.createOneTime);
 router.put('/one-time/:id', verifyToken, habitController.toggleOneTime);
+router.delete('/one-time/:id', verifyToken, habitController.deleteOneTime);
 
 export default router;
