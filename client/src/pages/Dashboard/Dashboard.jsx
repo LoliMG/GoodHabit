@@ -126,11 +126,11 @@ const Dashboard = () => {
                                     className="day-mood-btn" 
                                     onClick={(e) => {
                                         e.stopPropagation();
-                                        handleDayClick(day); // For now, open modal to change mood
+                                        handleDayClick(day);
                                     }}
                                     title="Sentimiento del día"
                                 >
-                                    {moodEmoji || '◌'}
+                                    {moodEmoji ? moodEmoji : <span style={{ opacity: 0.2, fontSize: '0.8rem' }}>+</span>}
                                 </button>
                                 
                                 <span className="day-number">{day}</span>
