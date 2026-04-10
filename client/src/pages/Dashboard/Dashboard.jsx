@@ -122,8 +122,19 @@ const Dashboard = () => {
 
                         return (
                             <div key={day} className={`day-cell clickable ${isToday ? 'today' : ''} status-${status}`} onClick={() => handleDayClick(day)}>
-                                <span>{day}</span>
-                                {moodEmoji && <div className="day-mood-indicator">{moodEmoji}</div>}
+                                <button 
+                                    className="day-mood-btn" 
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        handleDayClick(day); // For now, open modal to change mood
+                                    }}
+                                    title="Sentimiento del día"
+                                >
+                                    {moodEmoji || '◌'}
+                                </button>
+                                
+                                <span className="day-number">{day}</span>
+                                
                                 <div
                                     className="day-card-note-btn"
                                     onClick={(e) => {
