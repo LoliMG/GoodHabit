@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import { useState, useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../contexts/AuthContext';
 import { useGoogleLogin } from '@react-oauth/google';
@@ -13,7 +13,7 @@ const Register = () => {
     confirmPassword: ''
   });
   const [error, setError] = useState('');
-  
+
   const navigate = useNavigate();
 
   const handleGoogleSuccess = async (tokenResponse) => {
@@ -75,10 +75,10 @@ const Register = () => {
         <form className="login-form" onSubmit={handleSubmit}>
           <div className="form-group">
             <label>Nombre Completo</label>
-            <input 
-              type="text" 
+            <input
+              type="text"
               name="name"
-              placeholder="Juan Pérez" 
+              placeholder="Juan Pérez"
               value={formData.name}
               onChange={handleChange}
               required
@@ -86,10 +86,10 @@ const Register = () => {
           </div>
           <div className="form-group">
             <label>Correo Electrónico</label>
-            <input 
-              type="email" 
+            <input
+              type="email"
               name="email"
-              placeholder="nombre@ejemplo.com" 
+              placeholder="nombre@ejemplo.com"
               value={formData.email}
               onChange={handleChange}
               required
@@ -97,10 +97,10 @@ const Register = () => {
           </div>
           <div className="form-group">
             <label>Contraseña</label>
-            <input 
-              type="password" 
+            <input
+              type="password"
               name="password"
-              placeholder="••••••••" 
+              placeholder="••••••••"
               value={formData.password}
               onChange={handleChange}
               required
@@ -108,10 +108,10 @@ const Register = () => {
           </div>
           <div className="form-group">
             <label>Confirmar Contraseña</label>
-            <input 
-              type="password" 
+            <input
+              type="password"
               name="confirmPassword"
-              placeholder="••••••••" 
+              placeholder="••••••••"
               value={formData.confirmPassword}
               onChange={handleChange}
               required

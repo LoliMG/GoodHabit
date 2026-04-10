@@ -1,24 +1,33 @@
-import mysql from 'mysql2/promise';
+import pkg from 'pg';
+const { Pool } = pkg;
 import dotenv from 'dotenv';
 
 dotenv.config();
 
-const pool = mysql.createPool({
-    host: process.env.DB_HOST,
-    user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB_NAME,
-    waitForConnections: true,
-    connectionLimit: 10,
-    queueLimit: 0
+// Supabase usa SSL en producción
+const isProduction = process.env.NODE_ENV === 'production';
+
+const pool = new Pool({
+    connectionString: process.env.DATABASE_URL,
+    ssl: isProduction ? { rejectUnauthorized: false } : false
 });
 
-const executeQuery = async (sql, values) => {
+/**
+ * Execute a query in PostgreSQL
+ * @param {string} text - SQL Query (using $1, $2 for placeholders)
+ * @param {Array} params - Values to insert
+ */
+const executeQuery = async (text, params) => {
+    const start = Date.now();
     try {
-        const [results] = await pool.execute(sql, values);
-        return results;
+        const res = await pool.query(text, params);
+        const duration = Date.now() - start;
+        // console.log('executed query', { text, duration, rows: res.rowCount });
+        
+        // Postgres devuelve resultados en 'rows'
+        return res.rows;
     } catch (error) {
-        console.error('Database Error:', error);
+        console.error('Postgres Query Error:', error);
         throw error;
     }
 };

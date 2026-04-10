@@ -2,43 +2,44 @@ import executeQuery from '../../config/db.js';
 
 class HabitDal {
     addHabit = async (values) => {
-        let sql = 'INSERT INTO habits (user_id, habit_name, habit_icon) VALUES (?,?,?)';
+        let sql = 'INSERT INTO habits (user_id, habit_name, habit_icon) VALUES ($1, $2, $3) RETURNING *';
         return await executeQuery(sql, values);
     };
 
     getHabitsByUserId = async (userId) => {
-        let sql = 'SELECT habit_id AS id, user_id, habit_name AS name, habit_icon AS icon, habit_created_at AS created_at FROM habits WHERE user_id = ?';
+        let sql = 'SELECT habit_id AS id, user_id, habit_name AS name, habit_icon AS icon, habit_created_at AS created_at FROM habits WHERE user_id = $1';
         return await executeQuery(sql, [userId]);
     };
 
     updateHabit = async (values) => {
-        let sql = 'UPDATE habits SET habit_name = ?, habit_icon = ? WHERE habit_id = ? AND user_id = ?';
+        // En Postgres los parámetros se numeran: habit_name ($1), habit_icon ($2), habit_id ($3), user_id ($4)
+        let sql = 'UPDATE habits SET habit_name = $1, habit_icon = $2 WHERE habit_id = $3 AND user_id = $4';
         return await executeQuery(sql, values);
     };
 
     deleteHabit = async (habitId, userId) => {
-        let sql = 'DELETE FROM habits WHERE habit_id = ? AND user_id = ?';
+        let sql = 'DELETE FROM habits WHERE habit_id = $1 AND user_id = $2';
         return await executeQuery(sql, [habitId, userId]);
     };
 
     // One-Time Habits
     addOneTimeHabit = async (values) => {
-        let sql = 'INSERT INTO one_time_habits (user_id, oth_name, oth_date) VALUES (?,?,?)';
+        let sql = 'INSERT INTO one_time_habits (user_id, oth_name, oth_date) VALUES ($1, $2, $3) RETURNING *';
         return await executeQuery(sql, values);
     };
 
     getOneTimeHabits = async (userId, date = null) => {
-        let sql = "SELECT oth_id AS id, user_id, oth_name AS name, DATE_FORMAT(oth_date, '%Y-%m-%d') AS date, oth_is_completed AS is_completed FROM one_time_habits WHERE user_id = ?";
+        let sql = "SELECT oth_id AS id, user_id, oth_name AS name, TO_CHAR(oth_date, 'YYYY-MM-DD') AS date, oth_is_completed AS is_completed FROM one_time_habits WHERE user_id = $1";
         let params = [userId];
         if (date) {
-            sql += ' AND oth_date = ?';
+            sql += ' AND oth_date = $2';
             params.push(date);
         }
         return await executeQuery(sql, params);
     };
 
     toggleOneTimeHabit = async (otId, userId) => {
-        let sql = 'UPDATE one_time_habits SET oth_is_completed = NOT oth_is_completed WHERE oth_id = ? AND user_id = ?';
+        let sql = 'UPDATE one_time_habits SET oth_is_completed = NOT oth_is_completed WHERE oth_id = $1 AND user_id = $2';
         return await executeQuery(sql, [otId, userId]);
     };
 }

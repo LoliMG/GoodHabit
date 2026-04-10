@@ -3,7 +3,7 @@ import executeQuery from '../../config/db.js';
 class UserDal {
     register = async (values) => {
         try {
-            let sql = 'INSERT INTO users (user_name, user_email, user_password) VALUES (?,?,?)';
+            let sql = 'INSERT INTO users (user_name, user_email, user_password) VALUES ($1, $2, $3) RETURNING *';
             let result = await executeQuery(sql, values);
             return result;
         } catch (error) {
@@ -13,7 +13,7 @@ class UserDal {
 
     findUserByEmail = async (email) => {
         try {
-            let sql = 'SELECT user_id AS id, user_password AS password, user_name AS name, user_email AS email FROM users WHERE user_email = ?';
+            let sql = 'SELECT user_id AS id, user_password AS password, user_name AS name, user_email AS email FROM users WHERE user_email = $1';
             let result = await executeQuery(sql, [email]);
             return result;
         } catch (error) {
@@ -23,7 +23,7 @@ class UserDal {
 
     userByToken = async (id) => {
         try {
-            let sql = 'SELECT user_id AS id, user_name AS name, user_email AS email, user_created_at AS created_at FROM users WHERE user_id = ?';
+            let sql = 'SELECT user_id AS id, user_name AS name, user_email AS email, user_created_at AS created_at FROM users WHERE user_id = $1';
             let result = await executeQuery(sql, [id]);
             return result[0];
         } catch (error) {
@@ -33,7 +33,7 @@ class UserDal {
 
     editUser = async (values) => {
         try {
-            let sql = 'UPDATE users SET user_name=? WHERE user_id=?';
+            let sql = 'UPDATE users SET user_name=$1 WHERE user_id=$2';
             await executeQuery(sql, values);
         } catch (error) {
             throw error;
