@@ -371,7 +371,7 @@
 
     .note-textarea {
       width: 100%;
-      min-height: 120px;
+      min-height: 250px;
       background: hsla(0, 0%, 0%, 0.2);
       border: 1px solid var(--glass-border);
       border-radius: 16px;
@@ -560,7 +560,7 @@
 
       .note-textarea {
         font-size: 1rem;
-        min-height: 100px;
+        min-height: 200px;
       }
 
       .btn-save-note {
