@@ -265,7 +265,7 @@ const Dashboard = () => {
             >
                 <div className="mood-selection-modal">
                     <div className="mood-emojis-row">
-                        {['😊', '🤩', '😐', '😔', '😫', '😡'].map(emoji => (
+                        {['😊', '🤩', '😐', '😔', '😫', '😡', '😭'].map(emoji => (
                             <button 
                                 key={emoji} 
                                 className={`mood-btn-large ${currentMood === emoji ? 'active' : ''}`}
