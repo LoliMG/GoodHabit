@@ -252,8 +252,6 @@ export const AuthContextProvider = ({ children }) => {
         }
     };
 
-    console.log("user global", user);
-    console.log("token global", token);
 
     return (
         <AuthContext.Provider value={{
