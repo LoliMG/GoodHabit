@@ -17,6 +17,15 @@ const Habits = () => {
     const addDropdownRef = useRef(null);
     const editDropdownRef = useRef(null);
 
+    const AVAILABLE_ICONS = [
+        '🔥', '🏃‍♂️', '🧘', '💧', '📚', '🍎', '🏋️', '🧠', '🥗', '🚶‍♀️', 
+        '💻', '🎸', '🎨', '🧹', '🌱', '🛌', '☕', '🥛', '🧘‍♀️', '🧗', 
+        '🚴', '🏊', '🏀', '⚽', '🧺', '🧼', '🧴', '💸', '📈', '📉', 
+        '📱', '🔇', '🤝', '📵', '🌤️', '🌙', '📅', '📝', '🔒', '🔑', 
+        '🌈', '✨', '🌍', '❤️', '🥦', '🥕', '🥤', '🍌', '🍗', '🍜',
+        '🍳', '👟', '⚽', '🎒', '🔋', '🧘', '🥊', '🏸', '🤸‍♂️'
+    ];
+
     useEffect(() => {
         const handleClickOutside = (event) => {
             if (addDropdownRef.current && !addDropdownRef.current.contains(event.target)) {
@@ -108,7 +117,7 @@ const Habits = () => {
                         <div className="dropdown-selected">{newIcon}</div>
                         {isDropdownOpen && (
                             <div className="dropdown-options">
-                                {['🔥', '🏃‍♂️', '🧘', '💧', '📚', '🍎', '🏋️'].map(icon => (
+                                {AVAILABLE_ICONS.map(icon => (
                                     <div
                                         key={icon}
                                         className="dropdown-option"
@@ -177,7 +186,7 @@ const Habits = () => {
                             <div className="dropdown-selected">{editIcon}</div>
                             {isEditDropdownOpen && (
                                 <div className="dropdown-options">
-                                    {['🔥', '🏃‍♂️', '🧘', '💧', '📚', '🍎', '🏋️'].map(icon => (
+                                    {AVAILABLE_ICONS.map(icon => (
                                         <div
                                             key={icon}
                                             className="dropdown-option"
