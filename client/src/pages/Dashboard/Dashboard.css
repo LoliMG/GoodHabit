@@ -396,48 +396,49 @@
       }
     }
 
-    .mood-selection-modal {
-      padding: 1rem 0.5rem;
-      
-      .mood-emojis-row {
-        display: flex;
-        justify-content: center;
-        gap: 0.8rem;
-        flex-wrap: nowrap;
-        overflow-x: auto;
-        padding: 1rem 0;
-        
-        /* Hide scrollbar but allow scrolling if needed */
-        &::-webkit-scrollbar { display: none; }
-        
-        .mood-btn-large {
-          background: hsla(0, 0%, 100%, 0.03);
-          border: 1px solid var(--glass-border);
-          font-size: 2.22rem;
-          min-width: 62px;
-          height: 62px;
-          border-radius: 18px;
-          cursor: pointer;
-          transition: var(--transition-fast);
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          padding: 0;
-          flex-shrink: 0;
-          color: white;
+  }
 
-          &:hover {
-            background: hsla(0, 0%, 100%, 0.08);
-            transform: translateY(-5px);
-            border-color: var(--primary);
-          }
-          
-          &.active {
-            background: hsla(174, 100%, 41%, 0.15);
-            border-color: var(--primary);
-            box-shadow: 0 0 20px var(--glass-glow);
-            transform: scale(1.15);
-          }
+  /* MOOD SELECTION MODAL (Separated) */
+  .mood-selection-modal {
+    padding: 1.5rem 0.5rem;
+    
+    .mood-emojis-row {
+      display: flex;
+      justify-content: center;
+      gap: 1.25rem;
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      padding: 1.5rem 0;
+      
+      &::-webkit-scrollbar { display: none; }
+      
+      .mood-btn-large {
+        background: transparent;
+        border: 1px solid var(--glass-border);
+        font-size: 2.8rem; /* Make them even bigger and nicer */
+        min-width: 70px;
+        height: 70px;
+        border-radius: 20px;
+        cursor: pointer;
+        transition: var(--transition-fast);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0;
+        flex-shrink: 0;
+        color: white;
+
+        &:hover {
+          background: hsla(0, 0%, 100%, 0.1);
+          transform: translateY(-8px);
+          border-color: var(--primary);
+        }
+        
+        &.active {
+          background: hsla(174, 100%, 41%, 0.2);
+          border-color: var(--primary);
+          box-shadow: 0 0 30px var(--glass-glow);
+          transform: scale(1.15) translateY(-5px);
         }
       }
     }
