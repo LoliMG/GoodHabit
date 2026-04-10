@@ -98,6 +98,40 @@
                     font-size: 0.9rem;
                     color: var(--text-dim);
                 }
+
+                .password-input-wrapper {
+                    position: relative;
+                    display: flex;
+                    align-items: center;
+
+                    input {
+                        padding-right: 3.5rem; /* Space for the toggle button */
+                    }
+
+                    .password-toggle-btn {
+                        position: absolute;
+                        right: 1.25rem;
+                        background: none;
+                        border: none;
+                        color: var(--text-dim);
+                        cursor: pointer;
+                        padding: 0;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        transition: var(--transition-fast);
+                        z-index: 10;
+
+                        &:hover {
+                            color: white;
+                        }
+
+                        svg {
+                            width: 20px;
+                            height: 20px;
+                        }
+                    }
+                }
             }
         }
 
