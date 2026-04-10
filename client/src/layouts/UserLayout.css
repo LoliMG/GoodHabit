@@ -1,0 +1,178 @@
+.user-layout {
+  display: flex;
+  min-height: 100dvh;
+  gap: 0;
+  
+  .sidebar {
+    width: 280px;
+    min-width: 280px;
+    background: hsla(240, 10%, 4%, 0.4);
+    backdrop-filter: blur(40px);
+    -webkit-backdrop-filter: blur(40px);
+    border-right: 1px solid var(--glass-border);
+    padding: 3rem 2rem;
+    display: flex;
+    flex-direction: column;
+    position: sticky;
+    top: 0;
+    height: 100dvh;
+    z-index: 1000;
+
+    .sidebar-header {
+      margin-bottom: 5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      .sidebar-logo {
+        font-size: 1.8rem;
+        font-weight: 800;
+        letter-spacing: -2px;
+        background: linear-gradient(135deg, var(--primary), var(--accent));
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+
+      .menu-toggle {
+        display: none;
+        background: none;
+        border: none;
+        color: white;
+        font-size: 1.5rem;
+        cursor: pointer;
+      }
+    }
+
+    .sidebar-user {
+      margin-bottom: 4rem;
+      
+      span {
+        display: block;
+        color: var(--text-dim);
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        margin-bottom: 0.5rem;
+      }
+
+      strong {
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: white;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: block;
+      }
+    }
+
+    .sidebar-nav {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+
+      a {
+        display: flex;
+        align-items: center;
+        gap: 1.25rem;
+        padding: 1rem 1.25rem;
+        color: var(--text-dim);
+        border-radius: 12px;
+        font-weight: 500;
+        transition: var(--transition-fast);
+        text-decoration: none !important;
+
+        .icon {
+          font-size: 1.4rem;
+          transition: inherit;
+        }
+
+        &:hover {
+          color: white;
+          background: hsla(0, 0%, 100%, 0.04);
+        }
+
+        &.active {
+          color: var(--primary);
+          background: hsla(174, 100%, 41%, 0.08);
+          border: 1px solid hsla(174, 100%, 41%, 0.1);
+
+          .icon { filter: drop-shadow(0 0 8px var(--primary-glow)); }
+        }
+      }
+    }
+
+    .sidebar-footer {
+      padding-top: 2rem;
+      border-top: 1px solid var(--glass-border);
+
+      .btn-logout {
+        width: 100%;
+        padding: 1rem;
+        background: transparent;
+        color: var(--text-dim);
+        border: 1px solid var(--glass-border);
+        border-radius: 12px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: var(--transition-fast);
+
+        &:hover {
+          color: #ff4757;
+          border-color: #ff4757;
+          background: rgba(255, 71, 87, 0.05);
+        }
+      }
+    }
+  }
+
+  .content {
+    flex: 1;
+    padding: 3rem;
+    overflow-y: auto;
+    height: 100dvh;
+    animation: fadeInUp 0.8s var(--transition-slow);
+  }
+
+  @media (max-width: 1024px) {
+    flex-direction: column;
+    padding: 0;
+
+    .sidebar {
+      width: 100%;
+      height: auto;
+      min-height: unset;
+      padding: 1.5rem 2rem;
+      border-right: none;
+      border-bottom: 1px solid var(--glass-border);
+
+      .sidebar-header {
+        margin-bottom: 0;
+        .menu-toggle { display: block; }
+      }
+
+      .sidebar-user, .sidebar-nav, .sidebar-footer {
+        display: none;
+      }
+
+      &.open {
+        height: 100dvh;
+        .sidebar-header { margin-bottom: 3rem; }
+        .sidebar-user, .sidebar-nav, .sidebar-footer { display: flex; }
+      }
+    }
+
+    .content {
+      padding: 2rem 1.5rem;
+      height: auto;
+      min-height: calc(100dvh - 80px);
+    }
+  }
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(15px); }
+  to { opacity: 1; transform: translateY(0); }
+}

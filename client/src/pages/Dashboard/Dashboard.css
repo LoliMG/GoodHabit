@@ -1,0 +1,472 @@
+.dashboard-container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+
+  .dashboard-header {
+    margin-bottom: 5rem;
+
+    .status-banner {
+      padding: 2.5rem 3rem;
+      border-radius: 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: linear-gradient(135deg, hsla(220, 40%, 15%, 0.8) 0%, hsla(220, 40%, 10%, 0.6) 100%);
+      border: 1px solid var(--glass-border);
+      overflow: hidden;
+      position: relative;
+
+      &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 10px;
+        height: 100%;
+        background: var(--primary);
+        box-shadow: 0 0 40px var(--primary);
+      }
+
+      h2 {
+        font-size: 2.2rem;
+        font-weight: 800;
+        letter-spacing: -1px;
+        margin: 0;
+      }
+
+      .habits-left {
+        font-size: 1.55rem;
+        color: var(--text-dim);
+        margin: 0;
+
+        strong {
+          font-size: 1.7rem;
+          color: white;
+          font-weight: 800;
+          filter: drop-shadow(0 0 10px var(--primary-glow));
+        }
+      }
+    }
+  }
+
+  /* PREMIUM CALENDAR DESIGN */
+  .mini-calendar {
+    padding: 4rem;
+    border-radius: 48px;
+    background: hsla(220, 40%, 12%, 0.5);
+    border: 1px solid var(--glass-border);
+    backdrop-filter: blur(20px);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+
+    .calendar-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 4rem;
+
+      h3 {
+        font-size: 2.5rem;
+        font-weight: 800;
+        letter-spacing: -1.5px;
+        background: linear-gradient(135deg, white 60%, var(--primary));
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+
+      .cal-nav button {
+        background: hsla(0, 0%, 100%, 0.05);
+        border: 1px solid var(--glass-border);
+        color: white;
+        width: 56px;
+        height: 56px;
+        border-radius: 18px;
+        margin-left: 1.2rem;
+        cursor: pointer;
+        font-size: 1.6rem;
+        transition: var(--transition-fast);
+
+        &:hover {
+          background: var(--primary);
+          color: #0f172a;
+          transform: translateY(-3px);
+          box-shadow: 0 10px 30px var(--primary);
+        }
+      }
+    }
+
+    .calendar-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 1rem;
+
+      .day-name {
+        text-align: center;
+        color: var(--text-dim);
+        font-size: 0.85rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        padding-bottom: 2.5rem;
+      }
+
+      .day-cell {
+        aspect-ratio: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 22px;
+        background: hsla(0, 0%, 100%, 0.03);
+        border: 1px solid hsla(0, 0%, 100%, 0.05);
+        font-weight: 500;
+        font-size: 1.2rem;
+        transition: var(--transition-fast);
+        position: relative;
+
+        &.clickable:hover {
+          background: hsla(0, 0%, 100%, 0.1) !important;
+          transform: translateY(-5px) scale(1.08);
+          cursor: pointer;
+          border-color: var(--primary);
+        }
+
+        &.today {
+          background: var(--primary);
+          color: #0f172a;
+          box-shadow: 0 0 50px hsla(171, 100%, 50%, 0.4);
+          border: none;
+          font-weight: 800;
+        }
+
+        &.status-full {
+          background: hsla(174, 100%, 41%, 0.15);
+          border-color: hsla(174, 100%, 41%, 0.3);
+          color: var(--primary);
+        }
+
+        &.status-partial {
+          background: hsla(280, 100%, 70%, 0.1);
+          border-color: hsla(280, 100%, 70%, 0.3);
+          color: var(--secondary);
+        }
+
+        .day-indicator {
+          position: absolute;
+          bottom: 14px;
+          width: 6px;
+          height: 6px;
+          border-radius: 50%;
+          background: currentColor;
+          box-shadow: 0 0 10px currentColor;
+        }
+
+        .day-card-note-btn {
+          position: absolute;
+          top: 6px;
+          right: 6px;
+          font-size: 0.75rem;
+          color: white;
+          background: hsla(0, 0%, 100%, 0.1);
+          border-radius: 50%;
+          width: 20px;
+          height: 20px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          transition: var(--transition-fast);
+          z-index: 5;
+
+          &:hover {
+            background: var(--primary);
+            color: #0f172a;
+            transform: scale(1.15);
+            box-shadow: 0 0 15px hsla(171, 100%, 50%, 0.4);
+          }
+        }
+      }
+    }
+  }
+
+  /* ONE-TIME TASK INPUT */
+  .ot-input-group {
+    display: flex;
+    gap: 1rem;
+    margin: 1.5rem 0 2.5rem;
+
+    input {
+      flex: 1;
+      padding: 1.25rem 1.8rem;
+      background: hsla(220, 40%, 15%, 0.4);
+      border: 1px solid var(--glass-border);
+      border-radius: 100px;
+      /* Matching the pill pods */
+      color: white;
+      font-size: 1.1rem;
+      transition: var(--transition-fast);
+
+      &::placeholder {
+        color: hsla(0, 0%, 100%, 0.3);
+      }
+
+      &:focus {
+        border-color: var(--primary);
+        background: hsla(220, 40%, 20%, 0.6);
+      }
+    }
+
+    .btn-add-ot {
+      width: 54px;
+      height: 54px;
+      background: var(--primary);
+      color: #0f172a;
+      border: none;
+      border-radius: 50%;
+      /* Circle + button */
+      font-size: 1.8rem;
+      font-weight: 300;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: var(--transition-fast);
+      box-shadow: 0 5px 15px hsla(174, 100%, 41%, 0.3);
+
+      &:hover {
+        transform: scale(1.1) rotate(90deg);
+        background: white;
+      }
+    }
+  }
+
+  /* MODAL HABIT LIST */
+  .habits-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    margin-top: 2.5rem;
+
+    .habit-item {
+      padding: 1rem 1.8rem;
+      border-radius: 100px;
+      background: linear-gradient(90deg, hsla(220, 40%, 18%, 0.8) 0%, hsla(220, 40%, 14%, 0.6) 100%);
+      border: 1px solid hsla(0, 0%, 100%, 0.04);
+      display: flex;
+      align-items: center;
+      gap: 1.8rem;
+      cursor: pointer;
+      transition: var(--transition-fast);
+
+      &:hover {
+        background: linear-gradient(90deg, hsla(220, 40%, 22%, 0.9) 0%, hsla(220, 40%, 18%, 0.7) 100%);
+      }
+
+      .habit-icon {
+        font-size: 2rem;
+      }
+
+      .habit-info {
+        flex: 1;
+
+        .habit-name {
+          font-size: 1.15rem;
+          font-weight: 600;
+          color: white;
+        }
+      }
+
+      .checkbox {
+        width: 30px;
+        height: 30px;
+        border: 2px solid var(--glass-border);
+        border-radius: 9px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        &.checked {
+          background: var(--primary);
+          border-color: var(--primary);
+          color: #0f172a;
+          box-shadow: 0 0 20px hsla(174, 100%, 41%, 0.4);
+        }
+      }
+    }
+  }
+
+  /* DAILY NOTE JOURNAL SECTION */
+  .daily-note-section {
+    margin-top: 3rem;
+    padding: 2rem;
+    border-radius: 24px;
+    background: hsla(220, 40%, 15%, 0.4);
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+
+    .note-title {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      margin: 0;
+    }
+
+    .note-textarea {
+      width: 100%;
+      min-height: 120px;
+      background: hsla(0, 0%, 0%, 0.2);
+      border: 1px solid var(--glass-border);
+      border-radius: 16px;
+      padding: 1.2rem;
+      font-size: 1.1rem;
+      color: white;
+      resize: vertical;
+      transition: var(--transition-fast);
+
+      &::placeholder {
+        color: hsla(0, 0%, 100%, 0.3);
+      }
+
+      &:focus {
+        border-color: var(--primary);
+        background: hsla(220, 40%, 20%, 0.6);
+        outline: none;
+      }
+    }
+
+    .btn-save-note {
+      align-self: flex-end;
+      background: var(--primary);
+      color: #0f172a;
+      border: none;
+      padding: 0.8rem 1.5rem;
+      border-radius: 12px;
+      font-weight: 700;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: var(--transition-fast);
+
+      &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px hsla(174, 100%, 41%, 0.3);
+      }
+    }
+  }
+
+  @media (max-width: 768px) {
+    padding: 1rem;
+
+    .dashboard-header .status-banner {
+      flex-direction: column;
+      padding: 1.5rem;
+      text-align: center;
+      gap: 0.5rem;
+
+      h2 {
+        font-size: 1.4rem;
+        letter-spacing: -0.5px;
+      }
+
+      .habits-left {
+        font-size: 1.1rem;
+      }
+    }
+
+    .mini-calendar {
+      padding: 1.5rem;
+      border-radius: 28px;
+
+      .calendar-header {
+        margin-bottom: 2rem;
+
+        h3 {
+          font-size: 1.6rem;
+        }
+
+        .cal-nav button {
+          width: 40px;
+          height: 40px;
+          font-size: 1.2rem;
+          border-radius: 12px;
+          margin-left: 0.6rem;
+        }
+      }
+
+      .calendar-grid {
+        gap: 0.4rem;
+
+        .day-name {
+          font-size: 0.65rem;
+          letter-spacing: 0;
+          padding-bottom: 1rem;
+        }
+
+        .day-cell {
+          font-size: 0.9rem;
+          border-radius: 12px;
+
+          /* Hide note btn on small cells — too cramped */
+          .day-card-note-btn {
+            display: none;
+          }
+
+          .day-indicator {
+            bottom: 5px;
+            width: 4px;
+            height: 4px;
+          }
+        }
+      }
+    }
+
+    .ot-input-group {
+      margin: 1rem 0 1.5rem;
+
+      input {
+        font-size: 1rem;
+        padding: 1rem 1.2rem;
+      }
+
+      .btn-add-ot {
+        width: 44px;
+        height: 44px;
+        font-size: 1.5rem;
+      }
+    }
+
+    .habits-list {
+      gap: 0.8rem;
+      margin-top: 1.5rem;
+
+      .habit-item {
+        padding: 0.8rem 1.2rem;
+        gap: 1rem;
+
+        .habit-icon {
+          font-size: 1.5rem;
+        }
+
+        .habit-name {
+          font-size: 1rem;
+        }
+      }
+    }
+
+    .daily-note-section {
+      margin-top: 1.5rem;
+      padding: 1.2rem;
+
+      .note-textarea {
+        font-size: 1rem;
+        min-height: 100px;
+      }
+
+      .btn-save-note {
+        font-size: 0.9rem;
+        padding: 0.7rem 1.2rem;
+      }
+    }
+  }
+}

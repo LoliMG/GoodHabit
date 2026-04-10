@@ -1,0 +1,78 @@
+.contribution-container {
+    padding: 1.5rem;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    max-width: 100%;
+}
+
+.month-labels {
+    display: flex;
+    justify-content: space-around;
+    padding-left: 2.5rem;
+    margin-bottom: 0.5rem;
+    min-width: 800px; /* Ensure labels align with the scrollable grid */
+}
+
+.graph-body {
+    display: flex;
+    gap: 0.5rem;
+    overflow-x: auto; /* Enable internal scrolling */
+    padding-bottom: 1rem;
+    scrollbar-width: thin;
+    scrollbar-color: var(--card-border) transparent;
+}
+
+.graph-body::-webkit-scrollbar {
+    height: 4px;
+}
+
+.day-labels {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100px;
+    padding-bottom: 5px;
+    position: sticky;
+    left: 0;
+    background: var(--bg); /* Keep labels visible while scrolling */
+    padding-right: 0.5rem;
+    z-index: 10;
+}
+
+.weeks-grid {
+    display: flex;
+    gap: 3px;
+}
+
+.week-column {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.cell {
+    width: 11px;
+    height: 11px;
+    border-radius: 2px;
+    background: #161b22;
+    flex-shrink: 0;
+}
+
+.lvl-0 { background: #161b22; }
+.lvl-1 { background: #0e4429; }
+.lvl-2 { background: #006d32; }
+.lvl-3 { background: #26a641; }
+.lvl-4 { background: #39d353; }
+
+.graph-footer {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+}
+
+.legend {
+    display: flex;
+    gap: 3px;
+}
