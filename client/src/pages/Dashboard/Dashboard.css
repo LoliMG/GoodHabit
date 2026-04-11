@@ -155,7 +155,8 @@
           position: absolute;
           top: 6px;
           left: 6px;
-          background: hsla(0, 0%, 100%, 0.12); /* Slightly more visible background */
+          background: hsla(0, 0%, 100%, 0.12);
+          /* Slightly more visible background */
           border: 1px solid hsla(0, 0%, 100%, 0.1);
           color: white !important;
           width: 22px;
@@ -170,7 +171,8 @@
           z-index: 5;
 
           .mood-plus-placeholder {
-            opacity: 0.8 !important; /* Force high visibility */
+            opacity: 0.8 !important;
+            /* Force high visibility */
             font-size: 1rem;
             font-weight: 700;
           }
@@ -348,7 +350,7 @@
         }
       }
     }
-}
+  }
 
   /* DAILY NOTE JOURNAL SECTION */
   .daily-note-section {
@@ -415,18 +417,20 @@
   /* MOOD SELECTION MODAL (Separated) */
   .mood-selection-modal {
     padding: 1.5rem 0.5rem;
-    
+
     .mood-emojis-row {
       display: flex;
       justify-content: center;
       gap: 1.25rem;
-      flex-wrap: wrap; /* Changed from nowrap to wrap */
+      flex-wrap: wrap;
+      /* Changed from nowrap to wrap */
       padding: 1.5rem 0;
-      
+
       .mood-btn-large {
         background: transparent;
         border: 1px solid var(--glass-border);
-        font-size: 2.8rem; /* Make them even bigger and nicer */
+        font-size: 2.8rem;
+        /* Make them even bigger and nicer */
         min-width: 70px;
         height: 70px;
         border-radius: 20px;
@@ -444,7 +448,7 @@
           transform: translateY(-8px);
           border-color: var(--primary);
         }
-        
+
         &.active {
           background: hsla(174, 100%, 41%, 0.2);
           border-color: var(--primary);
@@ -560,7 +564,7 @@
 
       .note-textarea {
         font-size: 1rem;
-        min-height: 200px;
+        min-height: 400px;
       }
 
       .btn-save-note {
