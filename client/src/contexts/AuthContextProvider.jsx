@@ -237,14 +237,21 @@ export const AuthContextProvider = ({ children }) => {
         }
     };
 
-    const updateUserImage = async (imageData) => {
+    const updateUserImage = async (formData) => {
         try {
-            const res = await fetchData("/user/editImage", "PUT", imageData, token);
-            if (res.data) {
-                setUser(prev => ({ ...prev, image: imageData.image }));
-                return { success: true };
+            const response = await fetch(`${import.meta.env.VITE_API_URL || ""}/api/user/editImage`, {
+                method: "PUT",
+                headers: {
+                    "Authorization": `Bearer ${token}`
+                },
+                body: formData
+            });
+            const resData = await response.json();
+            if (response.ok) {
+                setUser(prev => ({ ...prev, image: resData.filename }));
+                return { success: true, filename: resData.filename };
             }
-            return { success: false };
+            return { success: false, message: resData.message };
         } catch (error) {
             console.error(error);
             return { success: false, message: "Error al subir la imagen" };

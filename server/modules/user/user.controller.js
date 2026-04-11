@@ -207,12 +207,12 @@ class UserController {
     editImage = async (req, res) => {
         try {
             const { user_id } = req;
-            const { image } = req.body; // Recibimos la cadena Base64
+            if (!req.file) return res.status(400).json({ message: "No se ha subido ninguna imagen" });
             
-            if (!image) return res.status(400).json({ message: "No se ha proporcionado ninguna imagen" });
+            const filename = req.file.filename || (Date.now() + "-" + req.file.originalname);
             
-            await userDal.editUserImage([image, user_id]);
-            res.status(200).json({ message: 'Image updated' });
+            await userDal.editUserImage([filename, user_id]);
+            res.status(200).json({ message: 'Image updated', filename });
         } catch (error) {
             console.error(error);
             res.status(500).json({ error: 'Failed to update image' });

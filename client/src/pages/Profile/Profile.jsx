@@ -27,25 +27,15 @@ const Profile = () => {
         const file = e.target.files[0];
         if (!file) return;
 
-        // Validar tamaño máximo (ej: 2MB para Base64 es razonable)
-        if (file.size > 2 * 1024 * 1024) {
-            setMessage("La imagen es demasiado grande (máx 2MB) ❌");
-            setTimeout(() => setMessage(""), 3000);
-            return;
-        }
+        const formData = new FormData();
+        formData.append("img", file);
 
-        const reader = new FileReader();
-        reader.onloadend = async () => {
-            const base64String = reader.result;
-            const res = await updateUserImage({ image: base64String });
-            if (res.success) {
-                setMessage("¡Imagen de perfil actualizada! 📸");
-            } else {
-                setMessage("Error al subir la imagen ❌");
-            }
-        };
-        reader.readAsDataURL(file);
-        
+        const res = await updateUserImage(formData);
+        if (res.success) {
+            setMessage("¡Imagen de perfil actualizada! 📸");
+        } else {
+            setMessage("Error al subir la imagen ❌");
+        }
         setTimeout(() => setMessage(""), 3000);
     };
 
@@ -61,7 +51,7 @@ const Profile = () => {
                     <div className="avatar-section">
                         <div className="avatar-preview">
                             {user?.image ? (
-                                <img src={user.image} alt="Profile" />
+                                <img src={`${import.meta.env.VITE_API_URL || ""}/images/users/${user.image}`} alt="Profile" />
                             ) : (
                                 <div className="avatar-placeholder">{user?.name?.charAt(0).toUpperCase()}</div>
                             )}
