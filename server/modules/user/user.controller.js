@@ -207,7 +207,11 @@ class UserController {
     editImage = async (req, res) => {
         try {
             const { user_id } = req;
-            const filename = req.file.filename;
+            if (!req.file) return res.status(400).json({ message: "No se ha subido ninguna imagen" });
+            
+            // Si usamos memoryStorage, el filename no existe, así que lo generamos
+            const filename = req.file.filename || (Date.now() + "-" + req.file.originalname);
+            
             await userDal.editUserImage([filename, user_id]);
             res.status(200).json({ message: 'Image updated', filename });
         } catch (error) {

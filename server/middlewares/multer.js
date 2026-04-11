@@ -1,13 +1,13 @@
 import multer from "multer";
 
-export const uploadImage = (folder) => {
-    const storage = multer.diskStorage({
-        destination: `./public/images/${folder}`,
-        filename: (req, file, cb) => {
-            const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-            cb(null, uniqueSuffix + "-" + file.originalname);
-        }
-    });
+// Usamos memoryStorage para evitar errores en entornos como Vercel
+// donde el sistema de archivos es de solo lectura.
+const storage = multer.memoryStorage();
 
-    return multer({ storage }).single("img");
+export const uploadImage = (folder) => {
+    // Nota: 'folder' se ignora en memoryStorage, pero mantenemos la firma de la función
+    return multer({ 
+        storage,
+        limits: { fileSize: 5 * 1024 * 1024 } // Límite de 5MB
+    }).single("img");
 }
