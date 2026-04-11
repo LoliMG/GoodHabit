@@ -101,8 +101,8 @@ const Habits = () => {
     return (
         <div className="habits-container">
             <header className="habits-header">
-                <h2>Tus Hábitos 🏆</h2>
-                <p>Registra tu consistencia con estadísticas semanales, mensuales y totales.</p>
+                <h2 className="animate-fade-in">Gestiona tus <span className="gradient-text">Hábitos</span> 🏆</h2>
+                <p className="animate-fade-in" style={{ animationDelay: '0.1s' }}>Registra tu consistencia con estadísticas semanales, mensuales y totales.</p>
             </header>
 
             <form className="add-habit-form glass-card" onSubmit={handleSubmit}>

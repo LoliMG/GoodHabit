@@ -21,8 +21,8 @@ const Profile = () => {
     return (
         <div className="profile-container">
             <header className="profile-header">
-                <h2>Perfil de Usuario 👤</h2>
-                <p>Gestiona los ajustes de tu cuenta y mira tus estadísticas globales.</p>
+                <h2 className="animate-fade-in">Tu <span className="gradient-text">Perfil</span> 👤</h2>
+                <p className="animate-fade-in" style={{ animationDelay: '0.1s' }}>Gestiona los ajustes de tu cuenta y mira tus estadísticas globales.</p>
             </header>
 
             <div className="profile-grid">
