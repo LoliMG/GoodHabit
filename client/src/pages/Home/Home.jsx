@@ -63,8 +63,8 @@ const Home = () => {
                             </div>
                         </div>
                         <div className="stats-box glass-card">
-                            <span>Tasa de Éxito</span>
-                            <strong>98.4%</strong>
+                            <span>Sigue tus</span>
+                            <strong>Hábitos</strong>
                         </div>
                     </div>
                 </div>
@@ -94,8 +94,7 @@ const Home = () => {
             <footer className="footer">
                 <div className="footer-content">
                     <div className="footer-logo">GH.</div>
-                    <p>&copy; {year} GoodHabit. Crecimiento personal hecho simple.</p>
-                </div>
+                    <p>&copy; {year} GoodHabit. Crecimiento personal hecho simple.</p>                </div>
             </footer>
         </div>
     );
