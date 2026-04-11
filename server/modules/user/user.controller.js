@@ -207,6 +207,8 @@ class UserController {
     editImage = async (req, res) => {
         try {
             const { user_id } = req;
+            console.log("editImage received req.file:", req.file);
+            console.log("editImage received body:", req.body);
             if (!req.file) return res.status(400).json({ message: "No se ha subido ninguna imagen" });
             
             const filename = req.file.filename || (Date.now() + "-" + req.file.originalname);

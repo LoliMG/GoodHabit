@@ -42,7 +42,8 @@ const Register = () => {
     
     if (!validation.success) {
       // Tomamos el primer mensaje de error que encuentre Zod
-      return setError(validation.error.errors[0].message);
+      const issues = validation.error.issues || validation.error.errors || [];
+      return setError(issues[0]?.message || "Datos inválidos");
     }
 
     if (formData.password !== formData.confirmPassword) {
