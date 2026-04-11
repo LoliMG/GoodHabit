@@ -1,14 +1,18 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { fetchData } from '../../helpers/axiosHelper';
+import { AuthContext } from '../../contexts/AuthContext';
 import './PublicProfile.css';
 
 const PublicProfile = () => {
     const { userId } = useParams();
     const navigate = useNavigate();
+    const { addHabit } = useContext(AuthContext);
     const [data, setData] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [activeTab, setActiveTab] = useState('habits');
+    const [copyMessage, setCopyMessage] = useState("");
 
     useEffect(() => {
         const fetchUserData = async () => {
@@ -25,6 +29,16 @@ const PublicProfile = () => {
         fetchUserData();
     }, [userId]);
 
+    const handleAddHabit = async (name, icon) => {
+        try {
+            await addHabit(name, icon);
+            setCopyMessage(`¡Has añadido "${name}" a tus hábitos! 🚀`);
+            setTimeout(() => setCopyMessage(""), 3000);
+        } catch (err) {
+            console.error(err);
+        }
+    };
+
     if (loading) return <div className="loading-state">Cargando perfil...</div>;
     if (error) return (
         <div className="error-container">
@@ -37,7 +51,6 @@ const PublicProfile = () => {
     );
 
     const { user, habits, notes } = data;
-    const [activeTab, setActiveTab] = useState('habits');
 
     // Sort notes
     const sortedNotes = notes
@@ -48,17 +61,25 @@ const PublicProfile = () => {
         <div className="public-profile-container">
             <button className="btn-back" onClick={() => navigate('/community')}>← Volver</button>
             
+            {copyMessage && <div className="copy-toast glass-glow">{copyMessage}</div>}
+
             <header className="profile-hero">
                 <div className="avatar-large">{user.name.charAt(0).toUpperCase()}</div>
                 <h1>{user.name}</h1>
                 <p className="since">En GoodHabit desde {new Date(user.created_at).toLocaleDateString('es-ES', { month: 'long', year: 'numeric' })}</p>
                 
                 <div className="public-stats-row">
-                    <div className="mini-stat glass-card">
+                    <div 
+                        className={`mini-stat glass-card ${activeTab === 'habits' ? 'active' : ''}`}
+                        onClick={() => setActiveTab('habits')}
+                    >
                         <strong>{habits.length}</strong>
                         <span>Hábitos</span>
                     </div>
-                    <div className="mini-stat glass-card">
+                    <div 
+                        className={`mini-stat glass-card ${activeTab === 'notes' ? 'active' : ''}`}
+                        onClick={() => setActiveTab('notes')}
+                    >
                         <strong>{sortedNotes.length}</strong>
                         <span>Notas</span>
                     </div>
@@ -87,8 +108,17 @@ const PublicProfile = () => {
                         <div className="habits-grid">
                             {habits.map(h => (
                                 <div key={h.id} className="public-habit-item glass-card">
-                                    <span className="icon">{h.icon}</span>
-                                    <span className="name">{h.name}</span>
+                                    <div className="habit-main">
+                                        <span className="icon">{h.icon}</span>
+                                        <span className="name">{h.name}</span>
+                                    </div>
+                                    <button 
+                                        className="btn-add-habit" 
+                                        onClick={() => handleAddHabit(h.name, h.icon)}
+                                        title="Añadir a mis hábitos"
+                                    >
+                                        ＋
+                                    </button>
                                 </div>
                             ))}
                         </div>
