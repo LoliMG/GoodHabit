@@ -139,51 +139,64 @@
     }
 
     .public-content-view {
-        h3 {
-            font-size: 1.5rem;
+        padding-top: 2rem;
+
+        .section-title {
+            font-size: 2rem;
             font-weight: 800;
-            margin-bottom: 2rem;
-            letter-spacing: -0.5px;
+            margin-bottom: 3rem;
+            letter-spacing: -1px;
             text-align: center;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
         .habits-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 1.5rem;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
 
             .public-habit-item {
-                padding: 1.2rem 1.5rem;
+                padding: 1.5rem 2rem;
                 display: flex;
                 align-items: center;
                 justify-content: space-between;
-                gap: 1rem;
-                border-radius: 22px;
+                gap: 1.5rem;
+                border-radius: 24px;
                 border: 1px solid var(--glass-border);
-                transition: var(--transition-fast);
+                background: hsla(0, 0%, 100%, 0.02);
+                transition: var(--transition-medium);
 
                 &:hover {
                     border-color: var(--primary);
-                    transform: translateY(-5px);
-                    background: hsla(174, 100%, 41%, 0.03);
+                    transform: translateY(-8px);
+                    background: hsla(174, 100%, 41%, 0.05);
+                    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+
+                    .copy-habit-btn {
+                        background: var(--primary);
+                        color: #0f172a;
+                        transform: scale(1.1);
+                    }
                 }
 
-                .habit-main {
+                .habit-info-wrapper {
                     display: flex;
                     align-items: center;
-                    gap: 1rem;
-                    .icon { font-size: 1.8rem; }
-                    .name { font-weight: 600; font-size: 1.15rem; }
+                    gap: 1.2rem;
+                    .habit-icon { font-size: 2rem; }
+                    .habit-name { font-weight: 700; font-size: 1.2rem; color: white; }
                 }
 
-                .btn-add-habit {
-                    width: 40px;
-                    height: 40px;
+                .copy-habit-btn {
+                    width: 45px;
+                    height: 45px;
                     background: hsla(0, 0%, 100%, 0.05);
                     border: 1px solid var(--glass-border);
                     color: var(--primary);
-                    font-size: 1.5rem;
-                    border-radius: 50%;
+                    font-size: 1.6rem;
+                    border-radius: 16px;
                     cursor: pointer;
                     display: flex;
                     align-items: center;
@@ -191,9 +204,7 @@
                     transition: var(--transition-fast);
 
                     &:hover {
-                        background: var(--primary);
-                        color: #0f172a;
-                        transform: rotate(90deg);
+                        transform: scale(1.2) rotate(90deg) !important;
                     }
                 }
             }
@@ -202,45 +213,47 @@
         .notes-list {
             display: flex;
             flex-direction: column;
-            gap: 2rem;
+            gap: 2.5rem;
             max-width: 800px;
             margin: 0 auto;
 
-            .no-notes {
-                padding: 3rem;
+            .no-data {
+                padding: 5rem;
                 text-align: center;
                 color: var(--text-dim);
-                border-radius: 24px;
+                border-radius: 32px;
                 border: 1px dashed var(--glass-border);
             }
 
             .public-note-card {
-                padding: 2.5rem;
-                border-radius: 32px;
+                padding: 3rem;
+                border-radius: 40px;
                 position: relative;
                 overflow: hidden;
+                background: hsla(0, 0%, 100%, 0.02);
+                border: 1px solid var(--glass-border);
 
                 &::before {
                     content: '';
                     position: absolute;
-                    top: 0; left: 0; width: 4px; height: 100%;
+                    top: 0; left: 0; width: 6px; height: 100%;
                     background: var(--primary);
                 }
 
                 .note-card-header {
-                    margin-bottom: 1rem;
+                    margin-bottom: 1.5rem;
                     .note-date {
-                        font-size: 0.9rem;
-                        font-weight: 700;
+                        font-size: 1rem;
+                        font-weight: 800;
                         color: var(--primary);
                         text-transform: uppercase;
-                        letter-spacing: 1px;
+                        letter-spacing: 2px;
                     }
                 }
 
                 .note-body {
-                    line-height: 1.7;
-                    font-size: 1.15rem;
+                    line-height: 1.8;
+                    font-size: 1.2rem;
                     color: hsla(0, 0%, 100%, 0.9);
                     white-space: pre-wrap;
                 }

@@ -72,6 +72,7 @@ const PublicProfile = () => {
                     <div 
                         className={`mini-stat glass-card ${activeTab === 'habits' ? 'active' : ''}`}
                         onClick={() => setActiveTab('habits')}
+                        style={{ cursor: 'pointer' }}
                     >
                         <strong>{habits.length}</strong>
                         <span>Hábitos</span>
@@ -79,6 +80,7 @@ const PublicProfile = () => {
                     <div 
                         className={`mini-stat glass-card ${activeTab === 'notes' ? 'active' : ''}`}
                         onClick={() => setActiveTab('notes')}
+                        style={{ cursor: 'pointer' }}
                     >
                         <strong>{sortedNotes.length}</strong>
                         <span>Notas</span>
@@ -86,51 +88,41 @@ const PublicProfile = () => {
                 </div>
             </header>
 
-            <nav className="profile-tabs">
-                <button 
-                    className={`tab-btn ${activeTab === 'habits' ? 'active' : ''}`}
-                    onClick={() => setActiveTab('habits')}
-                >
-                    Hábitos ✨
-                </button>
-                <button 
-                    className={`tab-btn ${activeTab === 'notes' ? 'active' : ''}`}
-                    onClick={() => setActiveTab('notes')}
-                >
-                    Notas 📝
-                </button>
-            </nav>
-
             <div className="public-content-view">
-                {activeTab === 'habits' && (
+                {activeTab === 'habits' ? (
                     <section className="public-habits animate-fade-in">
-                        <h3>Hábitos que cultiva</h3>
+                        <h3 className="section-title">Hábitos que cultiva ✨</h3>
                         <div className="habits-grid">
-                            {habits.map(h => (
-                                <div key={h.id} className="public-habit-item glass-card">
-                                    <div className="habit-main">
-                                        <span className="icon">{h.icon}</span>
-                                        <span className="name">{h.name}</span>
+                            {habits.length === 0 ? (
+                                <p className="no-data">Este usuario no tiene hábitos públicos.</p>
+                            ) : (
+                                habits.map(h => (
+                                    <div key={h.id} className="public-habit-item glass-card">
+                                        <div className="habit-info-wrapper">
+                                            <span className="habit-icon">{h.icon}</span>
+                                            <span className="habit-name">{h.name}</span>
+                                        </div>
+                                        <button 
+                                            className="copy-habit-btn" 
+                                            onClick={(e) => {
+                                                e.stopPropagation();
+                                                handleAddHabit(h.name, h.icon);
+                                            }}
+                                            title="Copiar a mis hábitos"
+                                        >
+                                            ＋
+                                        </button>
                                     </div>
-                                    <button 
-                                        className="btn-add-habit" 
-                                        onClick={() => handleAddHabit(h.name, h.icon)}
-                                        title="Añadir a mis hábitos"
-                                    >
-                                        ＋
-                                    </button>
-                                </div>
-                            ))}
+                                ))
+                            )}
                         </div>
                     </section>
-                )}
-
-                {activeTab === 'notes' && (
+                ) : (
                     <section className="public-notes animate-fade-in">
-                        <h3>Reflexiones Públicas</h3>
+                        <h3 className="section-title">Reflexiones Públicas 📝</h3>
                         <div className="notes-list">
                             {sortedNotes.length === 0 ? (
-                                <p className="no-notes">Este usuario aún no ha compartido reflexiones.</p>
+                                <p className="no-data">Este usuario no ha compartido reflexiones.</p>
                             ) : (
                                 sortedNotes.map(n => (
                                     <div key={n.date} className="public-note-card glass-card">
@@ -143,7 +135,7 @@ const PublicProfile = () => {
                                                 })}
                                             </span>
                                         </div>
-                                        <div className="note-body">{n.content}</div>
+                                        <p className="note-body">{n.content}</p>
                                     </div>
                                 ))
                             )}
