@@ -41,12 +41,10 @@ const limiter = rateLimit({
 app.use('/api/', limiter);
 
 app.use(logger('dev'));
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(express.json({ limit: '10mb' }));
+app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-// Ruta explícita para imágenes de usuario
-app.use('/images/users', express.static(path.join(__dirname, 'public/images/users')));
 
 // Routes app
 app.use('/api/user', userRouter);
