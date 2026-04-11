@@ -1,13 +1,31 @@
 import multer from "multer";
+import path from "path";
+import fs from "fs";
 
-// Usamos memoryStorage para evitar errores en entornos como Vercel
-// donde el sistema de archivos es de solo lectura.
-const storage = multer.memoryStorage();
+// Configuración de almacenamiento en disco
+const diskStorage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        const dir = './public/images/users';
+        try {
+            // Intentamos crear la carpeta si estamos en un entorno que lo permite (Local)
+            if (!fs.existsSync(dir)) {
+                fs.mkdirSync(dir, { recursive: true });
+            }
+            cb(null, dir);
+        } catch (err) {
+            // Si falla (como en Vercel), pasamos el error o usamos /tmp
+            cb(null, '/tmp'); 
+        }
+    },
+    filename: (req, file, cb) => {
+        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+        cb(null, uniqueSuffix + '-' + file.originalname);
+    }
+});
 
 export const uploadImage = (folder) => {
-    // Nota: 'folder' se ignora en memoryStorage, pero mantenemos la firma de la función
     return multer({ 
-        storage,
-        limits: { fileSize: 5 * 1024 * 1024 } // Límite de 5MB
+        storage: diskStorage,
+        limits: { fileSize: 5 * 1024 * 1024 } 
     }).single("img");
 }
