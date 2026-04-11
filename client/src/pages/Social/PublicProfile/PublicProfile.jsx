@@ -69,13 +69,13 @@ const PublicProfile = () => {
 
                 <div className="public-stats-selector">
                     <div
-                        className={`stat-box glass-card ${activeTab === 'habits' ? 'active' : ''}`}
+                        className={`stat-box glass-card`}
                     >
                         <span className="count">{habits.length}</span>
                         <span className="label">HÁBITOS</span>
                     </div>
                     <div
-                        className={`stat-box glass-card ${activeTab === 'notes' ? 'active' : ''}`}
+                        className={`stat-box glass-card`}
                     >
                         <span className="count">{sortedNotes.length}</span>
                         <span className="label">NOTAS</span>
