@@ -7,13 +7,17 @@ import './PublicProfile.css';
 const PublicProfile = () => {
     const { userId } = useParams();
     const navigate = useNavigate();
-    const { addHabit } = useContext(AuthContext);
+    const { addHabit, token } = useContext(AuthContext);
 
     const [data, setData] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [activeTab, setActiveTab] = useState('habits'); // 'habits' o 'notes'
     const [copyMessage, setCopyMessage] = useState("");
+
+    // Likes state: { [noteId]: { likes_count: number, liked_by_user: boolean } }
+    const [likes, setLikes] = useState({});
+    const [likesLoaded, setLikesLoaded] = useState(false);
 
     useEffect(() => {
         const fetchUserData = async () => {
@@ -29,6 +33,62 @@ const PublicProfile = () => {
         };
         fetchUserData();
     }, [userId]);
+
+    // Load likes when notes tab is accessed and data is available
+    useEffect(() => {
+        if (activeTab !== 'notes' || !data || likesLoaded) return;
+
+        const noteIds = data.notes
+            .filter(n => n.content && n.content.trim() !== '' && n.id)
+            .map(n => n.id);
+
+        if (noteIds.length === 0) {
+            setLikesLoaded(true);
+            return;
+        }
+
+        const fetchLikes = async () => {
+            try {
+                const res = await fetchData('/note/likes', 'POST', { note_ids: noteIds }, token || null);
+                setLikes(res.data);
+            } catch (err) {
+                console.error("Error fetching likes:", err);
+            } finally {
+                setLikesLoaded(true);
+            }
+        };
+        fetchLikes();
+    }, [activeTab, data, likesLoaded, token]);
+
+    const handleToggleLike = async (noteId) => {
+        if (!token) {
+            setCopyMessage("¡Inicia sesión para dar likes! 💙");
+            setTimeout(() => setCopyMessage(""), 3000);
+            return;
+        }
+
+        // Optimistic update
+        const current = likes[noteId] || { likes_count: 0, liked_by_user: false };
+        const newLiked = !current.liked_by_user;
+        setLikes(prev => ({
+            ...prev,
+            [noteId]: {
+                likes_count: current.likes_count + (newLiked ? 1 : -1),
+                liked_by_user: newLiked
+            }
+        }));
+
+        try {
+            await fetchData(`/note/likes/${noteId}`, 'PUT', null, token);
+        } catch (err) {
+            console.error("Error toggling like:", err);
+            // Revert optimistic update on error
+            setLikes(prev => ({
+                ...prev,
+                [noteId]: current
+            }));
+        }
+    };
 
     const handleAddHabit = async (name, icon) => {
         try {
@@ -68,15 +128,11 @@ const PublicProfile = () => {
                 <p className="since">Miembro de GoodHabit desde {new Date(user.created_at).toLocaleDateString('es-ES', { month: 'long', year: 'numeric' })}</p>
 
                 <div className="public-stats-selector">
-                    <div
-                        className={`stat-box glass-card`}
-                    >
+                    <div className="stat-box glass-card">
                         <span className="count">{habits.length}</span>
                         <span className="label">HÁBITOS</span>
                     </div>
-                    <div
-                        className={`stat-box glass-card`}
-                    >
+                    <div className="stat-box glass-card">
                         <span className="count">{sortedNotes.length}</span>
                         <span className="label">NOTAS</span>
                     </div>
@@ -129,18 +185,33 @@ const PublicProfile = () => {
                             {sortedNotes.length === 0 ? (
                                 <p className="empty-msg">Este usuario no ha compartido reflexiones aún.</p>
                             ) : (
-                                sortedNotes.map(n => (
-                                    <div key={n.date} className="public-note-item glass-card">
-                                        <div className="note-header">
-                                            <span className="date-tag">
-                                                {new Date(n.date).toLocaleDateString('es-ES', {
-                                                    day: 'numeric', month: 'long', year: 'numeric'
-                                                })}
-                                            </span>
+                                sortedNotes.map(n => {
+                                    const noteId = n.id;
+                                    const noteLikes = likes[noteId] || { likes_count: 0, liked_by_user: false };
+                                    return (
+                                        <div key={n.date} className="public-note-item glass-card">
+                                            <div className="note-header">
+                                                <span className="date-tag">
+                                                    {new Date(n.date).toLocaleDateString('es-ES', {
+                                                        day: 'numeric', month: 'long', year: 'numeric'
+                                                    })}
+                                                </span>
+                                                <button
+                                                    className={`like-btn ${noteLikes.liked_by_user ? 'liked' : ''}`}
+                                                    onClick={() => handleToggleLike(noteId)}
+                                                    title={noteLikes.liked_by_user ? 'Quitar like' : 'Dar like'}
+                                                    aria-label={`${noteLikes.liked_by_user ? 'Quitar like' : 'Dar like'} a esta nota`}
+                                                >
+                                                    <span className="heart-icon">
+                                                        {noteLikes.liked_by_user ? '❤️' : '🤍'}
+                                                    </span>
+                                                    <span className="like-count">{noteLikes.likes_count}</span>
+                                                </button>
+                                            </div>
+                                            <p className="note-text">{n.content}</p>
                                         </div>
-                                        <p className="note-text">{n.content}</p>
-                                    </div>
-                                ))
+                                    );
+                                })
                             )}
                         </div>
                     </section>

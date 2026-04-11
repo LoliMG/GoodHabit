@@ -21,3 +21,17 @@ export const verifyToken = (req, res, next) => {
         res.status(401).json({ message: 'Invalid token.' });
     }
 };
+
+export const optionalVerifyToken = (req, res, next) => {
+    const authHeader = req.headers['authorization'];
+    if (authHeader) {
+        const token = authHeader.replace('Bearer ', '');
+        try {
+            const decoded = jwt.verify(token, process.env.JWT_SECRET);
+            req.user_id = decoded.user_id;
+        } catch (_) {
+            // Invalid token is silently ignored for optional auth
+        }
+    }
+    next();
+};
