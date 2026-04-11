@@ -5,6 +5,8 @@ import habitDal from '../habit/habit.dal.js';
 import progressDal from '../progress/progress.dal.js';
 import noteDal from '../note/note.dal.js';
 import moodDal from '../mood/mood.dal.js';
+import { supabase } from '../../config/supabase.js';
+
 
 const formatMoods = (moods) => {
     return moods.reduce((acc, current) => {
@@ -204,17 +206,39 @@ class UserController {
         }
     };
 
+
     editImage = async (req, res) => {
         try {
             const { user_id } = req;
-            console.log("editImage received req.file:", req.file);
-            console.log("editImage received body:", req.body);
             if (!req.file) return res.status(400).json({ message: "No se ha subido ninguna imagen" });
             
-            const filename = req.file.filename || (Date.now() + "-" + req.file.originalname);
+            // Create a unique filename
+            const fileExt = req.file.originalname.split('.').pop();
+            const fileName = `${user_id}-${Date.now()}.${fileExt}`;
+            const filePath = `users/${fileName}`;
+
+            // Upload to Supabase Storage
+            const { data, error } = await supabase.storage
+                .from('images') // Asegúrate de tener un bucket llamado 'images'
+                .upload(filePath, req.file.buffer, {
+                    contentType: req.file.mimetype,
+                    upsert: true
+                });
+
+            if (error) {
+                console.error("Error uploading to Supabase:", error);
+                return res.status(500).json({ error: 'Fallo al subir a Supabase Storage' });
+            }
+
+            // Get Public URL
+            const { data: { publicUrl } } = supabase.storage
+                .from('images')
+                .getPublicUrl(filePath);
             
-            await userDal.editUserImage([filename, user_id]);
-            res.status(200).json({ message: 'Image updated', filename });
+            // Save the URL (or filename) in DB
+            await userDal.editUserImage([publicUrl, user_id]);
+            
+            res.status(200).json({ message: 'Image updated', filename: publicUrl });
         } catch (error) {
             console.error(error);
             res.status(500).json({ error: 'Failed to update image' });
