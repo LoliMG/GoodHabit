@@ -60,12 +60,12 @@ const Profile = () => {
                             <label htmlFor="avatar-upload" className="btn-upload">
                                 📷 Cambiar Foto
                             </label>
-                            <input 
-                                id="avatar-upload" 
-                                type="file" 
-                                onChange={handleFileChange} 
-                                accept="image/*" 
-                                hidden 
+                            <input
+                                id="avatar-upload"
+                                type="file"
+                                onChange={handleFileChange}
+                                accept="image/*"
+                                hidden
                             />
                         </div>
                     </div>
@@ -74,32 +74,32 @@ const Profile = () => {
                     <form onSubmit={handleUpdate}>
                         <div className="form-group">
                             <label>Nombre Completo</label>
-                            <input 
-                                type="text" 
-                                value={name} 
-                                onChange={(e) => setName(e.target.value)} 
+                            <input
+                                type="text"
+                                value={name}
+                                onChange={(e) => setName(e.target.value)}
                                 required
                             />
                         </div>
                         <div className="form-group">
                             <label>Correo Electrónico</label>
-                            <input 
-                                type="email" 
-                                value={user?.email || ""} 
+                            <input
+                                type="email"
+                                value={user?.email || ""}
                                 placeholder={user?.email ? "" : "Cargando o no disponible..."}
-                                disabled 
+                                disabled
                                 style={{ opacity: 0.6, cursor: 'not-allowed' }}
                             />
                             <p className="field-note">El correo no se puede cambiar.</p>
                         </div>
-                        
+
                         <div className="form-group privacy-toggle">
                             <label className="switch-label">
                                 <span>Perfil Público 🌍</span>
-                                <input 
-                                    type="checkbox" 
-                                    checked={isPublic} 
-                                    onChange={(e) => setIsPublic(e.target.checked)} 
+                                <input
+                                    type="checkbox"
+                                    checked={isPublic}
+                                    onChange={(e) => setIsPublic(e.target.checked)}
                                 />
                             </label>
                             <p className="field-note">Si activas esto, otros usuarios podrán ver tus notas y hábitos.</p>
@@ -130,9 +130,7 @@ const Profile = () => {
                         <div className="stat-content">
                             <span>Miembro Desde</span>
                             <strong>
-                                {user?.created_at 
-                                    ? new Date(user.created_at).toLocaleDateString('es-ES', { month: 'long', year: 'numeric' }) 
-                                    : 'Cargando...'}
+                                {user?.created_at ? new Date(user.created_at).toLocaleDateString('es-ES', { month: 'long', year: 'numeric' }) : 'Reciente'}
                             </strong>
                         </div>
                     </div>
