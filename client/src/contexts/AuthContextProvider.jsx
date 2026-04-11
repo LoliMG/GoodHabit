@@ -237,6 +237,27 @@ export const AuthContextProvider = ({ children }) => {
         }
     };
 
+    const updateUserImage = async (formData) => {
+        try {
+            const response = await fetch("http://localhost:3000/api/user/editImage", {
+                method: "PUT",
+                headers: {
+                    "Authorization": `Bearer ${token}`
+                },
+                body: formData
+            });
+            const resData = await response.json();
+            if (response.ok) {
+                setUser(prev => ({ ...prev, image: resData.filename }));
+                return { success: true, filename: resData.filename };
+            }
+            return { success: false, message: resData.message };
+        } catch (error) {
+            console.error(error);
+            return { success: false, message: "Error al subir la imagen" };
+        }
+    };
+
     const deleteDayNote = async (date) => {
         try {
             await fetchData("/note/delete", "DELETE", { date }, token);
@@ -255,7 +276,7 @@ export const AuthContextProvider = ({ children }) => {
 
     return (
         <AuthContext.Provider value={{
-            user, setUser, token, setToken, logout, login, loginWithGoogle, register, updateUserProfile,
+            user, setUser, token, setToken, logout, login, loginWithGoogle, register, updateUserProfile, updateUserImage,
             habits, setHabits, addHabit, updateHabit, deleteHabit,
             oneTimeHabits, setOneTimeHabits, addOneTimeHabit, deleteOneTimeHabit,
             progress, setProgress, toggleHabitProgress, isAuthLoading,

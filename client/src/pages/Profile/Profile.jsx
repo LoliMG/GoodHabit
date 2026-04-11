@@ -3,7 +3,7 @@ import { AuthContext } from '../../contexts/AuthContext';
 import './Profile.css';
 
 const Profile = () => {
-    const { user, updateUserProfile, habits, progress } = useContext(AuthContext);
+    const { user, updateUserProfile, updateUserImage, habits, progress } = useContext(AuthContext);
     const [name, setName] = useState(user?.name || "");
     const [isPublic, setIsPublic] = useState(user?.is_public || false);
     const [message, setMessage] = useState("");
@@ -23,6 +23,22 @@ const Profile = () => {
         setTimeout(() => setMessage(""), 3000);
     };
 
+    const handleFileChange = async (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        const formData = new FormData();
+        formData.append("img", file);
+
+        const res = await updateUserImage(formData);
+        if (res.success) {
+            setMessage("¡Imagen de perfil actualizada! 📸");
+        } else {
+            setMessage("Error al subir la imagen ❌");
+        }
+        setTimeout(() => setMessage(""), 3000);
+    };
+
     return (
         <div className="profile-container">
             <header className="profile-header">
@@ -32,6 +48,28 @@ const Profile = () => {
 
             <div className="profile-grid">
                 <div className="profile-settings glass-card">
+                    <div className="avatar-section">
+                        <div className="avatar-preview">
+                            {user?.image ? (
+                                <img src={`http://localhost:3000/images/users/${user.image}`} alt="Profile" />
+                            ) : (
+                                <div className="avatar-placeholder">{user?.name?.charAt(0).toUpperCase()}</div>
+                            )}
+                        </div>
+                        <div className="avatar-controls">
+                            <label htmlFor="avatar-upload" className="btn-upload">
+                                📷 Cambiar Foto
+                            </label>
+                            <input 
+                                id="avatar-upload" 
+                                type="file" 
+                                onChange={handleFileChange} 
+                                accept="image/*" 
+                                hidden 
+                            />
+                        </div>
+                    </div>
+
                     <h3>Información de Cuenta</h3>
                     <form onSubmit={handleUpdate}>
                         <div className="form-group">

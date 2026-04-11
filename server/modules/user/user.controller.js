@@ -63,7 +63,7 @@ class UserController {
                     res.status(200).json({ 
                         message: 'Login successful', 
                         token, 
-                        user: { id: userId, name: result[0].name, email: result[0].email, is_public: result[0].is_public },
+                        user: { id: userId, name: result[0].name, email: result[0].email, is_public: result[0].is_public, image: result[0].image },
                         habits,
                         oneTimeHabits,
                         progress,
@@ -136,6 +136,7 @@ class UserController {
             let userId;
             let userName;
             let userEmail;
+            let userImage;
 
             if (result.length === 0) {
                 // Register the user automatically
@@ -144,11 +145,13 @@ class UserController {
                 userId = insertResult[0].user_id;
                 userName = name;
                 userEmail = email;
+                userImage = null;
             } else {
                 // User exists, log them in
                 userId = result[0].id;
                 userName = result[0].name;
                 userEmail = result[0].email || email;
+                userImage = result[0].image;
             }
 
             const token = generateToken(userId);
@@ -174,7 +177,8 @@ class UserController {
                     id: userId, 
                     name: userName, 
                     email: userEmail, 
-                    is_public: result.length === 0 ? false : result[0].is_public 
+                    is_public: result.length === 0 ? false : result[0].is_public,
+                    image: userImage
                 },
                 habits,
                 oneTimeHabits,
@@ -197,6 +201,18 @@ class UserController {
         } catch (error) {
             console.error(error);
             res.status(500).json({ error: 'Update failed' });
+        }
+    };
+
+    editImage = async (req, res) => {
+        try {
+            const { user_id } = req;
+            const filename = req.file.filename;
+            await userDal.editUserImage([filename, user_id]);
+            res.status(200).json({ message: 'Image updated', filename });
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ error: 'Failed to update image' });
         }
     };
 
@@ -233,7 +249,7 @@ class UserController {
             }
 
             res.status(200).json({ 
-                user: { id: user.id, name: user.name, created_at: user.created_at },
+                user: { id: user.id, name: user.name, created_at: user.created_at, image: user.image },
                 notes,
                 habits,
                 moods: userMoods
