@@ -70,14 +70,12 @@ const PublicProfile = () => {
                 <div className="public-stats-selector">
                     <div
                         className={`stat-box glass-card ${activeTab === 'habits' ? 'active' : ''}`}
-                        onClick={() => setActiveTab('habits')}
                     >
                         <span className="count">{habits.length}</span>
                         <span className="label">HÁBITOS</span>
                     </div>
                     <div
                         className={`stat-box glass-card ${activeTab === 'notes' ? 'active' : ''}`}
-                        onClick={() => setActiveTab('notes')}
                     >
                         <span className="count">{sortedNotes.length}</span>
                         <span className="label">NOTAS</span>
@@ -86,18 +84,18 @@ const PublicProfile = () => {
             </header>
 
             <nav className="bootstrap-tabs-nav">
-                <div
+                <button
                     className={`tab-link ${activeTab === 'habits' ? 'active' : ''}`}
                     onClick={() => setActiveTab('habits')}
                 >
                     <span className="icon">✨</span> Hábitos
-                </div>
-                <div
+                </button>
+                <button
                     className={`tab-link ${activeTab === 'notes' ? 'active' : ''}`}
                     onClick={() => setActiveTab('notes')}
                 >
                     <span className="icon">📝</span> Notas
-                </div>
+                </button>
             </nav>
 
             <main className="tab-content-area">
