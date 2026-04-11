@@ -1,19 +1,25 @@
 import multer from "multer";
 import path from "path";
 import fs from "fs";
+import { fileURLToPath } from 'url';
 
-// Configuración de almacenamiento en disco
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// Configuración de almacenamiento en disco con ruta ABSOLUTA
 const diskStorage = multer.diskStorage({
     destination: (req, file, cb) => {
-        const dir = './public/images/users';
+        // Construimos la ruta absoluta hacia server/public/images/users
+        // Subimos dos niveles desde middlewares/ para llegar a la raíz del server
+        const dir = path.join(__dirname, '..', 'public', 'images', 'users');
+        
         try {
-            // Intentamos crear la carpeta si estamos en un entorno que lo permite (Local)
             if (!fs.existsSync(dir)) {
                 fs.mkdirSync(dir, { recursive: true });
             }
             cb(null, dir);
         } catch (err) {
-            // Si falla (como en Vercel), pasamos el error o usamos /tmp
+            console.error("Error creating directory:", err);
             cb(null, '/tmp'); 
         }
     },

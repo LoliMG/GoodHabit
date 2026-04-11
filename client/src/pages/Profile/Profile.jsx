@@ -129,7 +129,9 @@ const Profile = () => {
                         <span className="stat-icon">📅</span>
                         <div className="stat-content">
                             <span>Miembro Desde</span>
-                            <strong>Abril 2024</strong>
+                            <strong>
+                                {user?.created_at ? new Date(user.created_at).toLocaleDateString('es-ES', { month: 'long', year: 'numeric' }) : 'Reciente'}
+                            </strong>
                         </div>
                     </div>
                 </div>
