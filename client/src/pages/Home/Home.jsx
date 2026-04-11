@@ -25,7 +25,7 @@ const Home = () => {
 
             <header className="hero section-padding">
                 <div className="hero-content">
-                    <div className="status-badge">Disponible para Beta v2.1 🌿</div>
+                    <div className="status-badge">DEJA DE PROCASTINAR 🌿</div>
                     <h1>Domina tus <br /><span className="gradient-text">Rutinas con Elegancia.</span></h1>
                     <p className="hero-subtitle animate-fade-in" style={{ animationDelay: '0.1s' }}>
                         La forma más <span className="text-white">simple y elegante</span> de mantener tus rutinas bajo control. Sin distracciones, solo tú y tus metas diarias.
