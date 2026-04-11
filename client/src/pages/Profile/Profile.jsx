@@ -130,7 +130,9 @@ const Profile = () => {
                         <div className="stat-content">
                             <span>Miembro Desde</span>
                             <strong>
-                                {user?.created_at ? new Date(user.created_at).toLocaleDateString('es-ES', { month: 'long', year: 'numeric' }) : 'Reciente'}
+                                {user?.created_at 
+                                    ? new Date(user.created_at).toLocaleDateString('es-ES', { month: 'long', year: 'numeric' }) 
+                                    : 'Cargando...'}
                             </strong>
                         </div>
                     </div>
