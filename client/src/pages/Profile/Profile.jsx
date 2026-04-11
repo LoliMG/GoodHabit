@@ -51,7 +51,7 @@ const Profile = () => {
                     <div className="avatar-section">
                         <div className="avatar-preview">
                             {user?.image ? (
-                                <img src={`http://localhost:3000/images/users/${user.image}`} alt="Profile" />
+                                <img src={`${import.meta.env.VITE_API_URL || ""}/images/users/${user.image}`} alt="Profile" />
                             ) : (
                                 <div className="avatar-placeholder">{user?.name?.charAt(0).toUpperCase()}</div>
                             )}

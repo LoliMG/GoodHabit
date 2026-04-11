@@ -239,7 +239,7 @@ export const AuthContextProvider = ({ children }) => {
 
     const updateUserImage = async (formData) => {
         try {
-            const response = await fetch("http://localhost:3000/api/user/editImage", {
+            const response = await fetch(`${import.meta.env.VITE_API_URL || ""}/api/user/editImage`, {
                 method: "PUT",
                 headers: {
                     "Authorization": `Bearer ${token}`
