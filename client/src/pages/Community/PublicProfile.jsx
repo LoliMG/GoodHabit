@@ -37,6 +37,7 @@ const PublicProfile = () => {
     );
 
     const { user, habits, notes } = data;
+    const [activeTab, setActiveTab] = useState('habits');
 
     // Sort notes
     const sortedNotes = notes
@@ -64,42 +65,61 @@ const PublicProfile = () => {
                 </div>
             </header>
 
-            <div className="public-content-grid">
-                <section className="public-habits">
-                    <h3>Hábitos que cultiva</h3>
-                    <div className="habits-list">
-                        {habits.map(h => (
-                            <div key={h.id} className="public-habit-item glass-card">
-                                <span className="icon">{h.icon}</span>
-                                <span className="name">{h.name}</span>
-                            </div>
-                        ))}
-                    </div>
-                </section>
+            <nav className="profile-tabs">
+                <button 
+                    className={`tab-btn ${activeTab === 'habits' ? 'active' : ''}`}
+                    onClick={() => setActiveTab('habits')}
+                >
+                    Hábitos ✨
+                </button>
+                <button 
+                    className={`tab-btn ${activeTab === 'notes' ? 'active' : ''}`}
+                    onClick={() => setActiveTab('notes')}
+                >
+                    Notas 📝
+                </button>
+            </nav>
 
-                <section className="public-notes">
-                    <h3>Reflexiones Públicas</h3>
-                    <div className="notes-list">
-                        {sortedNotes.length === 0 ? (
-                            <p className="no-notes">Este usuario aún no ha compartido reflexiones.</p>
-                        ) : (
-                            sortedNotes.map(n => (
-                                <div key={n.date} className="public-note-card glass-card">
-                                    <div className="note-card-header">
-                                        <span className="note-date">
-                                            {new Date(n.date).toLocaleDateString('es-ES', { 
-                                                day: 'numeric', 
-                                                month: 'long', 
-                                                year: 'numeric' 
-                                            })}
-                                        </span>
-                                    </div>
-                                    <div className="note-body">{n.content}</div>
+            <div className="public-content-view">
+                {activeTab === 'habits' && (
+                    <section className="public-habits animate-fade-in">
+                        <h3>Hábitos que cultiva</h3>
+                        <div className="habits-grid">
+                            {habits.map(h => (
+                                <div key={h.id} className="public-habit-item glass-card">
+                                    <span className="icon">{h.icon}</span>
+                                    <span className="name">{h.name}</span>
                                 </div>
-                            ))
-                        )}
-                    </div>
-                </section>
+                            ))}
+                        </div>
+                    </section>
+                )}
+
+                {activeTab === 'notes' && (
+                    <section className="public-notes animate-fade-in">
+                        <h3>Reflexiones Públicas</h3>
+                        <div className="notes-list">
+                            {sortedNotes.length === 0 ? (
+                                <p className="no-notes">Este usuario aún no ha compartido reflexiones.</p>
+                            ) : (
+                                sortedNotes.map(n => (
+                                    <div key={n.date} className="public-note-card glass-card">
+                                        <div className="note-card-header">
+                                            <span className="note-date">
+                                                {new Date(n.date).toLocaleDateString('es-ES', { 
+                                                    day: 'numeric', 
+                                                    month: 'long', 
+                                                    year: 'numeric' 
+                                                })}
+                                            </span>
+                                        </div>
+                                        <div className="note-body">{n.content}</div>
+                                    </div>
+                                ))
+                            )}
+                        </div>
+                    </section>
+                )}
             </div>
         </div>
     );
