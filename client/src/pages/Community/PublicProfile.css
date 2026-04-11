@@ -1,285 +1,255 @@
 .public-profile-container {
-    padding: 2rem;
+    padding: 3rem 2rem;
     max-width: 1000px;
     margin: 0 auto;
-
-    .btn-back {
-        background: transparent;
-        border: none;
-        color: var(--text-dim);
-        font-weight: 700;
-        cursor: pointer;
-        margin-bottom: 2rem;
-        transition: var(--transition-fast);
-        &:hover {
-            color: white;
-            transform: translateX(-5px);
-        }
-    }
-
-    .profile-hero {
-        text-align: center;
-        margin-bottom: 4rem;
-
-        .avatar-large {
-            width: 120px;
-            height: 120px;
-            background: var(--primary);
-            color: #0f172a;
-            border-radius: 40px;
-            margin: 0 auto 1.5rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 4rem;
-            font-weight: 800;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-        }
-
-        h1 {
-            font-size: 3.5rem;
-            font-weight: 800;
-            margin-bottom: 0.5rem;
-            letter-spacing: -2px;
-        }
-
-        .since {
-            color: var(--text-dim);
-            font-size: 1.1rem;
-            margin-bottom: 2.5rem;
-        }
-
-        .public-stats-row {
-            display: flex;
-            justify-content: center;
-            gap: 1.5rem;
-
-            .mini-stat {
-                padding: 1.5rem 2.5rem;
-                border-radius: 20px;
-                display: flex;
-                flex-direction: column;
-                gap: 0.2rem;
-                cursor: pointer;
-                transition: var(--transition-fast);
-                border: 1px solid var(--glass-border);
-
-                strong { font-size: 2rem; color: var(--primary); transition: var(--transition-fast); }
-                span { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-dim); }
-
-                &:hover {
-                    background: hsla(0, 0%, 100%, 0.05);
-                    transform: translateY(-3px);
-                    border-color: hsla(0, 0%, 100%, 0.2);
-                }
-
-                &.active {
-                    background: hsla(174, 100%, 41%, 0.1);
-                    border-color: var(--primary);
-                    strong { color: white; transform: scale(1.1); }
-                }
-            }
-        }
-    }
-
-    .copy-toast {
-        position: fixed;
-        top: 2rem;
-        left: 50%;
-        transform: translateX(-50%);
-        z-index: 1000;
-        padding: 1rem 2rem;
-        background: var(--primary);
-        color: #0f172a;
-        font-weight: 800;
-        border-radius: 50px;
-        box-shadow: 0 10px 30px rgba(0, 255, 157, 0.3);
-        animation: slideDown 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    }
-
-    @keyframes slideDown {
-        from { transform: translate(-50%, -100%); opacity: 0; }
-        to { transform: translate(-50%, 0); opacity: 1; }
-    }
-
-    .profile-tabs {
-        display: flex;
-        justify-content: center;
-        gap: 1rem;
-        margin-bottom: 3rem;
-        background: hsla(0, 0%, 100%, 0.03);
-        padding: 0.5rem;
-        border-radius: 20px;
-        width: fit-content;
-        margin-inline: auto;
-        border: 1px solid var(--glass-border);
-
-        .tab-btn {
-            padding: 1rem 2.5rem;
-            border-radius: 15px;
-            border: none;
-            background: transparent;
-            color: var(--text-dim);
-            font-weight: 700;
-            cursor: pointer;
-            transition: var(--transition-fast);
-            font-size: 1rem;
-
-            &:hover {
-                color: white;
-                background: hsla(0, 0%, 100%, 0.05);
-            }
-
-            &.active {
-                background: var(--primary);
-                color: #0f172a;
-                box-shadow: 0 10px 20px hsla(174, 100%, 41%, 0.2);
-            }
-        }
-    }
-
-    .public-content-view {
-        padding-top: 2rem;
-
-        .section-title {
-            font-size: 2rem;
-            font-weight: 800;
-            margin-bottom: 3rem;
-            letter-spacing: -1px;
-            text-align: center;
-            background: var(--primary-gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .habits-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 2rem;
-
-            .public-habit-item {
-                padding: 1.5rem 2rem;
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-                gap: 1.5rem;
-                border-radius: 24px;
-                border: 1px solid var(--glass-border);
-                background: hsla(0, 0%, 100%, 0.02);
-                transition: var(--transition-medium);
-
-                &:hover {
-                    border-color: var(--primary);
-                    transform: translateY(-8px);
-                    background: hsla(174, 100%, 41%, 0.05);
-                    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
-
-                    .copy-habit-btn {
-                        background: var(--primary);
-                        color: #0f172a;
-                        transform: scale(1.1);
-                    }
-                }
-
-                .habit-info-wrapper {
-                    display: flex;
-                    align-items: center;
-                    gap: 1.2rem;
-                    .habit-icon { font-size: 2rem; }
-                    .habit-name { font-weight: 700; font-size: 1.2rem; color: white; }
-                }
-
-                .copy-habit-btn {
-                    width: 45px;
-                    height: 45px;
-                    background: hsla(0, 0%, 100%, 0.05);
-                    border: 1px solid var(--glass-border);
-                    color: var(--primary);
-                    font-size: 1.6rem;
-                    border-radius: 16px;
-                    cursor: pointer;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    transition: var(--transition-fast);
-
-                    &:hover {
-                        transform: scale(1.2) rotate(90deg) !important;
-                    }
-                }
-            }
-        }
-
-        .notes-list {
-            display: flex;
-            flex-direction: column;
-            gap: 2.5rem;
-            max-width: 800px;
-            margin: 0 auto;
-
-            .no-data {
-                padding: 5rem;
-                text-align: center;
-                color: var(--text-dim);
-                border-radius: 32px;
-                border: 1px dashed var(--glass-border);
-            }
-
-            .public-note-card {
-                padding: 3rem;
-                border-radius: 40px;
-                position: relative;
-                overflow: hidden;
-                background: hsla(0, 0%, 100%, 0.02);
-                border: 1px solid var(--glass-border);
-
-                &::before {
-                    content: '';
-                    position: absolute;
-                    top: 0; left: 0; width: 6px; height: 100%;
-                    background: var(--primary);
-                }
-
-                .note-card-header {
-                    margin-bottom: 1.5rem;
-                    .note-date {
-                        font-size: 1rem;
-                        font-weight: 800;
-                        color: var(--primary);
-                        text-transform: uppercase;
-                        letter-spacing: 2px;
-                    }
-                }
-
-                .note-body {
-                    line-height: 1.8;
-                    font-size: 1.2rem;
-                    color: hsla(0, 0%, 100%, 0.9);
-                    white-space: pre-wrap;
-                }
-            }
-        }
-    }
-
-    .loading-state { text-align: center; padding: 10rem; font-size: 1.5rem; color: var(--primary); }
-    
-    .error-container {
-        padding: 5rem 2rem;
-        display: flex;
-        justify-content: center;
-        .error-card {
-            padding: 4rem;
-            max-width: 500px;
-            text-align: center;
-            border-radius: 40px;
-            h2 { font-size: 3rem; margin-bottom: 1rem; }
-            p { font-size: 1.2rem; color: var(--text-dim); margin-bottom: 2.5rem; }
-        }
-    }
+    min-height: 100vh;
 }
 
-@media (max-width: 900px) {
-    .public-profile-container .public-content-grid {
-        grid-template-columns: 1fr;
+.btn-back {
+    background: transparent;
+    border: none;
+    color: var(--text-dim);
+    font-weight: 700;
+    cursor: pointer;
+    margin-bottom: 3rem;
+    transition: var(--transition-fast);
+}
+
+.btn-back:hover {
+    color: white;
+    transform: translateX(-5px);
+}
+
+/* Hero Section */
+.profile-hero {
+    text-align: center;
+    margin-bottom: 5rem;
+}
+
+.avatar-large {
+    width: 120px;
+    height: 120px;
+    background: var(--primary);
+    color: #0f172a;
+    border-radius: 40px;
+    margin: 0 auto 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 4rem;
+    font-weight: 800;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+}
+
+.profile-hero h1 {
+    font-size: 3.5rem;
+    font-weight: 800;
+    margin-bottom: 0.5rem;
+    letter-spacing: -2px;
+}
+
+.since {
+    color: var(--text-dim);
+    font-size: 1.1rem;
+    margin-bottom: 3rem;
+}
+
+/* Stats Selector Buttons */
+.public-stats-selector {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+}
+
+.stat-box {
+    padding: 2rem 3rem;
+    border-radius: 30px;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    transition: var(--transition-medium);
+    border: 1px solid var(--glass-border);
+    min-width: 160px;
+}
+
+.stat-box .count {
+    font-size: 2.8rem;
+    font-weight: 900;
+    color: var(--primary);
+    line-height: 1;
+}
+
+.stat-box .label {
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: var(--text-dim);
+}
+
+.stat-box:hover {
+    background: hsla(0, 0%, 100%, 0.05);
+    transform: translateY(-5px);
+    border-color: hsla(0, 0%, 100%, 0.2);
+}
+
+.stat-box.active {
+    background: hsla(174, 100%, 41%, 0.1);
+    border-color: var(--primary);
+    box-shadow: 0 0 30px rgba(0, 255, 157, 0.1);
+}
+
+.stat-box.active .count {
+    color: white;
+}
+
+/* Content Area */
+.tab-content-area {
+    padding-top: 2rem;
+}
+
+.content-title {
+    font-size: 1.8rem;
+    font-weight: 800;
+    margin-bottom: 3rem;
+    text-align: center;
+    color: white;
+}
+
+/* Habits Grid */
+.public-habits-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+}
+
+.public-habit-card {
+    padding: 2rem;
+    border-radius: 28px;
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    position: relative; /* Para el botón en la esquina */
+    border: 1px solid var(--glass-border);
+    transition: var(--transition-medium);
+}
+
+.public-habit-card:hover {
+    border-color: var(--primary);
+    background: hsla(174, 100%, 41%, 0.03);
+    transform: translateY(-5px);
+}
+
+.habit-icon {
+    font-size: 2.5rem;
+}
+
+.habit-name {
+    font-weight: 700;
+    font-size: 1.2rem;
+    color: white;
+    padding-right: 40px; /* Espacio para el botón */
+}
+
+/* EL BOTÓN EN LA ESQUINA SUPERIOR DERECHA */
+.add-to-me-btn {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    width: 36px;
+    height: 36px;
+    background: hsla(0, 0%, 100%, 0.08);
+    border: 1px solid var(--glass-border);
+    color: var(--primary);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+    cursor: pointer;
+    transition: var(--transition-fast);
+}
+
+.add-to-me-btn:hover {
+    background: var(--primary);
+    color: #0f172a;
+    transform: scale(1.1) rotate(90deg);
+}
+
+/* Notes Stack */
+.public-notes-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.public-note-item {
+    padding: 3rem;
+    border-radius: 35px;
+    border: 1px solid var(--glass-border);
+    position: relative;
+    overflow: hidden;
+}
+
+.public-note-item::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; width: 5px; height: 100%;
+    background: var(--primary);
+}
+
+.note-header {
+    margin-bottom: 1.5rem;
+}
+
+.date-tag {
+    font-size: 0.9rem;
+    font-weight: 800;
+    color: var(--primary);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.note-text {
+    font-size: 1.2rem;
+    line-height: 1.8;
+    color: hsla(0, 0%, 100%, 0.9);
+}
+
+/* Toast */
+.copy-toast {
+    position: fixed;
+    top: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 9999;
+    padding: 1rem 2.5rem;
+    background: var(--primary);
+    color: #0f172a;
+    font-weight: 800;
+    border-radius: 50px;
+    box-shadow: 0 10px 40px rgba(0, 255, 157, 0.4);
+}
+
+.empty-msg {
+    text-align: center;
+    color: var(--text-dim);
+    padding: 5rem;
+}
+
+.loading-state {
+    padding: 10rem;
+    text-align: center;
+    font-size: 1.5rem;
+    color: var(--primary);
+}
+
+@media (max-width: 768px) {
+    .public-stats-selector {
+        flex-direction: column;
+        align-items: stretch;
     }
 }

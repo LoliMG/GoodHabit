@@ -8,10 +8,11 @@ const PublicProfile = () => {
     const { userId } = useParams();
     const navigate = useNavigate();
     const { addHabit } = useContext(AuthContext);
+    
     const [data, setData] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const [activeTab, setActiveTab] = useState('habits');
+    const [activeTab, setActiveTab] = useState('habits'); // 'habits' o 'notes'
     const [copyMessage, setCopyMessage] = useState("");
 
     useEffect(() => {
@@ -32,7 +33,7 @@ const PublicProfile = () => {
     const handleAddHabit = async (name, icon) => {
         try {
             await addHabit(name, icon);
-            setCopyMessage(`¡Has añadido "${name}" a tus hábitos! 🚀`);
+            setCopyMessage(`¡"${name}" añadido a tu Dashboard! 🚀`);
             setTimeout(() => setCopyMessage(""), 3000);
         } catch (err) {
             console.error(err);
@@ -51,64 +52,55 @@ const PublicProfile = () => {
     );
 
     const { user, habits, notes } = data;
-
-    // Sort notes
     const sortedNotes = notes
         .filter(n => n.content && n.content.trim() !== '')
         .sort((a, b) => new Date(b.date) - new Date(a.date));
 
     return (
         <div className="public-profile-container">
-            <button className="btn-back" onClick={() => navigate('/community')}>← Volver</button>
+            <button className="btn-back" onClick={() => navigate('/community')}>← Volver a la Comunidad</button>
             
-            {copyMessage && <div className="copy-toast glass-glow">{copyMessage}</div>}
+            {copyMessage && <div className="copy-toast animate-slide-down">{copyMessage}</div>}
 
             <header className="profile-hero">
                 <div className="avatar-large">{user.name.charAt(0).toUpperCase()}</div>
                 <h1>{user.name}</h1>
-                <p className="since">En GoodHabit desde {new Date(user.created_at).toLocaleDateString('es-ES', { month: 'long', year: 'numeric' })}</p>
+                <p className="since">Miembro de GoodHabit desde {new Date(user.created_at).toLocaleDateString('es-ES', { month: 'long', year: 'numeric' })}</p>
                 
-                <div className="public-stats-row">
+                <div className="public-stats-selector">
                     <div 
-                        className={`mini-stat glass-card ${activeTab === 'habits' ? 'active' : ''}`}
+                        className={`stat-box glass-card ${activeTab === 'habits' ? 'active' : ''}`}
                         onClick={() => setActiveTab('habits')}
-                        style={{ cursor: 'pointer' }}
                     >
-                        <strong>{habits.length}</strong>
-                        <span>Hábitos</span>
+                        <span className="count">{habits.length}</span>
+                        <span className="label">HÁBITOS</span>
                     </div>
                     <div 
-                        className={`mini-stat glass-card ${activeTab === 'notes' ? 'active' : ''}`}
+                        className={`stat-box glass-card ${activeTab === 'notes' ? 'active' : ''}`}
                         onClick={() => setActiveTab('notes')}
-                        style={{ cursor: 'pointer' }}
                     >
-                        <strong>{sortedNotes.length}</strong>
-                        <span>Notas</span>
+                        <span className="count">{sortedNotes.length}</span>
+                        <span className="label">NOTAS</span>
                     </div>
                 </div>
             </header>
 
-            <div className="public-content-view">
+            <main className="tab-content-area">
                 {activeTab === 'habits' ? (
-                    <section className="public-habits animate-fade-in">
-                        <h3 className="section-title">Hábitos que cultiva ✨</h3>
-                        <div className="habits-grid">
+                    <section className="tab-pane animate-fade-in">
+                        <h2 className="content-title">Hábitos que cultiva ✨</h2>
+                        <div className="public-habits-grid">
                             {habits.length === 0 ? (
-                                <p className="no-data">Este usuario no tiene hábitos públicos.</p>
+                                <p className="empty-msg">Este usuario no tiene hábitos públicos.</p>
                             ) : (
                                 habits.map(h => (
-                                    <div key={h.id} className="public-habit-item glass-card">
-                                        <div className="habit-info-wrapper">
-                                            <span className="habit-icon">{h.icon}</span>
-                                            <span className="habit-name">{h.name}</span>
-                                        </div>
+                                    <div key={h.id} className="public-habit-card glass-card">
+                                        <div className="habit-icon">{h.icon}</div>
+                                        <div className="habit-name">{h.name}</div>
                                         <button 
-                                            className="copy-habit-btn" 
-                                            onClick={(e) => {
-                                                e.stopPropagation();
-                                                handleAddHabit(h.name, h.icon);
-                                            }}
-                                            title="Copiar a mis hábitos"
+                                            className="add-to-me-btn" 
+                                            onClick={(e) => { e.stopPropagation(); handleAddHabit(h.name, h.icon); }}
+                                            title="Añadir a mis hábitos"
                                         >
                                             ＋
                                         </button>
@@ -118,31 +110,29 @@ const PublicProfile = () => {
                         </div>
                     </section>
                 ) : (
-                    <section className="public-notes animate-fade-in">
-                        <h3 className="section-title">Reflexiones Públicas 📝</h3>
-                        <div className="notes-list">
+                    <section className="tab-pane animate-fade-in">
+                        <h2 className="content-title">Reflexiones Públicas 📝</h2>
+                        <div className="public-notes-stack">
                             {sortedNotes.length === 0 ? (
-                                <p className="no-data">Este usuario no ha compartido reflexiones.</p>
+                                <p className="empty-msg">Este usuario no ha compartido reflexiones aún.</p>
                             ) : (
                                 sortedNotes.map(n => (
-                                    <div key={n.date} className="public-note-card glass-card">
-                                        <div className="note-card-header">
-                                            <span className="note-date">
+                                    <div key={n.date} className="public-note-item glass-card">
+                                        <div className="note-header">
+                                            <span className="date-tag">
                                                 {new Date(n.date).toLocaleDateString('es-ES', { 
-                                                    day: 'numeric', 
-                                                    month: 'long', 
-                                                    year: 'numeric' 
+                                                    day: 'numeric', month: 'long', year: 'numeric' 
                                                 })}
                                             </span>
                                         </div>
-                                        <p className="note-body">{n.content}</p>
+                                        <p className="note-text">{n.content}</p>
                                     </div>
                                 ))
                             )}
                         </div>
                     </section>
                 )}
-            </div>
+            </main>
         </div>
     );
 };
