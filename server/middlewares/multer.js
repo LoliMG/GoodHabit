@@ -9,7 +9,7 @@ const __dirname = path.dirname(__filename);
 export const uploadImage = (folder = 'users') => {
     let storage;
 
-    if (process.env.NODE_ENV === 'production' || process.env.VERCEL) {
+    if (process.env.VERCEL) {
         storage = multer.memoryStorage();
     } else {
         storage = multer.diskStorage({
