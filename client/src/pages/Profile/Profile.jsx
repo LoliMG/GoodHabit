@@ -5,16 +5,21 @@ import './Profile.css';
 const Profile = () => {
     const { user, updateUserProfile, habits, progress } = useContext(AuthContext);
     const [name, setName] = useState(user?.name || "");
+    const [isPublic, setIsPublic] = useState(user?.is_public || false);
     const [message, setMessage] = useState("");
 
     const totalCompletions = Object.values(progress).reduce((acc, day) => {
         return acc + Object.values(day).filter(Boolean).length;
     }, 0);
 
-    const handleUpdate = (e) => {
+    const handleUpdate = async (e) => {
         e.preventDefault();
-        updateUserProfile({ name });
-        setMessage("¡Perfil actualizado con éxito! ✨");
+        const res = await updateUserProfile({ name, is_public: isPublic });
+        if (res.success) {
+            setMessage("¡Perfil actualizado con éxito! ✨");
+        } else {
+            setMessage("Error al actualizar el perfil ❌");
+        }
         setTimeout(() => setMessage(""), 3000);
     };
 
@@ -49,6 +54,19 @@ const Profile = () => {
                             />
                             <p className="field-note">El correo no se puede cambiar.</p>
                         </div>
+                        
+                        <div className="form-group privacy-toggle">
+                            <label className="switch-label">
+                                <span>Perfil Público 🌍</span>
+                                <input 
+                                    type="checkbox" 
+                                    checked={isPublic} 
+                                    onChange={(e) => setIsPublic(e.target.checked)} 
+                                />
+                            </label>
+                            <p className="field-note">Si activas esto, otros usuarios podrán ver tus notas y hábitos.</p>
+                        </div>
+
                         <button type="submit" className="btn-primary">Actualizar Perfil</button>
                         {message && <p className="success-message">{message}</p>}
                     </form>

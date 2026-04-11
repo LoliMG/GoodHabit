@@ -43,6 +43,9 @@ const UserLayout = () => {
                     <NavLink to="/profile" className={({ isActive }) => isActive ? 'active' : ''} onClick={() => setIsMenuOpen(false)}>
                         <span className="icon">👤</span> Perfil
                     </NavLink>
+                    <NavLink to="/community" className={({ isActive }) => isActive ? 'active' : ''} onClick={() => setIsMenuOpen(false)}>
+                        <span className="icon">🌍</span> Comunidad
+                    </NavLink>
                 </nav>
 
                 <div className="sidebar-footer">

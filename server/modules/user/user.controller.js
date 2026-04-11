@@ -63,7 +63,7 @@ class UserController {
                     res.status(200).json({ 
                         message: 'Login successful', 
                         token, 
-                        user: { id: userId, name: result[0].name, email: result[0].email },
+                        user: { id: userId, name: result[0].name, email: result[0].email, is_public: result[0].is_public },
                         habits,
                         oneTimeHabits,
                         progress,
@@ -170,7 +170,12 @@ class UserController {
             res.status(200).json({ 
                 message: 'Google Login successful', 
                 token, 
-                user: { id: userId, name: userName, email: userEmail },
+                user: { 
+                    id: userId, 
+                    name: userName, 
+                    email: userEmail, 
+                    is_public: result.length === 0 ? false : result[0].is_public 
+                },
                 habits,
                 oneTimeHabits,
                 progress,
@@ -185,12 +190,57 @@ class UserController {
 
     editUser = async (req, res) => {
         try {
-            const { name } = req.body;
+            const { name, is_public } = req.body;
             const { user_id } = req;
-            await userDal.editUser([name, user_id]);
+            await userDal.editUser([name, is_public, user_id]);
             res.status(200).json({ message: 'Update successful' });
         } catch (error) {
+            console.error(error);
             res.status(500).json({ error: 'Update failed' });
+        }
+    };
+
+    getPublicUsers = async (req, res) => {
+        try {
+            const users = await userDal.getAllPublicUsers();
+            res.status(200).json(users);
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ error: 'Failed to fetch public users' });
+        }
+    };
+
+    getPublicUserContent = async (req, res) => {
+        try {
+            const { target_user_id } = req.params;
+
+            // Check if user is public first
+            const user = await userDal.userByToken(target_user_id);
+            if (!user || !user.is_public) {
+                return res.status(403).json({ message: 'Este perfil es privado' });
+            }
+
+            const notes = await noteDal.getNotesByDateRange(target_user_id, '1970-01-01', '2100-01-01');
+            const habits = await habitDal.getHabitsByUserId(target_user_id);
+            
+            // Fetch moods safely
+            let userMoods = {};
+            try {
+                const moodsData = await moodDal.getMoodsByUserId(target_user_id);
+                userMoods = formatMoods(moodsData);
+            } catch (mErr) {
+                console.error("Non-critical: Failed to load moods for public user", mErr);
+            }
+
+            res.status(200).json({ 
+                user: { id: user.id, name: user.name, created_at: user.created_at },
+                notes,
+                habits,
+                moods: userMoods
+            });
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ error: 'Failed to fetch user content' });
         }
     };
 }
