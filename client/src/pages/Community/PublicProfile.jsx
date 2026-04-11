@@ -8,7 +8,7 @@ const PublicProfile = () => {
     const { userId } = useParams();
     const navigate = useNavigate();
     const { addHabit } = useContext(AuthContext);
-    
+
     const [data, setData] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -59,23 +59,23 @@ const PublicProfile = () => {
     return (
         <div className="public-profile-container">
             <button className="btn-back" onClick={() => navigate('/community')}>← Volver a la Comunidad</button>
-            
+
             {copyMessage && <div className="copy-toast animate-slide-down">{copyMessage}</div>}
 
             <header className="profile-hero">
                 <div className="avatar-large">{user.name.charAt(0).toUpperCase()}</div>
                 <h1>{user.name}</h1>
                 <p className="since">Miembro de GoodHabit desde {new Date(user.created_at).toLocaleDateString('es-ES', { month: 'long', year: 'numeric' })}</p>
-                
+
                 <div className="public-stats-selector">
-                    <div 
+                    <div
                         className={`stat-box glass-card ${activeTab === 'habits' ? 'active' : ''}`}
                         onClick={() => setActiveTab('habits')}
                     >
                         <span className="count">{habits.length}</span>
                         <span className="label">HÁBITOS</span>
                     </div>
-                    <div 
+                    <div
                         className={`stat-box glass-card ${activeTab === 'notes' ? 'active' : ''}`}
                         onClick={() => setActiveTab('notes')}
                     >
@@ -97,8 +97,8 @@ const PublicProfile = () => {
                                     <div key={h.id} className="public-habit-card glass-card">
                                         <div className="habit-icon">{h.icon}</div>
                                         <div className="habit-name">{h.name}</div>
-                                        <button 
-                                            className="add-to-me-btn" 
+                                        <button
+                                            className="add-to-me-btn"
                                             onClick={(e) => { e.stopPropagation(); handleAddHabit(h.name, h.icon); }}
                                             title="Añadir a mis hábitos"
                                         >
@@ -120,8 +120,8 @@ const PublicProfile = () => {
                                     <div key={n.date} className="public-note-item glass-card">
                                         <div className="note-header">
                                             <span className="date-tag">
-                                                {new Date(n.date).toLocaleDateString('es-ES', { 
-                                                    day: 'numeric', month: 'long', year: 'numeric' 
+                                                {new Date(n.date).toLocaleDateString('es-ES', {
+                                                    day: 'numeric', month: 'long', year: 'numeric'
                                                 })}
                                             </span>
                                         </div>
