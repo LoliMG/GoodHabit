@@ -2,6 +2,7 @@ import { useState, useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../contexts/AuthContext';
 import { useGoogleLogin } from '@react-oauth/google';
+import { registerSchema } from '../../schemas/RegisterSchema'; // Importar el esquema
 import '../Login/Login.css';
 
 const Register = () => {
@@ -35,6 +36,14 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
+
+    // Validación con Zod (RegisterSchema)
+    const validation = registerSchema.safeParse(formData);
+    
+    if (!validation.success) {
+      // Tomamos el primer mensaje de error que encuentre Zod
+      return setError(validation.error.errors[0].message);
+    }
 
     if (formData.password !== formData.confirmPassword) {
       return setError("Las contraseñas no coinciden");
