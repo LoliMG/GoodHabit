@@ -24,6 +24,9 @@ const __dirname = path.dirname(__filename);
 
 const app = express();
 
+// Trust proxy for Vercel/proxies to make express-rate-limit work correctly
+app.set('trust proxy', 1);
+
 // Security Middlewares
 app.use(helmet()); // Sets various security headers
 app.use(cors({
@@ -36,7 +39,8 @@ app.use(cors({
 const limiter = rateLimit({
     windowMs: 15 * 60 * 1000,
     max: 100,
-    message: { message: 'Too many requests from this IP, please try again after 15 minutes' }
+    message: { message: 'Too many requests from this IP, please try again after 15 minutes' },
+    validate: { xForwardedForHeader: false } // Disable the validation that's causing the crash
 });
 app.use('/api/', limiter);
 
