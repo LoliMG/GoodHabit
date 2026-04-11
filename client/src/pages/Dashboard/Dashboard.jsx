@@ -10,7 +10,9 @@ const Dashboard = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isNoteModalOpen, setIsNoteModalOpen] = useState(false);
     const [isMoodModalOpen, setIsMoodModalOpen] = useState(false);
+    const [isSelectorModalOpen, setIsSelectorModalOpen] = useState(false);
     const [otName, setOtName] = useState("");
+
     const [currentNote, setCurrentNote] = useState("");
     const [currentMood, setCurrentMood] = useState("");
 
@@ -64,8 +66,15 @@ const Dashboard = () => {
         if (!day) return;
         const formattedDate = `${currentYear}-${(viewDate.getMonth() + 1).toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
         setSelectedDate(formattedDate);
-        setIsModalOpen(true);
+        
+        // Detect mobile (you can use window.innerWidth or just check for a certain state)
+        if (window.innerWidth <= 768) {
+            setIsSelectorModalOpen(true);
+        } else {
+            setIsModalOpen(true);
+        }
     };
+
 
     const handleMoodClick = (dateStr) => {
         setSelectedDate(dateStr);
@@ -277,6 +286,28 @@ const Dashboard = () => {
                             </button>
                         ))}
                     </div>
+                </div>
+            </Modal>
+
+            <Modal
+                isOpen={isSelectorModalOpen}
+                onClose={() => setIsSelectorModalOpen(false)}
+                title="¿QUÉ QUIERES HACER?"
+                maxWidth="400px"
+            >
+                <div className="mobile-selector-grid">
+                    <button className="selector-btn glass-card" onClick={() => { setIsSelectorModalOpen(false); setIsModalOpen(true); }}>
+                        <span className="icon">✨</span>
+                        <span className="label">Hábitos</span>
+                    </button>
+                    <button className="selector-btn glass-card" onClick={() => { setIsSelectorModalOpen(false); setIsMoodModalOpen(true); }}>
+                        <span className="icon">😊</span>
+                        <span className="label">Estado de ánimo</span>
+                    </button>
+                    <button className="selector-btn glass-card" onClick={() => { setIsSelectorModalOpen(false); setIsNoteModalOpen(true); }}>
+                        <span className="icon">📝</span>
+                        <span className="label">Nota del día</span>
+                    </button>
                 </div>
             </Modal>
         </div>
