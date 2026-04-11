@@ -26,18 +26,19 @@ const Home = () => {
             <header className="hero section-padding">
                 <div className="hero-content">
                     <div className="status-badge">Disponible para Beta v2.1 🌿</div>
-                    <h1>Domina tus <br/><span className="gradient-text">Rutinas con Elegancia.</span></h1>
-                    <p className="hero-subtitle">Experimenta el rastreador de hábitos más estilizado del mundo. Diseñado para quienes aprecian la precisión, la estética y el crecimiento personal.</p>
+                    <h1>Domina tus <br /><span className="gradient-text">Rutinas con Elegancia.</span></h1>
+                    <p className="hero-subtitle animate-fade-in" style={{ animationDelay: '0.1s' }}>
+                        La forma más <span className="text-white">simple y elegante</span> de mantener tus rutinas bajo control. Sin distracciones, solo tú y tus metas diarias.
+                    </p>
                     <div className="hero-actions">
                         {user ? (
                             <Link to="/dashboard" className="btn-primary">Volver al Panel</Link>
                         ) : (
                             <Link to="/register" className="btn-primary">Crea tu Cuenta</Link>
                         )}
-                        <button className="btn-ghost">Ver la Galería</button>
                     </div>
                 </div>
-                
+
                 <div className="hero-visual">
                     <div className="obsidian-stack">
                         <div className="glass-card panel-main">
@@ -70,22 +71,22 @@ const Home = () => {
             </header>
 
             <section id="features" className="features section-padding">
-                <h2 className="section-title">Herramientas Minimalistas. <br/>Resultados Poderosos.</h2>
+                <h2 className="section-title">Herramientas Minimalistas. <br />Resultados Poderosos.</h2>
                 <div className="features-grid">
                     <div className="feature-card glass-card">
-                        <div className="f-icon">✦</div>
-                        <h3>Modo Obsidiana</h3>
-                        <p>Un tema oscuro meticulosamente diseñado para el enfoque y la comodidad ocular a largo plazo.</p>
+                        <div className="f-icon">🎯</div>
+                        <h3>Enfoque Total</h3>
+                        <p>Una interfaz limpia y minimalista diseñada para eliminar cualquier distracción de tu camino.</p>
                     </div>
                     <div className="feature-card glass-card">
-                        <div className="f-icon">✦</div>
-                        <h3>Analítica Inteligente</h3>
-                        <p>Información profunda sobre tus patrones sin el desorden de las aplicaciones tradicionales.</p>
+                        <div className="f-icon">📊</div>
+                        <h3>Progreso Real</h3>
+                        <p>Visualiza tus estadísticas y rachas semanales para mantener la motivación siempre alta.</p>
                     </div>
                     <div className="feature-card glass-card">
-                        <div className="f-icon">✦</div>
-                        <h3>Cloud Pulse</h3>
-                        <p>Sincronización en tiempo real en todos tus dispositivos profesionales de alta gama.</p>
+                        <div className="f-icon">☁️</div>
+                        <h3>Sincronía</h3>
+                        <p>Tus hábitos están siempre actualizados y disponibles en todos tus dispositivos.</p>
                     </div>
                 </div>
             </section>
@@ -93,7 +94,7 @@ const Home = () => {
             <footer className="footer">
                 <div className="footer-content">
                     <div className="footer-logo">GH.</div>
-                    <p>&copy; {year} GoodHabit. Crecimiento personal de alta fidelidad.</p>
+                    <p>&copy; {year} GoodHabit. Crecimiento personal hecho simple.</p>
                 </div>
             </footer>
         </div>

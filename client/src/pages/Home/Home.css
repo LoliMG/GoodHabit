@@ -104,12 +104,24 @@
 }
 
 .hero-subtitle {
-    font-size: 1.35rem;
+    font-size: 1.4rem;
     color: var(--text-dim);
     margin-bottom: 4rem;
-    max-width: 600px;
-    line-height: 1.6;
+    max-width: 650px;
+    line-height: 1.8;
     font-weight: 300;
+    letter-spacing: 0.2px;
+
+    .text-highlight {
+        color: var(--primary);
+        font-weight: 500;
+        text-shadow: 0 0 15px hsla(174, 100%, 41%, 0.3);
+    }
+
+    .text-white {
+        color: white;
+        font-weight: 500;
+    }
 }
 
 .hero-actions {
