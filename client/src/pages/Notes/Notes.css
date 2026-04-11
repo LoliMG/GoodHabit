@@ -146,6 +146,31 @@
                 filter: drop-shadow(0 0 10px var(--glass-glow));
             }
 
+            .note-card-right {
+                display: flex;
+                align-items: center;
+                gap: 0.8rem;
+            }
+
+            .note-likes-badge {
+                font-size: 0.95rem;
+                font-weight: 700;
+                color: #ff6b8a;
+                display: flex;
+                align-items: center;
+                gap: 0.3rem;
+                background: hsla(350, 80%, 60%, 0.1);
+                border: 1px solid hsla(350, 80%, 60%, 0.2);
+                padding: 0.3rem 0.75rem;
+                border-radius: 50px;
+                white-space: nowrap;
+                transition: var(--transition-fast);
+
+                &:hover {
+                    background: hsla(350, 80%, 60%, 0.18);
+                }
+            }
+
             .note-actions {
                 display: flex;
                 gap: 0.8rem;
@@ -171,6 +196,7 @@
                 }
             }
         }
+
 
         &:hover .note-actions {
             opacity: 1;

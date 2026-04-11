@@ -1,10 +1,11 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { AuthContext } from '../../contexts/AuthContext';
+import { fetchData } from '../../helpers/axiosHelper';
 import Modal from '../../components/Modal/Modal';
 import './Notes.css';
 
 const Notes = () => {
-    const { notes, moods, updateDayNote, deleteDayNote } = useContext(AuthContext);
+    const { notes, moods, updateDayNote, deleteDayNote, user, token } = useContext(AuthContext);
     const [searchContent, setSearchContent] = useState('');
     const [searchDate, setSearchDate] = useState('');
     
@@ -13,6 +14,9 @@ const Notes = () => {
     const [modalDate, setModalDate] = useState('');
     const [modalContent, setModalContent] = useState('');
     const [isEditing, setIsEditing] = useState(false);
+
+    // Likes per date: { [date]: likesCount }
+    const [noteLikes, setNoteLikes] = useState({});
 
     // Convert notes object to sorted array, filtering out entries that only have a mood but no content
     const sortedNotes = Object.entries(notes)
@@ -26,6 +30,21 @@ const Notes = () => {
         const matchesDate = searchDate ? note.date === searchDate : true;
         return matchesContent && matchesDate;
     });
+
+    // Load likes only if profile is public
+    useEffect(() => {
+        if (!user?.is_public || !token) return;
+
+        const fetchLikes = async () => {
+            try {
+                const res = await fetchData('/note/my-likes', 'GET', null, token);
+                setNoteLikes(res.data);
+            } catch (err) {
+                console.error('Error fetching note likes:', err);
+            }
+        };
+        fetchLikes();
+    }, [user?.is_public, token]);
 
     const handleOpenCreate = () => {
         const today = new Date().toISOString().split('T')[0];
@@ -97,34 +116,44 @@ const Notes = () => {
                         <p>No se encontraron notas con ese criterio.</p>
                     </div>
                 ) : (
-                    filteredNotes.map((note, idx) => (
-                        <div 
-                            key={note.date} 
-                            className="note-card glass-card animate-fade-in" 
-                            style={{ animationDelay: `${0.3 + idx * 0.05}s` }}
-                        >
-                            <div className="note-card-header">
-                                <div className="date-mood-row">
-                                    <span className="note-date">
-                                        {new Date(note.date).toLocaleDateString('es-ES', { 
-                                            weekday: 'long', 
-                                            day: 'numeric', 
-                                            month: 'long', 
-                                            year: 'numeric' 
-                                        })}
-                                    </span>
-                                    {note.mood && <span className="note-mood-emoji">{note.mood}</span>}
+                    filteredNotes.map((note, idx) => {
+                        const likeCount = noteLikes[note.date] ?? null;
+                        return (
+                            <div 
+                                key={note.date} 
+                                className="note-card glass-card animate-fade-in" 
+                                style={{ animationDelay: `${0.3 + idx * 0.05}s` }}
+                            >
+                                <div className="note-card-header">
+                                    <div className="date-mood-row">
+                                        <span className="note-date">
+                                            {new Date(note.date).toLocaleDateString('es-ES', { 
+                                                weekday: 'long', 
+                                                day: 'numeric', 
+                                                month: 'long', 
+                                                year: 'numeric' 
+                                            })}
+                                        </span>
+                                        {note.mood && <span className="note-mood-emoji">{note.mood}</span>}
+                                    </div>
+                                    <div className="note-card-right">
+                                        {user?.is_public && likeCount !== null && (
+                                            <span className="note-likes-badge" title="Likes de otros usuarios">
+                                                ❤️ {likeCount}
+                                            </span>
+                                        )}
+                                        <div className="note-actions">
+                                            <button className="btn-note-edit" onClick={() => handleOpenEdit(note)}>✏️</button>
+                                            <button className="btn-note-delete" onClick={() => handleDelete(note.date)}>🗑️</button>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div className="note-actions">
-                                    <button className="btn-note-edit" onClick={() => handleOpenEdit(note)}>✏️</button>
-                                    <button className="btn-note-delete" onClick={() => handleDelete(note.date)}>🗑️</button>
+                                <div className="note-content">
+                                    {note.content}
                                 </div>
                             </div>
-                            <div className="note-content">
-                                {note.content}
-                            </div>
-                        </div>
-                    ))
+                        );
+                    })
                 )}
             </div>
 

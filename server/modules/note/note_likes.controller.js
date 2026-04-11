@@ -44,6 +44,24 @@ class NoteLikesController {
             res.status(500).json({ error: 'Failed to get likes' });
         }
     };
+
+    // Returns { [date]: likesCount } for all notes owned by the authenticated user
+    getMyNotesLikes = async (req, res) => {
+        try {
+            const { user_id } = req;
+            const rows = await noteLikesDal.getMyNotesLikes(user_id);
+            // Build map: date -> likes_count
+            const result = {};
+            rows.forEach(row => {
+                result[row.date] = parseInt(row.likes_count);
+            });
+            res.status(200).json(result);
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ error: 'Failed to get my notes likes' });
+        }
+    };
 }
 
 export default new NoteLikesController();
+

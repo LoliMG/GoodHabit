@@ -37,6 +37,19 @@ class NoteLikesDal {
         `;
         return await executeQuery(sql, [userId, noteIds]);
     };
+
+    // Returns likes count keyed by note date string (YYYY-MM-DD) for all notes owned by userId
+    getMyNotesLikes = async (userId) => {
+        const sql = `
+            SELECT TO_CHAR(dn.note_date, 'YYYY-MM-DD') AS date, COUNT(nl.like_id) AS likes_count
+            FROM daily_notes dn
+            LEFT JOIN note_likes nl ON nl.note_id = dn.note_id
+            WHERE dn.user_id = $1
+            GROUP BY dn.note_date
+        `;
+        return await executeQuery(sql, [userId]);
+    };
 }
 
 export default new NoteLikesDal();
+

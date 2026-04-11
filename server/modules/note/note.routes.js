@@ -11,5 +11,7 @@ router.delete('/delete', verifyToken, noteController.deleteNote);
 // Like endpoints
 router.put('/likes/:note_id', verifyToken, noteLikesController.toggleLike);
 router.post('/likes', optionalVerifyToken, noteLikesController.getNoteLikes);
+router.get('/my-likes', verifyToken, noteLikesController.getMyNotesLikes);
 
 export default router;
+
