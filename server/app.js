@@ -36,14 +36,9 @@ app.use(cors({
     allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
-// Rate Limiting: 100 requests per 15 minutes
-const limiter = rateLimit({
-    windowMs: 15 * 60 * 1000,
-    max: 100,
-    message: { message: 'Too many requests from this IP, please try again after 15 minutes' },
-    validate: false // Desactivar TODAS las validaciones de una vez para evitar el crash
-});
-app.use('/api/', limiter);
+// Rate Limiting (Disabled for Vercel compatibility)
+// const limiter = ...
+// app.use('/api/', limiter);
 
 app.use(logger('dev'));
 app.use(express.json());
