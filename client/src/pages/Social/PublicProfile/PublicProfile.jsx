@@ -85,6 +85,21 @@ const PublicProfile = () => {
                 </div>
             </header>
 
+            <nav className="bootstrap-tabs-nav">
+                <button 
+                    className={`tab-link ${activeTab === 'habits' ? 'active' : ''}`}
+                    onClick={() => setActiveTab('habits')}
+                >
+                    <span className="icon">✨</span> Hábitos
+                </button>
+                <button 
+                    className={`tab-link ${activeTab === 'notes' ? 'active' : ''}`}
+                    onClick={() => setActiveTab('notes')}
+                >
+                    <span className="icon">📝</span> Notas
+                </button>
+            </nav>
+
             <main className="tab-content-area">
                 {activeTab === 'habits' ? (
                     <section className="tab-pane animate-fade-in">
