@@ -12,8 +12,8 @@ const Dashboard = lazy(() => import("../pages/Dashboard/Dashboard"));
 const Habits = lazy(() => import("../pages/Habits/Habits"));
 const Profile = lazy(() => import("../pages/Profile/Profile"));
 const Notes = lazy(() => import("../pages/Notes/Notes"));
-const Community = lazy(() => import("../pages/Community/Community"));
-const PublicProfile = lazy(() => import("../pages/Community/PublicProfile"));
+const Community = lazy(() => import("../pages/Social/Community/Community"));
+const PublicProfile = lazy(() => import("../pages/Social/PublicProfile/PublicProfile"));
 
 const AppRoutes = () => {
     return (

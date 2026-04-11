@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { fetchData } from '../../helpers/axiosHelper';
+import { fetchData } from '../../../helpers/axiosHelper';
 import './Community.css';
 
 const Community = () => {

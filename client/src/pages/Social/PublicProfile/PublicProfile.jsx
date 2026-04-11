@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { fetchData } from '../../helpers/axiosHelper';
-import { AuthContext } from '../../contexts/AuthContext';
+import { fetchData } from '../../../helpers/axiosHelper';
+import { AuthContext } from '../../../contexts/AuthContext';
 import './PublicProfile.css';
 
 const PublicProfile = () => {
