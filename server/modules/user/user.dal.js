@@ -13,7 +13,8 @@ class UserDal {
 
     findUserByEmail = async (email) => {
         try {
-            let sql = 'SELECT user_id AS id, user_password AS password, user_name AS name, user_email AS email, user_is_public AS is_public, user_image AS image FROM users WHERE user_email = $1';
+            // Eliminamos user_image temporalmente para evitar el error 500 si la columna no existe
+            let sql = 'SELECT user_id AS id, user_password AS password, user_name AS name, user_email AS email, user_is_public AS is_public FROM users WHERE user_email = $1';
             let result = await executeQuery(sql, [email]);
             return result;
         } catch (error) {
@@ -23,7 +24,7 @@ class UserDal {
 
     userByToken = async (id) => {
         try {
-            let sql = 'SELECT user_id AS id, user_name AS name, user_email AS email, user_created_at AS created_at, user_is_public AS is_public, user_image AS image FROM users WHERE user_id = $1';
+            let sql = 'SELECT user_id AS id, user_name AS name, user_email AS email, user_created_at AS created_at, user_is_public AS is_public FROM users WHERE user_id = $1';
             let result = await executeQuery(sql, [id]);
             return result[0];
         } catch (error) {
@@ -51,7 +52,7 @@ class UserDal {
 
     getAllPublicUsers = async () => {
         try {
-            let sql = 'SELECT user_id AS id, user_name AS name, user_created_at AS created_at, user_image AS image FROM users WHERE user_is_public = TRUE';
+            let sql = 'SELECT user_id AS id, user_name AS name, user_created_at AS created_at FROM users WHERE user_is_public = TRUE';
             let result = await executeQuery(sql);
             return result;
         } catch (error) {

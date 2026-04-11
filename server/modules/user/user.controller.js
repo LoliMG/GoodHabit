@@ -63,7 +63,7 @@ class UserController {
                     res.status(200).json({ 
                         message: 'Login successful', 
                         token, 
-                        user: { id: userId, name: result[0].name, email: result[0].email, is_public: result[0].is_public, image: result[0].image },
+                        user: { id: userId, name: result[0].name, email: result[0].email, is_public: result[0].is_public, image: result[0].image || null },
                         habits,
                         oneTimeHabits,
                         progress,
@@ -151,7 +151,7 @@ class UserController {
                 userId = result[0].id;
                 userName = result[0].name;
                 userEmail = result[0].email || email;
-                userImage = result[0].image;
+                userImage = result[0].image || null;
             }
 
             const token = generateToken(userId);
