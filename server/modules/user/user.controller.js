@@ -227,7 +227,11 @@ class UserController {
 
             if (error) {
                 console.error("Error uploading to Supabase:", error);
-                return res.status(500).json({ error: 'Fallo al subir a Supabase Storage' });
+                return res.status(500).json({ 
+                    error: 'Fallo al subir a Supabase Storage', 
+                    details: error.message,
+                    tip: '¿Has creado el bucket "images" y puesto las variables en Vercel?' 
+                });
             }
 
             // Get Public URL
