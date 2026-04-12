@@ -26,8 +26,21 @@ const UserLayout = () => {
                 </div>
 
                 <div className="sidebar-user">
-                    <span>Bienvenido, </span>
-                    <strong>{user?.name}</strong>
+                    <div className="sidebar-avatar">
+                        {user?.image ? (
+                            <img 
+                                src={user.image.startsWith('http') ? user.image : `${import.meta.env.VITE_API_URL || ""}/images/users/${user.image}`} 
+                                alt="Profile" 
+                                className="sidebar-avatar-img"
+                            />
+                        ) : (
+                            user?.name?.charAt(0).toUpperCase()
+                        )}
+                    </div>
+                    <div className="user-meta">
+                        <span>Bienvenido, </span>
+                        <strong>{user?.name}</strong>
+                    </div>
                 </div>
 
                 <nav className="sidebar-nav">

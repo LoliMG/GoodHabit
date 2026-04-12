@@ -51,7 +51,7 @@ class UserDal {
 
     getAllPublicUsers = async () => {
         try {
-            let sql = 'SELECT user_id AS id, user_name AS name, user_created_at AS created_at FROM users WHERE user_is_public = TRUE';
+            let sql = 'SELECT user_id AS id, user_name AS name, user_created_at AS created_at, user_image AS image FROM users WHERE user_is_public = TRUE';
             let result = await executeQuery(sql);
             return result;
         } catch (error) {
