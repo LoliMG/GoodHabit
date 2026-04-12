@@ -102,7 +102,7 @@ export const AuthContextProvider = ({ children }) => {
     const loginWithGoogle = async (tokenResponse) => {
         try {
             const res = await fetchData("/user/googleLogin", "POST", { access_token: tokenResponse.access_token });
-            if (res.ok) {
+            if (res.status === 200) {
                 setToken(res.data.token);
                 setUser(res.data.user);
                 setHabits(res.data.habits || []);
