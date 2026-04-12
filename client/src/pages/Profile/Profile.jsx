@@ -46,32 +46,33 @@ const Profile = () => {
                 <p className="animate-fade-in" style={{ animationDelay: '0.1s' }}>Gestiona los ajustes de tu cuenta y mira tus estadísticas globales.</p>
             </header>
 
+            <div className="avatar-section animate-fade-in" style={{ animationDelay: '0.2s' }}>
+                <div className="avatar-preview">
+                    {user?.image ? (
+                        <img 
+                            src={user.image.startsWith('http') ? user.image : `${import.meta.env.VITE_API_URL || ""}/images/users/${user.image}`} 
+                            alt="Profile" 
+                        />
+                    ) : (
+                        <div className="avatar-placeholder">{user?.name?.charAt(0).toUpperCase()}</div>
+                    )}
+                </div>
+                <div className="avatar-controls">
+                    <label htmlFor="avatar-upload" className="btn-upload">
+                        📷 Cambiar Foto
+                    </label>
+                    <input
+                        id="avatar-upload"
+                        type="file"
+                        onChange={handleFileChange}
+                        accept="image/*"
+                        hidden
+                    />
+                </div>
+            </div>
+
             <div className="profile-grid">
                 <div className="profile-settings glass-card">
-                    <div className="avatar-section">
-                        <div className="avatar-preview">
-                            {user?.image ? (
-                                <img 
-                                    src={user.image.startsWith('http') ? user.image : `${import.meta.env.VITE_API_URL || ""}/images/users/${user.image}`} 
-                                    alt="Profile" 
-                                />
-                            ) : (
-                                <div className="avatar-placeholder">{user?.name?.charAt(0).toUpperCase()}</div>
-                            )}
-                        </div>
-                        <div className="avatar-controls">
-                            <label htmlFor="avatar-upload" className="btn-upload">
-                                📷 Cambiar Foto
-                            </label>
-                            <input
-                                id="avatar-upload"
-                                type="file"
-                                onChange={handleFileChange}
-                                accept="image/*"
-                                hidden
-                            />
-                        </div>
-                    </div>
 
                     <h3>Información de Cuenta</h3>
                     <form onSubmit={handleUpdate}>
