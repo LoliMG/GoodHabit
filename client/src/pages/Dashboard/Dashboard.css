@@ -132,8 +132,8 @@
         }
 
         &.today {
-          border: 2.5px solid #00d2ff !important;
-          box-shadow: 0 0 35px rgba(0, 210, 255, 0.5) !important;
+          border: 1px solid var(--primary) !important;
+          box-shadow: 0 0 15px var(--glass-glow) !important;
           font-weight: 800;
           z-index: 10;
         }
