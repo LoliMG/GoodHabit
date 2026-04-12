@@ -123,7 +123,17 @@ const PublicProfile = () => {
             {copyMessage && <div className="copy-toast animate-slide-down">{copyMessage}</div>}
 
             <header className="profile-hero">
-                <div className="avatar-large">{user.name.charAt(0).toUpperCase()}</div>
+                <div className="avatar-large">
+                    {user.image ? (
+                        <img 
+                            src={user.image.startsWith('http') ? user.image : `${import.meta.env.VITE_API_URL || ""}/images/users/${user.image}`} 
+                            alt={user.name} 
+                            className="avatar-img"
+                        />
+                    ) : (
+                        user.name.charAt(0).toUpperCase()
+                    )}
+                </div>
                 <h1>{user.name}</h1>
                 <p className="since">Miembro de GoodHabit desde {new Date(user.created_at).toLocaleDateString('es-ES', { month: 'long', year: 'numeric' })}</p>
 

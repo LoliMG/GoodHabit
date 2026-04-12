@@ -39,6 +39,14 @@
     font-size: 4rem;
     font-weight: 800;
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+
+    .avatar-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 40px;
+    }
 }
 
 .profile-hero h1 {
