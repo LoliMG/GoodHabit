@@ -98,6 +98,7 @@ const Dashboard = () => {
 
         if (completed === 0) return 'none';
         if (completed === total) return 'full';
+        if (completed >= total / 2) return 'majority';
         return 'partial';
     };
 

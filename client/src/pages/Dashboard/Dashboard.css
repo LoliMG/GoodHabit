@@ -151,6 +151,13 @@
           color: var(--secondary);
         }
 
+        &.status-majority {
+          background: hsla(280, 100%, 80%, 0.2);
+          border-color: hsla(280, 100%, 80%, 0.4);
+          color: #d1b3ff;
+          box-shadow: 0 0 15px hsla(280, 100%, 75%, 0.15);
+        }
+
         .day-mood-btn {
           position: absolute;
           top: 6px;
