@@ -3,6 +3,26 @@ import { Outlet, NavLink, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../contexts/AuthContext';
 import './UserLayout.css';
 
+const AvatarImage = ({ user, className = "" }) => {
+    const [imgError, setImgError] = React.useState(false);
+    const imageUrl = user?.image?.startsWith('http') 
+        ? user.image 
+        : `${import.meta.env.VITE_API_URL || ""}/images/users/${user?.image}`;
+
+    if (!user?.image || user.image === 'null' || imgError) {
+        return <span className="avatar-letter">{user?.name?.charAt(0).toUpperCase()}</span>;
+    }
+
+    return (
+        <img 
+            src={imageUrl} 
+            alt="Profile" 
+            className={className || "sidebar-avatar-img"}
+            onError={() => setImgError(true)}
+        />
+    );
+};
+
 const UserLayout = () => {
     const { logout, user } = useContext(AuthContext);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -27,15 +47,7 @@ const UserLayout = () => {
 
                 <div className="sidebar-user">
                     <div className="sidebar-avatar">
-                        {user?.image && user.image !== 'null' ? (
-                            <img 
-                                src={user.image.startsWith('http') ? user.image : `${import.meta.env.VITE_API_URL || ""}/images/users/${user.image}`} 
-                                alt="Profile" 
-                                className="sidebar-avatar-img"
-                            />
-                        ) : (
-                            <span className="avatar-letter">{user?.name?.charAt(0).toUpperCase()}</span>
-                        )}
+                        <AvatarImage user={user} />
                     </div>
                     <div className="user-meta">
                         <span>Bienvenido, </span>

@@ -3,6 +3,26 @@ import { Link } from 'react-router-dom';
 import { fetchData } from '../../../helpers/axiosHelper';
 import './Community.css';
 
+const AvatarImage = ({ user, className = "avatar-img" }) => {
+    const [imgError, setImgError] = React.useState(false);
+    const imageUrl = user?.image?.startsWith('http') 
+        ? user.image 
+        : `${import.meta.env.VITE_API_URL || ""}/images/users/${user?.image}`;
+
+    if (!user?.image || user.image === 'null' || imgError) {
+        return <span className="avatar-letter">{user?.name?.charAt(0).toUpperCase()}</span>;
+    }
+
+    return (
+        <img 
+            src={imageUrl} 
+            alt={user.name} 
+            className={className}
+            onError={() => setImgError(true)}
+        />
+    );
+};
+
 const Community = () => {
     const [users, setUsers] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -45,15 +65,7 @@ const Community = () => {
                                 style={{ animationDelay: `${0.2 + idx * 0.1}s` }}
                             >
                                 <div className="user-avatar">
-                                    {u.image && u.image !== 'null' ? (
-                                        <img 
-                                            src={u.image.startsWith('http') ? u.image : `${import.meta.env.VITE_API_URL || ""}/images/users/${u.image}`} 
-                                            alt={u.name} 
-                                            className="avatar-img"
-                                        />
-                                    ) : (
-                                        <span className="avatar-letter">{u.name?.charAt(0).toUpperCase()}</span>
-                                    )}
+                                    <AvatarImage user={u} />
                                 </div>
                                 <div className="user-info">
                                     <h3>{u.name}</h3>
