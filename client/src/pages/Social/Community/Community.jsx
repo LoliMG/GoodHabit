@@ -45,14 +45,14 @@ const Community = () => {
                                 style={{ animationDelay: `${0.2 + idx * 0.1}s` }}
                             >
                                 <div className="user-avatar">
-                                    {u.image ? (
+                                    {u.image && u.image !== 'null' ? (
                                         <img 
                                             src={u.image.startsWith('http') ? u.image : `${import.meta.env.VITE_API_URL || ""}/images/users/${u.image}`} 
                                             alt={u.name} 
                                             className="avatar-img"
                                         />
                                     ) : (
-                                        u.name.charAt(0).toUpperCase()
+                                        <span className="avatar-letter">{u.name?.charAt(0).toUpperCase()}</span>
                                     )}
                                 </div>
                                 <div className="user-info">

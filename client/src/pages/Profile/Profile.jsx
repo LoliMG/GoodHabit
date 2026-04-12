@@ -48,7 +48,7 @@ const Profile = () => {
 
             <div className="avatar-section animate-fade-in" style={{ animationDelay: '0.2s' }}>
                 <div className="avatar-preview">
-                    {user?.image ? (
+                    {user?.image && user.image !== 'null' ? (
                         <img 
                             src={user.image.startsWith('http') ? user.image : `${import.meta.env.VITE_API_URL || ""}/images/users/${user.image}`} 
                             alt="Profile" 

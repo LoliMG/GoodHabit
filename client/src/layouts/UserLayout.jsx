@@ -27,14 +27,14 @@ const UserLayout = () => {
 
                 <div className="sidebar-user">
                     <div className="sidebar-avatar">
-                        {user?.image ? (
+                        {user?.image && user.image !== 'null' ? (
                             <img 
                                 src={user.image.startsWith('http') ? user.image : `${import.meta.env.VITE_API_URL || ""}/images/users/${user.image}`} 
                                 alt="Profile" 
                                 className="sidebar-avatar-img"
                             />
                         ) : (
-                            user?.name?.charAt(0).toUpperCase()
+                            <span className="avatar-letter">{user?.name?.charAt(0).toUpperCase()}</span>
                         )}
                     </div>
                     <div className="user-meta">

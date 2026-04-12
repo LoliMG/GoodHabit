@@ -124,14 +124,14 @@ const PublicProfile = () => {
 
             <header className="profile-hero">
                 <div className="avatar-large">
-                    {user.image ? (
+                    {user.image && user.image !== 'null' ? (
                         <img 
                             src={user.image.startsWith('http') ? user.image : `${import.meta.env.VITE_API_URL || ""}/images/users/${user.image}`} 
                             alt={user.name} 
                             className="avatar-img"
                         />
                     ) : (
-                        user.name.charAt(0).toUpperCase()
+                        <span className="avatar-letter">{user.name?.charAt(0).toUpperCase()}</span>
                     )}
                 </div>
                 <h1>{user.name}</h1>
