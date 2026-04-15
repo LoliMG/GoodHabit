@@ -146,8 +146,8 @@ const NotesPage = () => {
                                     </div>
                                     <div className="note-card-right">
                                         {user?.is_public && likeCount !== null && (
-                                            <span className="note-likes-badge" title="Likes de otros usuarios">
-                                                ❤️ {likeCount}
+                                            <span className={`note-likes-badge ${likeCount === 0 ? 'zero-likes' : ''}`} title="Likes de otros usuarios">
+                                                {likeCount === 0 ? '🤍' : '❤️'} {likeCount}
                                             </span>
                                         )}
                                     </div>
