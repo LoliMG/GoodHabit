@@ -13,7 +13,7 @@ const PublicProfile = () => {
     useEffect(() => {
         const fetchPublicUser = async () => {
             try {
-                const res = await fetchData(`/user/public/${userId}`, 'GET');
+                const res = await fetchData(`/user/public-user/${userId}`, 'GET');
                 setPublicUser(res.data.user);
                 setPublicHabits(res.data.habits || []);
             } catch (error) {
