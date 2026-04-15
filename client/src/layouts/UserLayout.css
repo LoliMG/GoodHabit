@@ -188,6 +188,8 @@
 
       &.open {
         height: 100dvh;
+        background: hsla(240, 10%, 4%, 0.96);
+        backdrop-filter: blur(50px);
         .sidebar-header { margin-bottom: 3rem; }
         .sidebar-user, .sidebar-nav, .sidebar-footer { display: flex; }
       }
