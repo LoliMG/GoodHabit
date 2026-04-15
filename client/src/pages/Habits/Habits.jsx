@@ -2,6 +2,7 @@ import React, { useState, useContext, useRef, useEffect } from 'react';
 import { AuthContext } from '../../contexts/AuthContext';
 import Modal from '../../components/Modal/Modal';
 import HabitCard from '../../components/Habits/HabitCard/HabitCard';
+import HabitForm from '../../components/Habits/HabitForm/HabitForm';
 import './Habits.css';
 
 const Habits = () => {
@@ -90,13 +91,19 @@ const Habits = () => {
             </div>
 
             <Modal isOpen={!!selectedHabit} onClose={() => setSelectedHabit(null)} title="Editar Hábito">
-                <form className="edit-habit-form" onSubmit={(e) => { e.preventDefault(); updateHabit(selectedHabit.id, editName, editIcon); setSelectedHabit(null); }}>
-                    <div className="form-group"><label>Nombre</label><input type="text" value={editName} onChange={(e) => setEditName(e.target.value)} /></div>
-                    <div className="modal-actions">
-                        <button type="button" className="btn-danger" onClick={() => { if(window.confirm("¿Eliminar?")) { deleteHabit(selectedHabit.id); setSelectedHabit(null); } }}>Eliminar</button>
-                        <button type="submit" className="btn-primary">Guardar</button>
-                    </div>
-                </form>
+                <HabitForm 
+                    name={editName}
+                    setName={setEditName}
+                    icon={editIcon}
+                    setIcon={setEditIcon}
+                    isEdit={true}
+                    availableIcons={AVAILABLE_ICONS}
+                    isDropdownOpen={isEditDropdownOpen}
+                    setIsDropdownOpen={setIsEditDropdownOpen}
+                    dropdownRef={editDropdownRef}
+                    onSubmit={(e) => { e.preventDefault(); updateHabit(selectedHabit.id, editName, editIcon); setSelectedHabit(null); }}
+                    onDelete={() => { if(window.confirm("¿Eliminar?")) { deleteHabit(selectedHabit.id); setSelectedHabit(null); } }}
+                />
             </Modal>
         </div>
     );

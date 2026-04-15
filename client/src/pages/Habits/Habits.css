@@ -125,31 +125,6 @@
         grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
         gap: 3.5rem;
     }
-
-    /* EDIT MODAL STYLES */
-    .edit-habit-form {
-        display: flex;
-        flex-direction: column;
-        gap: 2.5rem;
-        padding: 1rem 0;
-
-        .form-group {
-            display: flex;
-            flex-direction: column;
-            gap: 1.2rem;
-            label { text-transform: uppercase; letter-spacing: 2px; font-size: 0.8rem; color: var(--text-dim); font-weight: 800; }
-            input { font-size: 1.2rem; padding: 1.2rem 1.5rem; border-radius: 16px; background: hsla(0, 0%, 0%, 0.2); border: 1px solid var(--glass-border); color: white; }
-        }
-
-        .modal-actions {
-            display: flex;
-            gap: 1.5rem;
-            margin-top: 2rem;
-            button { flex: 1; padding: 1.25rem; border-radius: 16px; font-weight: 700; font-size: 1rem; cursor: pointer; transition: var(--transition-fast); }
-            .btn-danger { background: hsla(0, 84%, 60%, 0.1); color: #ff4757; border: 1px solid hsla(0, 84%, 60%, 0.2); &:hover { background: #ff4757; color: white; transform: translateY(-3px); } }
-            .btn-primary { background: var(--primary); color: #0f172a; border: none; &:hover { transform: translateY(-3px); box-shadow: 0 10px 25px hsla(174, 100%, 41%, 0.3); } }
-        }
-    }
 }
 
 @media (max-width: 768px) {
