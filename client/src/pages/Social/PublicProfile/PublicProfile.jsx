@@ -139,7 +139,7 @@ const PublicProfile = () => {
                                                 {new Date(note.date).toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' })}
                                             </span>
                                             <button 
-                                                className={`like-btn ${(note.likes_count > 0 || note.liked_by_user) ? 'liked' : ''}`}
+                                                className={`like-btn ${note.liked_by_user ? 'liked' : ''}`}
                                                 onClick={() => handleToggleLike(note.id)}
                                             >
                                                 <span className="heart-icon">❤️</span> 
