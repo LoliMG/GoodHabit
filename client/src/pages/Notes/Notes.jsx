@@ -190,9 +190,8 @@ const NotesPage = () => {
                     </div>
                     <div className="modal-actions">
                         {isEditing && (
-                            <Button variant="danger" onClick={() => handleDelete(modalDate)}>Eliminar</Button>
+                            <Button variant="danger" onClick={() => handleDelete(modalDate)}>Eliminar Nota</Button>
                         )}
-                        <Button variant="secondary" onClick={() => setIsModalOpen(false)}>Cancelar</Button>
                         <Button type="submit">Guardar Nota</Button>
                     </div>
                 </form>

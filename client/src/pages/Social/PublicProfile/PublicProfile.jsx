@@ -2,6 +2,7 @@ import { useState, useEffect, useContext } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../../contexts/AuthContext';
 import { fetchData } from '../../../helpers/axiosHelper';
+import Button from '../../../components/UI/Button/Button';
 import './PublicProfile.css';
 
 const PublicProfile = () => {
@@ -46,7 +47,7 @@ const PublicProfile = () => {
         if (!token) return navigate('/login');
         try {
             const res = await fetchData(`/note/likes/${noteId}`, 'PUT', null, token);
-            if (res.success) {
+            if (res.status === 200) {
                 // Actualizar localmente la nota que recibió el like
                 setPublicNotes(prev => prev.map(n => 
                     n.id === noteId 
@@ -66,9 +67,9 @@ const PublicProfile = () => {
         <div className="public-profile-container">
             {toast && <div className="copy-toast">{toast}</div>}
             
-            <button className="btn-back" onClick={() => navigate('/community')}>
+            <Button variant="secondary" onClick={() => navigate('/community')} style={{ alignSelf: 'flex-start', marginBottom: '2rem' }}>
                 ← Volver a Comunidad
-            </button>
+            </Button>
 
             <header className="profile-hero">
                 <div className="avatar-large">

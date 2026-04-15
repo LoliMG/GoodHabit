@@ -13,7 +13,7 @@ import './Dashboard.css';
 const Dashboard = () => {
     const { 
         habits, oneTimeHabits, addOneTimeHabit, deleteOneTimeHabit, 
-        progress, toggleHabitProgress, notes, updateDayNote, 
+        progress, toggleHabitProgress, activateHabitForDay, notes, updateDayNote, 
         updateDayMood, deleteDayNote, moods 
     } = useContext(AuthContext);
 
