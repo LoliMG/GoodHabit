@@ -9,7 +9,7 @@ import './Notes.css';
 
 registerLocale('es', es);
 
-const Notes = () => {
+const NotesPage = () => {
     const { user, token, notes, deleteDayNote, updateDayNote, moods } = useContext(AuthContext);
     const [searchContent, setSearchContent] = useState('');
     const [searchDate, setSearchDate] = useState('');
@@ -198,4 +198,4 @@ const Notes = () => {
     );
 };
 
-export default Notes;
+export default NotesPage;
