@@ -1,3 +1,4 @@
+import Button from '../../UI/Button/Button';
 import './HabitForm.css';
 
 const HabitForm = ({
@@ -56,13 +57,13 @@ const HabitForm = ({
 
             <div className="modal-actions">
                 {isEdit && (
-                    <button type="button" className="btn-danger" onClick={onDelete}>
+                    <Button variant="danger" onClick={onDelete}>
                         Eliminar
-                    </button>
+                    </Button>
                 )}
-                <button type="submit" className="btn-primary">
+                <Button type="submit">
                     {isEdit ? 'Guardar Cambios' : 'Añadir Hábito'}
-                </button>
+                </Button>
             </div>
         </form>
     );

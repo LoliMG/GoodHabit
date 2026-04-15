@@ -1,5 +1,6 @@
 import { useState, useContext } from 'react';
 import { AuthContext } from '../../contexts/AuthContext';
+import Button from '../../components/UI/Button/Button';
 import './Profile.css';
 
 const Profile = () => {
@@ -143,7 +144,7 @@ const Profile = () => {
                             <p className="field-note">Si activas esto, otros usuarios podrán ver tus notas y hábitos.</p>
                         </div>
 
-                        <button type="submit" className="btn-primary">Actualizar Perfil</button>
+                        <Button type="submit">Actualizar Perfil</Button>
                         {message && <p className="success-message">{message}</p>}
                     </form>
                 </div>

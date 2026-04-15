@@ -3,6 +3,7 @@ import { AuthContext } from '../../contexts/AuthContext';
 import Modal from '../../components/Modal/Modal';
 import HabitCard from '../../components/Habits/HabitCard/HabitCard';
 import HabitForm from '../../components/Habits/HabitForm/HabitForm';
+import Button from '../../components/UI/Button/Button';
 import './Habits.css';
 
 const Habits = () => {
@@ -75,7 +76,7 @@ const Habits = () => {
                             </div>
                         )}
                     </div>
-                    <button type="submit" className="btn-primary">Añadir</button>
+                    <Button type="submit">Añadir</Button>
                 </div>
             </form>
 

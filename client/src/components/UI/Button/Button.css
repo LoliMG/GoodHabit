@@ -1,0 +1,70 @@
+.gh-button {
+    padding: 1.1rem 2rem;
+    border-radius: 18px;
+    font-weight: 700;
+    font-size: 1.05rem;
+    cursor: pointer;
+    transition: var(--transition-fast);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.8rem;
+    border: 1px solid transparent;
+}
+
+/* Variant: Primary (Teal) */
+.gh-button--primary {
+    background: var(--primary);
+    color: #0f172a;
+    border: none;
+}
+
+.gh-button--primary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px hsla(174, 100%, 41%, 0.3);
+}
+
+.gh-button--primary:active {
+    transform: translateY(-1px);
+}
+
+/* Variant: Secondary (Glass) */
+.gh-button--secondary {
+    background: hsla(0, 0%, 100%, 0.05);
+    color: white;
+    border: 1px solid var(--glass-border);
+}
+
+.gh-button--secondary:hover {
+    background: hsla(0, 0%, 100%, 0.1);
+    border-color: var(--primary);
+}
+
+/* Variant: Danger (Reddish) */
+.gh-button--danger {
+    background: hsla(0, 84%, 60%, 0.08);
+    color: #ff4757;
+    border: 1px solid hsla(0, 84%, 60%, 0.15);
+}
+
+.gh-button--danger:hover {
+    background: #ff4757;
+    color: white;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(255, 71, 87, 0.2);
+}
+
+/* Disabled State */
+.gh-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none !important;
+    box-shadow: none !important;
+}
+
+@media (max-width: 768px) {
+    .gh-button {
+        padding: 0.9rem 1.5rem;
+        font-size: 1rem;
+    }
+}

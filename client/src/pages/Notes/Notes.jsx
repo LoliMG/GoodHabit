@@ -5,6 +5,7 @@ import es from 'date-fns/locale/es';
 import "react-datepicker/dist/react-datepicker.css";
 import { fetchData } from '../../helpers/axiosHelper';
 import Modal from '../../components/Modal/Modal';
+import Button from '../../components/UI/Button/Button';
 import './Notes.css';
 
 registerLocale('es', es);
@@ -87,7 +88,7 @@ const NotesPage = () => {
                 <h2 className="animate-fade-in">Tu Historial de <span className="gradient-text">Reflexiones</span> 📝</h2>
                 <p className="animate-fade-in" style={{ animationDelay: '0.1s' }}>Repasa tus pensamientos y progreso a lo largo del tiempo.</p>
                 <div className="header-actions animate-fade-in" style={{ animationDelay: '0.15s' }}>
-                    <button className="btn-primary" onClick={handleOpenCreate}>+ Crear Nueva Nota</button>
+                    <Button onClick={handleOpenCreate}>+ Crear Nueva Nota</Button>
                 </div>
             </header>
 
@@ -189,10 +190,10 @@ const NotesPage = () => {
                     </div>
                     <div className="modal-actions">
                         {isEditing && (
-                            <button type="button" className="btn-danger" onClick={() => handleDelete(modalDate)}>Eliminar</button>
+                            <Button variant="danger" onClick={() => handleDelete(modalDate)}>Eliminar</Button>
                         )}
-                        <button type="button" className="btn-secondary" onClick={() => setIsModalOpen(false)}>Cancelar</button>
-                        <button type="submit" className="btn-primary">Guardar Nota</button>
+                        <Button variant="secondary" onClick={() => setIsModalOpen(false)}>Cancelar</Button>
+                        <Button type="submit">Guardar Nota</Button>
                     </div>
                 </form>
             </Modal>
