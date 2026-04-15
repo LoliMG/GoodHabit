@@ -29,18 +29,18 @@ const Notes = () => {
         <div className="notes-page-container">
             <header className="notes-header">
                 <h1 className="notes-title">Tu <span className="gradient-text">Diario</span> Personal</h1>
-                <p className="subtitle">Reflexiona sobre tu día y guarda tus progresos.</p>
+                <p className="subtitle">Documenta tu viaje hacia el éxito una nota a la vez.</p>
             </header>
 
-            <main className="notes-grid">
-                <div className="notes-sidebar-column">
+            <main className="notes-immersive-area">
+                <div className="notes-controls-top">
                     <NotesDateSelector 
                         selectedDate={selectedDate} 
                         setSelectedDate={setSelectedDate} 
                     />
                 </div>
                 
-                <div className="notes-editor-column">
+                <div className="notes-editor-wrapper">
                     <NotesEditor 
                         selectedDate={selectedDate}
                         currentNote={currentNote}
