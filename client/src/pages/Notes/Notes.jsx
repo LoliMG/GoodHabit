@@ -1,7 +1,7 @@
 import { useState, useContext, useEffect } from 'react';
 import { AuthContext } from '../../contexts/AuthContext';
 import { fetchData } from '../../helpers/axiosHelper';
-import Modal from '../../components/Modal/Modal';
+import Modal from '../../components/UI/Modal/Modal';
 import Button from '../../components/UI/Button/Button';
 import CustomDatePicker from '../../components/UI/DatePicker/CustomDatePicker';
 import './Notes.css';

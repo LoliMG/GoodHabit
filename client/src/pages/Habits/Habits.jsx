@@ -1,6 +1,6 @@
 import { useState, useContext, useRef, useEffect } from 'react';
 import { AuthContext } from '../../contexts/AuthContext';
-import Modal from '../../components/Modal/Modal';
+import Modal from '../../components/UI/Modal/Modal';
 import HabitCard from '../../components/Habits/HabitCard/HabitCard';
 import HabitForm from '../../components/Habits/HabitForm/HabitForm';
 import Button from '../../components/UI/Button/Button';

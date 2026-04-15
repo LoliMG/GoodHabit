@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { AuthContext } from '../../contexts/AuthContext';
-import Modal from '../../components/Modal/Modal';
+import Modal from '../../components/UI/Modal/Modal';
 import StatusBanner from '../../components/Dashboard/StatusBanner/StatusBanner';
 import MiniCalendar from '../../components/Dashboard/MiniCalendar/MiniCalendar';
 import DailyPlan from '../../components/Dashboard/DailyPlan/DailyPlan';
