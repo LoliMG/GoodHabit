@@ -40,18 +40,18 @@
     border-color: var(--primary);
 }
 
-/* Variant: Danger (Reddish) */
+/* Variant: Danger (Soft Red) */
 .gh-button--danger {
-    background: hsla(0, 84%, 60%, 0.08);
+    background: hsla(0, 84%, 60%, 0.1);
     color: #ff4757;
-    border: 1px solid hsla(0, 84%, 60%, 0.15);
+    border: 1px solid hsla(0, 84%, 60%, 0.2);
 }
 
 .gh-button--danger:hover {
     background: #ff4757;
     color: white;
     transform: translateY(-3px);
-    box-shadow: 0 8px 20px rgba(255, 71, 87, 0.2);
+    box-shadow: 0 10px 25px rgba(255, 71, 87, 0.3);
 }
 
 /* Disabled State */
