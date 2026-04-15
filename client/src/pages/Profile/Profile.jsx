@@ -39,6 +39,40 @@ const Profile = () => {
         setTimeout(() => setMessage(""), 3000);
     };
 
+    const calculateStreak = () => {
+        if (!progress) return 0;
+        const today = new Date();
+        let streak = 0;
+        let currentDate = new Date(today);
+
+        // Retrocedemos día a día desde hoy
+        while (true) {
+            const dateStr = currentDate.toISOString().split('T')[0];
+            const dayData = progress[dateStr];
+            
+            // Si el día tiene al menos un hábito completado (valor true)
+            const completedCount = dayData ? Object.values(dayData).filter(Boolean).length : 0;
+            
+            if (completedCount > 0) {
+                streak++;
+                currentDate.setDate(currentDate.getDate() - 1);
+            } else {
+                // Si llegamos a un día (distinto de hoy aún pendiente) sin nada, paramos
+                // Nota: Si hoy aún no has hecho nada, la racha sigue contando el ayer, 
+                // pero si ayer no hiciste nada, hoy la racha es 0.
+                if (streak === 0 && dateStr === today.toISOString().split('T')[0]) {
+                    // Si hoy no hay nada, miramos ayer para ver si la racha sigue viva
+                    currentDate.setDate(currentDate.getDate() - 1);
+                    continue; 
+                }
+                break;
+            }
+        }
+        return streak;
+    };
+
+    const currentStreak = calculateStreak();
+
     return (
         <div className="profile-container">
             <header className="profile-header">
@@ -132,10 +166,8 @@ const Profile = () => {
                     <div className="stat-card glass-card">
                         <span className="stat-icon">📅</span>
                         <div className="stat-content">
-                            <span>Miembro Desde</span>
-                            <strong>
-                                {user?.created_at ? new Date(user.created_at).toLocaleDateString('es-ES', { month: 'long', year: 'numeric' }) : 'Reciente'}
-                            </strong>
+                            <span>¡Racha de días!</span>
+                            <strong>{currentStreak} {currentStreak === 1 ? 'Día' : 'Días'} seguidos</strong>
                         </div>
                     </div>
                 </div>

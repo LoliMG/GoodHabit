@@ -288,9 +288,14 @@
           }
 
           strong {
-            font-size: 2rem;
+            font-size: 1.8rem;
             font-weight: 800;
             color: white;
+            display: block;
+            margin-top: 0.2rem;
+            background: linear-gradient(90deg, #fff, var(--primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
           }
         }
       }
