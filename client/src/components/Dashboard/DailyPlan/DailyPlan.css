@@ -110,21 +110,22 @@
       }
 
       .btn-add-ot {
-        width: 54px;
-        height: 54px;
+        width: 48px;
+        height: 48px;
         background: var(--primary);
         color: #0f172a;
         border: none;
         border-radius: 50%;
-        font-size: 1.8rem;
+        font-size: 1.5rem;
         cursor: pointer;
         display: flex;
         align-items: center;
         justify-content: center;
         transition: var(--transition-fast);
         box-shadow: 0 5px 15px hsla(174, 100%, 41%, 0.3);
+        flex-shrink: 0; /* Evita que el botón se comprima */
 
-        &:hover { transform: scale(1.1) rotate(90deg); background: white; }
+        &:hover { background: white; transform: rotate(90deg); }
       }
     }
 

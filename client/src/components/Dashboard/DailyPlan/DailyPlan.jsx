@@ -4,12 +4,12 @@ import './DailyPlan.css';
 const DailyPlan = ({ habits, allGlobalHabits, otName, setOtName, onAddOT, onToggle, onDeleteOT }) => {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
-    // Solo mostramos los que están completados o son OneTime
-    const completedHabits = habits.filter(h => h.isDone);
+    // Mostramos los hábitos completados Y todas las tareas únicas (aunque no estén hechas)
+    const visibleHabits = habits.filter(h => h.isDone || h.isOneTime);
 
     // Filtramos para el select: hábitos globales que NO están en la lista de completados
     const availableGlobalHabits = allGlobalHabits.filter(gh => 
-        !completedHabits.some(ch => !ch.isOneTime && ch.id === gh.id)
+        !visibleHabits.some(ch => !ch.isOneTime && ch.id === gh.id)
     );
 
     const handleSelectHabit = (id) => {
@@ -57,9 +57,9 @@ const DailyPlan = ({ habits, allGlobalHabits, otName, setOtName, onAddOT, onTogg
             </form>
 
             <div className="habits-list">
-                {completedHabits.length === 0 && <p className="no-habits">Aún no hay actividad registrada.</p>}
+                {visibleHabits.length === 0 && <p className="no-habits">Aún no hay actividad registrada.</p>}
                 
-                {completedHabits.map(habit => (
+                {visibleHabits.map(habit => (
                     <div 
                         key={habit.isOneTime ? `ot-${habit.id}` : `reg-${habit.id}`} 
                         className={`habit-item glass-card ${habit.isOneTime ? 'one-time' : ''}`} 
