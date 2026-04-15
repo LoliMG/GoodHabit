@@ -310,7 +310,7 @@
                 
                 .heart-icon {
                     filter: grayscale(0) opacity(1) !important;
-                    transform: scale(1.15);
+                    transform: none !important;
                 }
                 
                 .likes-count {
