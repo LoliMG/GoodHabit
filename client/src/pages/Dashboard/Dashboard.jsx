@@ -55,7 +55,7 @@ const Dashboard = () => {
         return completed >= total / 2 ? 'majority' : 'partial';
     };
 
-    const habitsLeftToday = getHabitsForDay(todayStr).length - getCompletedCount(todayStr);
+    const completedToday = getCompletedCount(todayStr);
 
     const changeMonth = (offset) => {
         const newDate = new Date(viewDate);
@@ -90,7 +90,7 @@ const Dashboard = () => {
         <div className="dashboard-container">
             <StatusBanner 
                 dateFormatted={dateFormatted} 
-                habitsLeftToday={habitsLeftToday} 
+                completedToday={completedToday} 
             />
 
             <MiniCalendar 

@@ -1,16 +1,13 @@
 import React from 'react';
 import './StatusBanner.css';
 
-const StatusBanner = ({ dateFormatted, habitsLeftToday }) => {
+const StatusBanner = ({ dateFormatted, completedToday }) => {
     return (
         <header className="dashboard-header">
             <div className="status-banner glass-card" style={{ textTransform: 'capitalize' }}>
                 <h2>{dateFormatted}</h2>
                 <p className="habits-left">
-                    {habitsLeftToday > 0
-                        ? <span>🚀 <strong>{habitsLeftToday}</strong> hábitos restantes hoy!</span>
-                        : <span>🌟 ¡Todo hecho! ¡Lo estás petando!</span>
-                    }
+                    <span>🌟 ¡Has completado <strong>{completedToday}</strong> {completedToday === 1 ? 'hábito' : 'hábitos'} hoy!</span>
                 </p>
             </div>
         </header>
