@@ -30,7 +30,7 @@ export const registerSchema = z.object({
     password: z
                 .string()
                 .regex(
-                    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,}$/,
-                    "La contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula, un número y un símbolo"
+                    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/,
+                    "La contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula y un número"
                 )
 });
