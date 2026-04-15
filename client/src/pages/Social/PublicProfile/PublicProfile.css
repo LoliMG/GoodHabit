@@ -85,8 +85,14 @@
         align-items: center;
         gap: 0.5rem;
 
-        .icon { font-size: 1.3rem; opacity: 0.7; }
-        &:hover { color: white; }
+        .icon {
+            font-size: 1.3rem;
+            opacity: 0.7;
+        }
+
+        &:hover {
+            color: white;
+        }
 
         &::after {
             content: '';
@@ -102,8 +108,14 @@
 
         &.active {
             color: var(--primary);
-            .icon { opacity: 1; }
-            &::after { width: 100%; }
+
+            .icon {
+                opacity: 1;
+            }
+
+            &::after {
+                width: 100%;
+            }
         }
     }
 }
@@ -131,8 +143,16 @@
             transform: translateY(-5px);
         }
 
-        .habit-icon { font-size: 2.5rem; }
-        .habit-name { font-weight: 700; font-size: 1.2rem; color: white; padding-right: 40px; }
+        .habit-icon {
+            font-size: 2.5rem;
+        }
+
+        .habit-name {
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: white;
+            padding-right: 40px;
+        }
 
         .add-to-me-btn {
             position: absolute;
@@ -179,7 +199,10 @@
         &::before {
             content: '';
             position: absolute;
-            top: 0; left: 0; width: 5px; height: 100%;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 100%;
             background: var(--primary);
         }
 
@@ -197,10 +220,59 @@
                 text-transform: uppercase;
                 letter-spacing: 2px;
             }
+        }
 
+        .note-text {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            color: hsla(0, 0%, 100%, 0.9);
+            white-space: pre-wrap;
+        }
+    }
+}
+
+/* UI Elements */
+.copy-toast {
+    position: fixed;
+    top: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 9999;
+    padding: 1rem 2.5rem;
+    background: var(--primary);
+    color: #0f172a;
+    font-weight: 800;
+    border-radius: 50px;
+    box-shadow: 0 10px 40px rgba(0, 255, 157, 0.4);
+    animation: fadeIn 0.3s ease;
+}
+
+.empty-msg {
+    text-align: center;
+    color: var(--text-dim);
+    padding: 5rem;
+}
+
+.loading-state {
+    padding: 10rem;
+    text-align: center;
+    font-size: 1.5rem;
+    color: var(--primary);
 }
 
 @media (max-width: 768px) {
-    .bootstrap-tabs-nav { gap: 1rem; .tab-link { font-size: 1rem; padding: 0.8rem; } }
-    .public-note-item { padding: 1.8rem; .note-text { font-size: 1.1rem; } }
+    .bootstrap-tabs-nav {
+        gap: 1rem;
+        .tab-link {
+            font-size: 1rem;
+            padding: 0.8rem;
+        }
+    }
+
+    .public-note-item {
+        padding: 1.8rem;
+        .note-text {
+            font-size: 1.1rem;
+        }
+    }
 }
