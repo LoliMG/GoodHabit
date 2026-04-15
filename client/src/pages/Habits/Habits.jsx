@@ -1,4 +1,4 @@
-import React, { useState, useContext, useRef, useEffect } from 'react';
+import { useState, useContext, useRef, useEffect } from 'react';
 import { AuthContext } from '../../contexts/AuthContext';
 import Modal from '../../components/Modal/Modal';
 import HabitCard from '../../components/Habits/HabitCard/HabitCard';
@@ -81,17 +81,17 @@ const Habits = () => {
 
             <div className="habits-grid">
                 {habits.map(habit => (
-                    <HabitCard 
-                        key={habit.id} 
-                        habit={habit} 
-                        stats={getHabitStats(habit.id)} 
-                        onOpenEdit={handleOpenEdit} 
+                    <HabitCard
+                        key={habit.id}
+                        habit={habit}
+                        stats={getHabitStats(habit.id)}
+                        onOpenEdit={handleOpenEdit}
                     />
                 ))}
             </div>
 
             <Modal isOpen={!!selectedHabit} onClose={() => setSelectedHabit(null)} title="Editar Hábito">
-                <HabitForm 
+                <HabitForm
                     name={editName}
                     setName={setEditName}
                     icon={editIcon}
@@ -102,7 +102,7 @@ const Habits = () => {
                     setIsDropdownOpen={setIsEditDropdownOpen}
                     dropdownRef={editDropdownRef}
                     onSubmit={(e) => { e.preventDefault(); updateHabit(selectedHabit.id, editName, editIcon); setSelectedHabit(null); }}
-                    onDelete={() => { if(window.confirm("¿Eliminar?")) { deleteHabit(selectedHabit.id); setSelectedHabit(null); } }}
+                    onDelete={() => { if (window.confirm("¿Eliminar?")) { deleteHabit(selectedHabit.id); setSelectedHabit(null); } }}
                 />
             </Modal>
         </div>

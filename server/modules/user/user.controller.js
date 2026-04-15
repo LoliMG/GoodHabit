@@ -8,10 +8,13 @@ import noteDal from '../note/note.dal.js';
 import moodDal from '../mood/mood.dal.js';
 import { supabase } from '../../config/supabase.js';
 
-
+// Helper ultra-seguro para moods
 const formatMoods = (moods) => {
+    if (!Array.isArray(moods)) return {};
     return moods.reduce((acc, current) => {
-        acc[current.date] = current.emoji;
+        if (current && current.date && current.emoji) {
+            acc[current.date] = current.emoji;
+        }
         return acc;
     }, {});
 };
@@ -38,46 +41,51 @@ class UserController {
             let result = await userDal.findUserByEmail(email);
 
             if (result.length === 0) {
-                res.status(401).json({ message: 'Datos incorrectos' });
-            } else {
-                let match = await comparePassword(password, result[0].password);
-                if (!match) {
-                    res.status(401).json({ message: 'Datos incorrectos' });
-                } else {
-                    const userId = result[0].id;
-                    const token = generateToken(userId);
-                    
-                    // Fetch all associated data
-                    const habits = await habitDal.getHabitsByUserId(userId);
-                    // For simplicity, we return all one-time and progress for now, or you can filter by range
-                    // Here we'll just return what's there
-                    const oneTimeHabits = await habitDal.getOneTimeHabits(userId); 
-                    const progress = await progressDal.getProgressByDateRange(userId, '1970-01-01', '2100-01-01');
-                    const notes = await noteDal.getNotesByDateRange(userId, '1970-01-01', '2100-01-01');
-                    // Fetch moods safely
-                    let userMoods = {};
-                    try {
-                        const moodsData = await moodDal.getMoodsByUserId(userId);
-                        userMoods = formatMoods(moodsData);
-                    } catch (mErr) {
-                        console.error("Non-critical: Failed to load moods during login", mErr);
-                    }
-
-                    res.status(200).json({ 
-                        message: 'Login successful', 
-                        token, 
-                        user: { id: userId, name: result[0].name, email: result[0].email, is_public: result[0].is_public, image: result[0].image || null },
-                        habits,
-                        oneTimeHabits,
-                        progress,
-                        notes,
-                        moods: userMoods
-                    });
-                }
+                return res.status(401).json({ message: 'Datos incorrectos' });
             }
+
+            let match = await comparePassword(password, result[0].password);
+            if (!match) {
+                return res.status(401).json({ message: 'Datos incorrectos' });
+            }
+
+            const userId = result[0].id;
+            const token = generateToken(userId);
+            
+            // Carga de datos asociada al usuario
+            const habits = await habitDal.getHabitsByUserId(userId);
+            const oneTimeHabits = await habitDal.getOneTimeHabits(userId); 
+            const progress = await progressDal.getProgressByDateRange(userId, '1970-01-01', '2100-01-01');
+            const notes = await noteDal.getNotesByDateRange(userId, '1970-01-01', '2100-01-01');
+            
+            // Moods cargados con seguridad total
+            let userMoods = {};
+            try {
+                const moodsData = await moodDal.getMoodsByUserId(userId);
+                userMoods = formatMoods(moodsData);
+            } catch (mErr) {
+                console.error("Fallo no crítico al cargar moods en login:", mErr);
+            }
+
+            res.status(200).json({ 
+                message: 'Login successful', 
+                token, 
+                user: { 
+                    id: userId, 
+                    name: result[0].name, 
+                    email: result[0].email, 
+                    is_public: result[0].is_public, 
+                    image: result[0].image || null 
+                },
+                habits,
+                oneTimeHabits,
+                progress,
+                notes,
+                moods: userMoods
+            });
         } catch (error) {
-            console.error(error);
-            res.status(500).json({ message: 'Error al iniciar sesión' });
+            console.error("ERROR CRÍTICO EN LOGIN:", error);
+            res.status(500).json({ message: 'Error interno en el servidor al iniciar sesión' });
         }
     };
 
@@ -85,18 +93,19 @@ class UserController {
         const { user_id } = req;
         try {
             const user = await userDal.userByToken(user_id);
+            if (!user) return res.status(404).json({ error: 'Usuario no encontrado' });
+
             const habits = await habitDal.getHabitsByUserId(user_id);
-            // Assuming we want to load all user data on initial fetch
             const oneTimeHabits = await habitDal.getOneTimeHabits(user_id);
             const progress = await progressDal.getProgressByDateRange(user_id, '1970-01-01', '2100-01-01');
             const notes = await noteDal.getNotesByDateRange(user_id, '1970-01-01', '2100-01-01');
-            // Fetch moods safely
+            
             let userMoods = {};
             try {
                 const moodsData = await moodDal.getMoodsByUserId(user_id);
                 userMoods = formatMoods(moodsData);
             } catch (mErr) {
-                console.error("Non-critical: Failed to load moods during userByToken", mErr);
+                console.error("Fallo no crítico en userByToken:", mErr);
             }
 
             res.status(200).json({ 
@@ -109,40 +118,29 @@ class UserController {
                 moods: userMoods
             });
         } catch (error) {
-            console.error(error);
-            res.status(500).json({ error: 'Failed to find user' });
+            console.error("ERROR EN USERBYTOKEN:", error);
+            res.status(500).json({ error: 'Fallo al recuperar usuario por token' });
         }
     };
 
     googleLogin = async (req, res) => {
         try {
             const { access_token } = req.body;
-            
-            if (!access_token) {
-                return res.status(400).json({ message: 'Token de Google no proporcionado' });
-            }
+            if (!access_token) return res.status(400).json({ message: 'Token de Google no proporcionado' });
 
-            // Verify token with Google API from server-side
             const googleRes = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
                 headers: { Authorization: `Bearer ${access_token}` }
             });
 
-            if (!googleRes.ok) {
-                return res.status(401).json({ message: 'Token de Google inválido' });
-            }
+            if (!googleRes.ok) return res.status(401).json({ message: 'Token de Google inválido' });
 
             const userInfo = await googleRes.json();
             const { email, name, sub: googleId } = userInfo;
 
             let result = await userDal.findUserByEmail(email);
-            
-            let userId;
-            let userName;
-            let userEmail;
-            let userImage;
+            let userId, userName, userEmail, userImage;
 
             if (result.length === 0) {
-                // Register the user automatically
                 let hashedPass = await hashPassword(googleId || 'google_auth_placeholder');
                 let insertResult = await userDal.register([name, email, hashedPass]);
                 userId = insertResult[0].user_id;
@@ -150,44 +148,35 @@ class UserController {
                 userEmail = email;
                 userImage = null;
             } else {
-                // User exists, log them in
                 userId = result[0].id;
                 userName = result[0].name;
-                userEmail = result[0].email || email;
+                userEmail = result[0].email;
                 userImage = result[0].image || null;
             }
 
             const token = generateToken(userId);
-            
             const habits = await habitDal.getHabitsByUserId(userId);
             const oneTimeHabits = await habitDal.getOneTimeHabits(userId); 
             const progress = await progressDal.getProgressByDateRange(userId, '1970-01-01', '2100-01-01');
             const notes = await noteDal.getNotesByDateRange(userId, '1970-01-01', '2100-01-01');
 
-            // Fetch moods safely
             let userMoods = {};
             try {
                 const moodsData = await moodDal.getMoodsByUserId(userId);
                 userMoods = formatMoods(moodsData);
             } catch (mErr) {
-                console.error("Non-critical: Failed to load moods during googleLogin", mErr);
+                console.error("Fallo no crítico en googleLogin:", mErr);
             }
 
             res.status(200).json({ 
                 message: 'Google Login successful', 
                 token, 
                 user: { 
-                    id: userId, 
-                    name: userName, 
-                    email: userEmail, 
+                    id: userId, name: userName, email: userEmail, 
                     is_public: result.length === 0 ? false : result[0].is_public,
                     image: userImage
                 },
-                habits,
-                oneTimeHabits,
-                progress,
-                notes,
-                moods: userMoods
+                habits, oneTimeHabits, progress, notes, moods: userMoods
             });
         } catch (error) {
             console.error("Google Login Error:", error);
@@ -207,42 +196,31 @@ class UserController {
         }
     };
 
-
     editImage = async (req, res) => {
         try {
             const { user_id } = req;
             if (!req.file) return res.status(400).json({ message: "No se ha subido ninguna imagen" });
             
-            // Create a unique filename
             const fileExt = req.file.originalname.split('.').pop();
             const fileName = `${user_id}-${Date.now()}.${fileExt}`;
             const filePath = `users/${fileName}`;
 
-            // Upload to Supabase Storage
+            if (!supabase || !supabase.storage) throw new Error("Supabase no configurado para subida de imágenes");
+
             const { data, error } = await supabase.storage
-                .from('images') // Asegúrate de tener un bucket llamado 'images'
+                .from('images')
                 .upload(filePath, req.file.buffer, {
                     contentType: req.file.mimetype,
                     upsert: true
                 });
 
-            if (error) {
-                console.error("Error uploading to Supabase:", error);
-                return res.status(500).json({ 
-                    error: 'Fallo al subir a Supabase Storage', 
-                    details: error.message,
-                    tip: '¿Has creado el bucket "images" y puesto las variables en Vercel?' 
-                });
-            }
+            if (error) throw error;
 
-            // Get Public URL
             const { data: { publicUrl } } = supabase.storage
                 .from('images')
                 .getPublicUrl(filePath);
             
-            // Save the URL (or filename) in DB
             await userDal.editUserImage([publicUrl, user_id]);
-            
             res.status(200).json({ message: 'Image updated', filename: publicUrl });
         } catch (error) {
             console.error(error);
@@ -263,9 +241,8 @@ class UserController {
     getPublicUserContent = async (req, res) => {
         try {
             const { target_user_id } = req.params;
-
-            // Check if user is public first
             const user = await userDal.userByToken(target_user_id);
+            
             if (!user || !user.is_public) {
                 return res.status(403).json({ message: 'Este perfil es privado' });
             }
@@ -273,37 +250,41 @@ class UserController {
             const notes = await noteDal.getNotesByDateRange(target_user_id, '1970-01-01', '2100-01-01');
             const habits = await habitDal.getHabitsByUserId(target_user_id);
             
-            // Fetch likes for each note
+            // Protección contra Supabase Mock o errores
             const notesWithLikes = await Promise.all(notes.map(async (note) => {
-                const { count } = await supabase
-                    .from('note_likes')
-                    .select('*', { count: 'exact', head: true })
-                    .eq('note_id', note.id);
-                
+                let likesCount = 0;
                 let likedByUser = false;
-                if (req.user_id) {
-                    const { data } = await supabase
-                        .from('note_likes')
-                        .select('*')
-                        .eq('note_id', note.id)
-                        .eq('user_id', req.user_id);
-                    likedByUser = data && data.length > 0;
+
+                try {
+                    if (supabase && typeof supabase.from === 'function') {
+                        const { count } = await supabase
+                            .from('note_likes')
+                            .select('*', { count: 'exact', head: true })
+                            .eq('note_id', note.id);
+                        likesCount = count || 0;
+
+                        if (req.user_id) {
+                            const { data } = await supabase
+                                .from('note_likes')
+                                .select('*')
+                                .eq('note_id', note.id)
+                                .eq('user_id', req.user_id);
+                            likedByUser = data && data.length > 0;
+                        }
+                    }
+                } catch (sErr) {
+                    console.error("Fallo silencioso en fetch de likes:", sErr);
                 }
 
-                return {
-                    ...note,
-                    likes_count: count || 0,
-                    liked_by_user: likedByUser
-                };
+                return { ...note, likes_count: likesCount, liked_by_user: likedByUser };
             }));
 
-            // Fetch moods safely
             let userMoods = {};
             try {
                 const moodsData = await moodDal.getMoodsByUserId(target_user_id);
                 userMoods = formatMoods(moodsData);
             } catch (mErr) {
-                console.error("Non-critical: Failed to load moods for public user", mErr);
+                console.error("Fallo al cargar moods públicos:", mErr);
             }
 
             res.status(200).json({ 
@@ -322,24 +303,15 @@ class UserController {
         const { email } = req.body;
         try {
             const result = await userDal.findUserByEmail(email);
-            if (result.length === 0) {
-                // Return success anyway to avoid leaks
-                return res.status(200).json({ message: 'Si el correo está registrado, recibirás un enlace de recuperación' });
-            }
+            if (result.length === 0) return res.status(200).json({ message: 'Enlace enviado si el correo existe' });
 
             const token = generateResetToken(result[0].id);
             const resetLink = `${process.env.FRONTEND_URL || 'http://localhost:5173'}/reset-password?token=${token}`;
-            
-            const sent = await sendResetPasswordEmail(email, resetLink);
-            
-            if (!sent) {
-                return res.status(500).json({ message: 'Error enviando el email de recuperación' });
-            }
-
-            res.status(200).json({ message: 'Email de recuperación enviado correctamente' });
+            await sendResetPasswordEmail(email, resetLink);
+            res.status(200).json({ message: 'Email enviado' });
         } catch (error) {
             console.error(error);
-            res.status(500).json({ message: 'Error en el proceso de recuperación' });
+            res.status(500).json({ message: 'Error en recuperación' });
         }
     };
 
@@ -347,17 +319,14 @@ class UserController {
         const { token, newPassword } = req.body;
         try {
             const decoded = verifyResetToken(token);
-            if (!decoded) {
-                return res.status(401).json({ message: 'Token de recuperación inválido o expirado' });
-            }
+            if (!decoded) return res.status(401).json({ message: 'Token inválido' });
 
             const hashedPass = await hashPassword(newPassword);
             await userDal.updatePassword(hashedPass, decoded.user_id);
-
-            res.status(200).json({ message: 'Contraseña actualizada correctamente' });
+            res.status(200).json({ message: 'Contraseña actualizada' });
         } catch (error) {
             console.error(error);
-            res.status(500).json({ message: 'Error al actualizar la contraseña' });
+            res.status(500).json({ message: 'Error al actualizar contraseña' });
         }
     };
 }

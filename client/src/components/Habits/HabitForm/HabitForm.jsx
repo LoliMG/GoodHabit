@@ -1,13 +1,12 @@
-import React from 'react';
 import './HabitForm.css';
 
-const HabitForm = ({ 
-    name, 
-    setName, 
-    icon, 
-    setIcon, 
-    onSubmit, 
-    onDelete, 
+const HabitForm = ({
+    name,
+    setName,
+    icon,
+    setIcon,
+    onSubmit,
+    onDelete,
     availableIcons,
     isEdit,
     isDropdownOpen,
@@ -25,13 +24,13 @@ const HabitForm = ({
                     placeholder="Ej. Beber agua"
                 />
             </div>
-            
+
             <div className="form-group">
                 <label>Icono</label>
-                <div 
-                    className="custom-dropdown" 
-                    ref={dropdownRef} 
-                    style={{ width: '100%' }} 
+                <div
+                    className="custom-dropdown"
+                    ref={dropdownRef}
+                    style={{ width: '100%' }}
                     onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                 >
                     <div className="dropdown-selected">{icon}</div>
