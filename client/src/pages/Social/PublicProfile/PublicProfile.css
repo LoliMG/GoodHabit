@@ -272,4 +272,51 @@
 @media (max-width: 768px) {
     .bootstrap-tabs-nav { gap: 1rem; .tab-link { font-size: 1rem; padding: 0.8rem; } }
     .public-note-item { padding: 1.8rem; .note-text { font-size: 1.1rem; } }
+
+    /* Rediseño del botón de likes para móvil: Corazón con cifra dentro */
+    .note-header {
+        .like-btn {
+            width: 54px;
+            height: 54px;
+            padding: 0 !important;
+            border-radius: 50% !important;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+            background: hsla(0, 0%, 100%, 0.1) !important;
+            border-color: hsla(0, 0%, 100%, 0.2) !important;
+
+            .heart-icon {
+                font-size: 2.2rem !important;
+                margin: 0;
+                filter: grayscale(1) opacity(0.3) !important;
+            }
+
+            .likes-count {
+                position: absolute;
+                top: 55%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                font-size: 0.75rem !important;
+                color: white !important;
+                text-shadow: 0 1px 3px rgba(0,0,0,0.5);
+                pointer-events: none;
+            }
+
+            &.liked {
+                background: hsla(350, 84%, 60%, 0.2) !important;
+                border-color: #ff4757 !important;
+                
+                .heart-icon {
+                    filter: grayscale(0) opacity(1) !important;
+                    transform: scale(1.1);
+                }
+                
+                .likes-count {
+                    font-weight: 900;
+                    text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+                }
+            }
+        }
+    }
 }
