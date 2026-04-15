@@ -25,12 +25,18 @@
     .add-habit-form {
         position: relative;
         z-index: 10;
-        padding: 2.2rem 3rem;
+        padding: 3rem;
         margin-bottom: 5rem;
-        border-radius: 32px;
+        border-radius: 35px;
         background: hsla(220, 40%, 15%, 0.4);
         border: 1px solid var(--glass-border);
         backdrop-filter: blur(25px);
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 2.5rem;
+        }
 
         .input-group {
             display: flex;
@@ -42,80 +48,67 @@
                 border: 1px solid var(--glass-border);
                 border-radius: 16px;
                 padding: 1.2rem 1.8rem;
-                font-size: 1.1rem;
-                flex: 4;
+                font-size: 1.2rem;
+                flex: 1;
                 color: white;
                 transition: var(--transition-fast);
                 &:focus { border-color: var(--primary); background: hsla(0, 0%, 0%, 0.3) !important; }
             }
-
-            .btn-primary {
-                flex: 1.2;
-                min-width: 160px;
-                padding: 1.2rem;
-                border-radius: 16px;
-                font-weight: 700;
-                font-size: 1.1rem;
-            }
         }
-    }
 
-    /* CUSTOM DROPDOWN (Add Form) */
-    .custom-dropdown {
-        position: relative;
-        flex: 0 0 100px;
-        user-select: none;
-
-        .dropdown-selected {
-            background: hsla(0, 0%, 0%, 0.2) !important;
-            border: 1px solid var(--glass-border);
-            border-radius: 16px;
-            padding: 1rem;
-            font-size: 2rem;
-            text-align: center;
-            cursor: pointer;
-            transition: var(--transition-fast);
+        .icon-selection-container {
             display: flex;
-            align-items: center;
-            justify-content: center;
+            flex-direction: column;
+            gap: 1.2rem;
 
-            &:hover {
-                border-color: var(--primary);
-                box-shadow: 0 0 20px hsla(174, 100%, 41%, 0.2);
+            .section-label {
+                text-transform: uppercase;
+                letter-spacing: 2px;
+                font-size: 0.8rem;
+                color: var(--text-dim);
+                font-weight: 800;
             }
         }
 
-        .dropdown-options {
-            position: absolute;
-            top: 115%;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 320px;
-            max-height: 250px;
+        /* REUTILIZANDO ESTILOS DE LA CUADRÍCULA */
+        .icon-selector-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
+            gap: 0.8rem;
+            max-height: 200px;
             overflow-y: auto;
-            background: hsla(220, 45%, 12%, 0.98);
+            background: hsla(0, 0%, 0%, 0.2);
             border: 1px solid var(--glass-border);
-            border-radius: 24px;
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.6);
-            backdrop-filter: blur(30px);
-            padding: 1rem;
-            z-index: 999;
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 0.6rem;
+            border-radius: 20px;
+            padding: 1.5rem;
 
-            .dropdown-option {
-                width: 50px;
-                height: 50px;
+            &::-webkit-scrollbar { width: 6px; }
+            &::-webkit-scrollbar-track { background: transparent; }
+            &::-webkit-scrollbar-thumb { 
+                background: hsla(0, 0%, 100%, 0.1); 
+                border-radius: 10px; 
+            }
+            &::-webkit-scrollbar-thumb:hover { background: var(--primary); }
+
+            .icon-grid-item {
+                aspect-ratio: 1;
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                font-size: 1.8rem;
+                font-size: 2rem;
                 cursor: pointer;
                 border-radius: 14px;
-                transition: var(--transition-fast);
-                &:hover { background: hsla(174, 100%, 41%, 0.2); transform: scale(1.15) translateY(-3px); }
+                transition: all 0.2s ease;
+                background: hsla(0, 0%, 100%, 0.03);
+                border: 2px solid transparent;
+
+                &:hover { background: hsla(0, 0%, 100%, 0.08); transform: translateY(-3px); }
+
+                &.active {
+                    background: hsla(174, 100%, 41%, 0.15);
+                    border-color: var(--primary);
+                    box-shadow: 0 0 15px hsla(174, 100%, 41%, 0.2);
+                }
             }
         }
     }

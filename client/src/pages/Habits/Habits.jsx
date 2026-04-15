@@ -18,15 +18,15 @@ const Habits = () => {
     const addDropdownRef = useRef(null);
     const editDropdownRef = useRef(null);
 
-    const AVAILABLE_ICONS = ['🔥', '跑', '🧘', '💧', '📚', '🍎', '🏋️', '👟', '⚽', '🤸‍♂️', '🌈', '✨', '🔋'];
+    const AVAILABLE_ICONS = [
+        '🔥', '🏃', '🧘', '💧', '📚', '🍎', '🏋️', '👟', '⚽', '🤸‍♂️', '🌈', '✨', '🔋',
+        '🚴', '🏊', '🏀', '🎾', '🥊', '🧗', '🩺', '🥦', '🥗', '☕', '🍵', '🥛', '🍳',
+        '🎨', '🎸', '🎮', '📺', '🎧', '✍️', '🧠', '🕯️', '📓', '⏰', '📅', '✉️', '📎',
+        '💻', '💡', '💰', '📈', '🌿', '☀️', '🌑', '🌊', '⛰️', '🧼', '🧹', '🧺'
+    ];
 
     useEffect(() => {
-        const handleClickOutside = (event) => {
-            if (addDropdownRef.current && !addDropdownRef.current.contains(event.target)) setIsDropdownOpen(false);
-            if (editDropdownRef.current && !editDropdownRef.current.contains(event.target)) setIsEditDropdownOpen(false);
-        };
-        document.addEventListener('mousedown', handleClickOutside);
-        return () => document.removeEventListener('mousedown', handleClickOutside);
+        // Ya no necesitamos handleClickOutside para los iconos ya que no son dropdowns
     }, []);
 
     const handleOpenEdit = (habit) => {
@@ -63,22 +63,29 @@ const Habits = () => {
                 <p>Registra tu consistencia con estadísticas semanales, mensuales y totales.</p>
             </header>
 
-            <form className="add-habit-form glass-card" onSubmit={(e) => { e.preventDefault(); if (newName) addHabit(newName, newIcon); setNewName(''); }}>
-                <div className="input-group">
-                    <input type="text" placeholder="Nombre del hábito..." value={newName} onChange={(e) => setNewName(e.target.value)} />
-                    <div className="custom-dropdown" ref={addDropdownRef} onClick={() => setIsDropdownOpen(!isDropdownOpen)}>
-                        <div className="dropdown-selected">{newIcon}</div>
-                        {isDropdownOpen && (
-                            <div className="dropdown-options">
-                                {AVAILABLE_ICONS.map(icon => (
-                                    <div key={icon} className="dropdown-option" onClick={(e) => { e.stopPropagation(); setNewIcon(icon); setIsDropdownOpen(false); }}>{icon}</div>
-                                ))}
-                            </div>
-                        )}
+            <div className="add-habit-form glass-card">
+                <form onSubmit={(e) => { e.preventDefault(); if (newName) addHabit(newName, newIcon); setNewName(''); }}>
+                    <div className="input-group">
+                        <input type="text" placeholder="Nombre del hábito..." value={newName} onChange={(e) => setNewName(e.target.value)} />
+                        <Button type="submit">Añadir</Button>
                     </div>
-                    <Button type="submit">Añadir</Button>
-                </div>
-            </form>
+                    
+                    <div className="icon-selection-container">
+                        <label className="section-label">Selecciona un icono</label>
+                        <div className="icon-selector-grid">
+                            {AVAILABLE_ICONS.map(icon => (
+                                <div 
+                                    key={icon} 
+                                    className={`icon-grid-item ${newIcon === icon ? 'active' : ''}`} 
+                                    onClick={() => setNewIcon(icon)}
+                                >
+                                    {icon}
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </form>
+            </div>
 
             <div className="habits-grid">
                 {habits.map(habit => (
