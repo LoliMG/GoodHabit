@@ -1,6 +1,6 @@
 .habit-card {
-    padding: 3.5rem;
-    border-radius: 48px;
+    padding: 1.8rem;
+    border-radius: 32px;
     cursor: pointer;
     display: flex;
     flex-direction: column;
@@ -11,12 +11,12 @@
     overflow: hidden;
 
     &:hover {
-        transform: translateY(-8px);
+        transform: translateY(-5px);
         border-color: var(--primary);
-        box-shadow: 0 40px 80px rgba(0, 0, 0, 0.4);
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
 
         .habit-card-header .icon {
-            transform: scale(1.1) translateY(-5px);
+            transform: scale(1.1) translateY(-2px);
         }
     }
 
@@ -25,20 +25,20 @@
         width: 100%;
 
         .icon {
-            font-size: 8rem;
+            font-size: 4rem;
             display: block;
-            margin-bottom: 2.5rem;
+            margin-bottom: 0.8rem;
             transition: var(--transition-slow);
-            filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.1));
+            filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.1));
         }
 
         h3 {
-            font-size: 3.5rem;
+            font-size: 1.8rem;
             font-weight: 800;
-            margin-bottom: 3rem;
-            letter-spacing: -2px;
+            margin-bottom: 1.5rem;
+            letter-spacing: -1px;
             color: white;
-            line-height: 1;
+            line-height: 1.1;
         }
     }
 
@@ -46,50 +46,49 @@
         width: 100%;
         height: 1px;
         background: hsla(0, 0%, 100%, 0.08);
-        margin: 1.5rem 0 3rem;
+        margin: 0.5rem 0 1.5rem;
     }
 
     .habit-card-stats-grid {
         width: 100%;
         display: grid;
         grid-template-columns: repeat(3, 1fr);
-        gap: 1rem;
+        gap: 0.8rem;
         text-align: center;
 
         .stat-item {
             display: flex;
             flex-direction: column;
-            gap: 0.5rem;
+            gap: 0.2rem;
 
             .stat-number {
-                font-size: 2.2rem;
+                font-size: 1.4rem;
                 font-weight: 800;
                 color: white;
             }
 
             .stat-text {
-                font-size: 0.85rem;
+                font-size: 0.65rem;
                 color: var(--text-dim);
                 text-transform: uppercase;
-                letter-spacing: 1px;
+                letter-spacing: 0.5px;
                 font-weight: 700;
             }
 
             &:last-child .stat-number {
-                color: var(--primary); /* El total sigue resaltando en esmeralda */
+                color: var(--primary);
             }
         }
     }
 }
 
-@media (max-width: 900px) {
+@media (max-width: 768px) {
     .habit-card {
-        padding: 2rem;
-        border-radius: 32px;
+        padding: 1.2rem;
         .habit-card-header {
-            .icon { font-size: 5rem; }
-            h3 { font-size: 2.2rem; }
+            .icon { font-size: 3rem; }
+            h3 { font-size: 1.4rem; }
         }
-        .habit-card-stats-grid .stat-number { font-size: 1.6rem; }
+        .habit-card-stats-grid .stat-number { font-size: 1.2rem; }
     }
 }
