@@ -14,7 +14,7 @@ const PublicProfile = () => {
     const [publicHabits, setPublicHabits] = useState([]);
     const [publicNotes, setPublicNotes] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [activeTab, setActiveTab] = useState('habits'); 
+    const [activeTab, setActiveTab] = useState('habits');
     const [toast, setToast] = useState("");
 
     useEffect(() => {
@@ -50,9 +50,9 @@ const PublicProfile = () => {
             const res = await fetchData(`/note/likes/${noteId}`, 'PUT', null, token);
             if (res.status === 200) {
                 // Actualizar localmente la nota que recibió el like
-                setPublicNotes(prev => prev.map(n => 
-                    n.id === noteId 
-                        ? { ...n, likes_count: res.data.likes_count, liked_by_user: res.data.liked_by_user } 
+                setPublicNotes(prev => prev.map(n =>
+                    n.id === noteId
+                        ? { ...n, likes_count: res.data.likes_count, liked_by_user: res.data.liked_by_user }
                         : n
                 ));
             }
@@ -67,16 +67,18 @@ const PublicProfile = () => {
     return (
         <div className="public-profile-container">
             {toast && <div className="copy-toast">{toast}</div>}
-            
-            <Button variant="secondary" onClick={() => navigate('/community')} style={{ alignSelf: 'flex-start', marginBottom: '2rem' }}>
+
+            <Button variant="secondary"
+                onClick={() => navigate('/community')}
+                style={{ alignSelf: 'flex-start', marginBottom: '2rem' }}>
                 ← Volver a Comunidad
             </Button>
 
             <header className="profile-hero">
                 <div className="avatar-large">
                     {publicUser.image && publicUser.image !== 'null' ? (
-                        <img 
-                            src={publicUser.image.startsWith('http') ? publicUser.image : `${import.meta.env.VITE_API_URL || ""}/images/users/${publicUser.image}`} 
+                        <img
+                            src={publicUser.image.startsWith('http') ? publicUser.image : `${import.meta.env.VITE_API_URL || ""}/images/users/${publicUser.image}`}
                             alt={publicUser.name}
                             className="avatar-img"
                         />
@@ -88,13 +90,13 @@ const PublicProfile = () => {
                 <p className="since">Miembro de GoodHabit desde {new Date(publicUser.created_at).toLocaleDateString('es-ES', { month: 'long', year: 'numeric' })}</p>
 
                 <div className="bootstrap-tabs-nav">
-                    <button 
+                    <button
                         className={`tab-link ${activeTab === 'habits' ? 'active' : ''}`}
                         onClick={() => setActiveTab('habits')}
                     >
                         <span className="icon">🔥</span> Hábitos
                     </button>
-                    <button 
+                    <button
                         className={`tab-link ${activeTab === 'notes' ? 'active' : ''}`}
                         onClick={() => setActiveTab('notes')}
                     >
@@ -112,8 +114,8 @@ const PublicProfile = () => {
                                     <div key={habit.id} className="public-habit-card glass-card">
                                         <span className="habit-icon">{habit.icon}</span>
                                         <span className="habit-name">{habit.name}</span>
-                                        <button 
-                                            className="add-to-me-btn" 
+                                        <button
+                                            className="add-to-me-btn"
                                             title="Copiar a mis hábitos"
                                             onClick={() => handleCopyHabit(habit)}
                                         >
@@ -137,11 +139,11 @@ const PublicProfile = () => {
                                                 {new Date(note.date).toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' })}
                                             </span>
                                             <button 
-                                                className={`like-btn ${note.liked_by_user ? 'liked' : ''}`}
+                                                className={`like-btn ${(note.likes_count > 0 || note.liked_by_user) ? 'liked' : ''}`}
                                                 onClick={() => handleToggleLike(note.id)}
                                             >
-                                                <span className="heart-icon">{note.liked_by_user ? '❤️' : '🤍'}</span>
-                                                <span className="like-count">{note.likes_count}</span>
+                                                <span className="heart-icon">❤️</span> 
+                                                <span className="likes-count">{note.likes_count || 0}</span>
                                             </button>
                                         </div>
                                         <p className="note-text">{note.content}</p>

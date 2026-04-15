@@ -201,19 +201,48 @@
             .like-btn {
                 display: flex;
                 align-items: center;
-                gap: 0.4rem;
+                gap: 0.6rem;
                 background: hsla(0, 0%, 100%, 0.05);
                 border: 1px solid var(--glass-border);
                 cursor: pointer;
-                padding: 0.5rem 1rem;
+                padding: 0.6rem 1.2rem;
                 border-radius: 50px;
-                transition: var(--transition-fast);
+                transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                color: var(--text-dim);
                 
-                .heart-icon { font-size: 1.2rem; }
-                .like-count { font-size: 0.95rem; font-weight: 700; color: var(--text-dim); }
+                .heart-icon { 
+                    font-size: 1.1rem; 
+                    filter: grayscale(1) opacity(0.5); 
+                    transition: all 0.3s ease;
+                }
+                
+                .likes-count { 
+                    font-size: 1rem; 
+                    font-weight: 800; 
+                    color: inherit;
+                }
 
-                &:hover { background: hsla(0, 0%, 100%, 0.1); transform: translateY(-3px); }
-                &.liked { border-color: #ff6b8a; background: hsla(350, 80%, 60%, 0.1); .like-count { color: #ff6b8a; } }
+                &:hover { 
+                    background: hsla(0, 0%, 100%, 0.1); 
+                    transform: translateY(-3px) scale(1.05); 
+                    color: white;
+                    .heart-icon { filter: grayscale(0) opacity(1); }
+                }
+
+                &.liked { 
+                    border-color: #ff4757; 
+                    background: hsla(350, 84%, 60%, 0.15); 
+                    color: #ff4757;
+                    box-shadow: 0 0 15px rgba(255, 71, 87, 0.2);
+
+                    .heart-icon { 
+                        filter: grayscale(0) opacity(1);
+                        transform: scale(1.2);
+                        text-shadow: 0 0 10px rgba(255, 71, 87, 0.4);
+                    }
+                    
+                    .likes-count { color: white; }
+                }
             }
         }
 
