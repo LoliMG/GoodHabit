@@ -1,4 +1,3 @@
-import React from 'react';
 import './HabitCard.css';
 
 const HabitCard = ({ habit, stats, onOpenEdit }) => {
@@ -8,7 +7,7 @@ const HabitCard = ({ habit, stats, onOpenEdit }) => {
                 <span className="icon">{habit.icon}</span>
                 <h3>{habit.name}</h3>
             </div>
-            
+
             <div className="habit-card-divider"></div>
 
             <div className="habit-card-stats-grid">

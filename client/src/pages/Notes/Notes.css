@@ -39,6 +39,7 @@
             position: relative;
             display: flex;
             align-items: center;
+            z-index: 100; /* Asegura que el dropdown del calendario flote por encima */
 
             input, .react-datepicker-wrapper {
                 width: 100%;
@@ -84,6 +85,7 @@
         border: 1px solid var(--glass-border);
         transition: var(--transition-fast);
         background: hsla(220, 40%, 10%, 0.4);
+        cursor: pointer; /* Hace que toda la card sea clicable */
 
         &::before {
             content: '';

@@ -67,6 +67,7 @@ const NotesPage = () => {
     const handleDelete = async (date) => {
         if (window.confirm('¿Estás seguro de que quieres eliminar esta nota?')) {
             await deleteDayNote(date);
+            setIsModalOpen(false);
         }
     };
 
@@ -111,6 +112,7 @@ const NotesPage = () => {
                         isClearable
                         calendarClassName="custom-dark-calendar"
                         wrapperClassName="date-picker-wrapper"
+                        portalId="root"
                     />
                 </div>
             </div>
@@ -128,6 +130,7 @@ const NotesPage = () => {
                                 key={note.date} 
                                 className="note-card glass-card animate-fade-in" 
                                 style={{ animationDelay: `${0.3 + idx * 0.05}s` }}
+                                onClick={() => handleOpenEdit(note)}
                             >
                                 <div className="note-card-header">
                                     <div className="date-mood-row">
@@ -147,10 +150,6 @@ const NotesPage = () => {
                                                 ❤️ {likeCount}
                                             </span>
                                         )}
-                                        <div className="note-actions">
-                                            <button className="btn-note-edit" onClick={() => handleOpenEdit(note)}>✏️</button>
-                                            <button className="btn-note-delete" onClick={() => handleDelete(note.date)}>🗑️</button>
-                                        </div>
                                     </div>
                                 </div>
                                 <div className="note-content">
@@ -189,6 +188,9 @@ const NotesPage = () => {
                         />
                     </div>
                     <div className="modal-actions">
+                        {isEditing && (
+                            <button type="button" className="btn-danger" onClick={() => handleDelete(modalDate)}>Eliminar</button>
+                        )}
                         <button type="button" className="btn-secondary" onClick={() => setIsModalOpen(false)}>Cancelar</button>
                         <button type="submit" className="btn-primary">Guardar Nota</button>
                     </div>
