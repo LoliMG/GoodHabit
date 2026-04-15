@@ -1,91 +1,246 @@
 .public-profile-container {
-    width: 100%;
-    max-width: 1200px;
+    padding: 3rem 2rem;
+    max-width: 1000px;
     margin: 0 auto;
-    padding: 3rem;
+    min-height: 100vh;
+}
 
-    .public-stats-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 2rem;
-      margin-top: 1.5rem;
-      margin-bottom: 6rem;
+.btn-back {
+    background: transparent;
+    border: none;
+    color: var(--text-dim);
+    font-weight: 700;
+    cursor: pointer;
+    margin-bottom: 3rem;
+    transition: var(--transition-fast);
+}
 
-      .stat-card {
-        padding: 2.5rem;
-        border-radius: 30px;
-        text-align: center;
+.btn-back:hover {
+    color: white;
+    transform: translateX(-5px);
+}
+
+/* Hero Section */
+.profile-hero {
+    text-align: center;
+    margin-bottom: 5rem;
+
+    .avatar-large {
+        width: 120px;
+        height: 120px;
+        background: var(--primary);
+        color: #0f172a;
+        border-radius: 40px;
+        margin: 0 auto 1.5rem;
         display: flex;
-        flex-direction: column;
-        gap: 1.25rem;
-
-        .stat-value {
-          font-size: 3rem;
-          font-weight: 800;
-          color: var(--primary);
-        }
-
-        .stat-label {
-          font-size: 1.1rem;
-          font-weight: 700;
-          color: var(--text-dim);
-          text-transform: uppercase;
-          letter-spacing: 1px;
-        }
-      }
-    }
-
-    .public-habits-section {
-      .section-title {
-        font-size: 2.2rem;
+        align-items: center;
+        justify-content: center;
+        font-size: 4rem;
         font-weight: 800;
-        margin-bottom: 4rem;
-        letter-spacing: -1px;
-      }
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        overflow: hidden;
 
-      .public-habits-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-        gap: 1.5rem;
-
-        .public-habit-item {
-          padding: 1.5rem 2rem;
-          border-radius: 20px;
-          display: flex;
-          align-items: center;
-          gap: 1.5rem;
-          background: hsla(220, 40%, 15%, 0.4);
-          border: 1px solid var(--glass-border);
-
-          .icon { font-size: 2rem; }
-          .name { font-size: 1.1rem; font-weight: 600; color: white; }
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 40px;
         }
-      }
     }
 
-    .public-footer {
-      margin-top: 8rem;
-      text-align: center;
+    h1 {
+        font-size: 3.5rem;
+        font-weight: 800;
+        margin-bottom: 0.5rem;
+        letter-spacing: -2px;
+    }
 
-      .btn-back {
-        text-decoration: none;
+    .since {
         color: var(--text-dim);
         font-size: 1.1rem;
-        font-weight: 700;
-        transition: var(--transition-fast);
-
-        &:hover {
-          color: var(--primary);
-          transform: translateX(-5px);
-        }
-      }
+        margin-bottom: 3rem;
     }
 }
 
-@media (max-width: 768px) {
-    .public-profile-container {
-      padding: 1.5rem;
-      .public-stats-grid { grid-template-columns: 1fr; gap: 1rem; }
-      .public-habits-section .section-title { font-size: 1.5rem; text-align: center; }
+/* Tabs Nav */
+.bootstrap-tabs-nav {
+    display: flex;
+    justify-content: center;
+    gap: 3rem;
+    margin-bottom: 3rem;
+    border-bottom: 1px solid var(--glass-border);
+    padding: 0 1rem;
+
+    .tab-link {
+        background: transparent;
+        border: none;
+        color: var(--text-dim);
+        font-size: 1.15rem;
+        font-weight: 700;
+        padding: 1rem 1.5rem;
+        cursor: pointer;
+        position: relative;
+        transition: var(--transition-fast);
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+
+        .icon { font-size: 1.3rem; opacity: 0.7; }
+        &:hover { color: white; }
+
+        &::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 0;
+            height: 3px;
+            background: var(--primary);
+            transition: var(--transition-fast);
+            border-radius: 10px 10px 0 0;
+        }
+
+        &.active {
+            color: var(--primary);
+            .icon { opacity: 1; }
+            &::after { width: 100%; }
+        }
     }
+}
+
+/* Content View */
+.public-habits-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+
+    .public-habit-card {
+        padding: 2rem;
+        border-radius: 28px;
+        display: flex;
+        align-items: center;
+        gap: 1.5rem;
+        position: relative;
+        border: 1px solid var(--glass-border);
+        transition: var(--transition-medium);
+        background: hsla(220, 40%, 15%, 0.4);
+
+        &:hover {
+            border-color: var(--primary);
+            background: hsla(174, 100%, 41%, 0.05);
+            transform: translateY(-5px);
+        }
+
+        .habit-icon { font-size: 2.5rem; }
+        .habit-name { font-weight: 700; font-size: 1.2rem; color: white; padding-right: 40px; }
+
+        .add-to-me-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            width: 36px;
+            height: 36px;
+            background: hsla(0, 0%, 100%, 0.08);
+            border: 1px solid var(--glass-border);
+            color: var(--primary);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            cursor: pointer;
+            transition: var(--transition-fast);
+
+            &:hover {
+                background: var(--primary);
+                color: #0f172a;
+                transform: scale(1.1) rotate(90deg);
+            }
+        }
+    }
+}
+
+/* Notes View */
+.public-notes-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    max-width: 800px;
+    margin: 0 auto;
+
+    .public-note-item {
+        padding: 3rem;
+        border-radius: 35px;
+        border: 1px solid var(--glass-border);
+        position: relative;
+        overflow: hidden;
+        background: hsla(220, 40%, 10%, 0.4);
+
+        &::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 5px; height: 100%;
+            background: var(--primary);
+        }
+
+        .note-header {
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+
+            .date-tag {
+                font-size: 0.9rem;
+                font-weight: 800;
+                color: var(--primary);
+                text-transform: uppercase;
+                letter-spacing: 2px;
+            }
+
+            .like-btn {
+                display: flex;
+                align-items: center;
+                gap: 0.4rem;
+                background: hsla(0, 0%, 100%, 0.05);
+                border: 1px solid var(--glass-border);
+                cursor: pointer;
+                padding: 0.5rem 1rem;
+                border-radius: 50px;
+                transition: var(--transition-fast);
+                
+                .heart-icon { font-size: 1.2rem; }
+                .like-count { font-size: 0.95rem; font-weight: 700; color: var(--text-dim); }
+
+                &:hover { background: hsla(0, 0%, 100%, 0.1); transform: translateY(-3px); }
+                &.liked { border-color: #ff6b8a; background: hsla(350, 80%, 60%, 0.1); .like-count { color: #ff6b8a; } }
+            }
+        }
+
+        .note-text { font-size: 1.2rem; line-height: 1.8; color: hsla(0, 0%, 100%, 0.9); white-space: pre-wrap; }
+    }
+}
+
+/* UI Elements */
+.copy-toast {
+    position: fixed;
+    top: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 9999;
+    padding: 1rem 2.5rem;
+    background: var(--primary);
+    color: #0f172a;
+    font-weight: 800;
+    border-radius: 50px;
+    box-shadow: 0 10px 40px rgba(0, 255, 157, 0.4);
+    animation: fadeIn 0.3s ease;
+}
+
+.empty-msg { text-align: center; color: var(--text-dim); padding: 5rem; }
+.loading-state { padding: 10rem; text-align: center; font-size: 1.5rem; color: var(--primary); }
+
+@media (max-width: 768px) {
+    .bootstrap-tabs-nav { gap: 1rem; .tab-link { font-size: 1rem; padding: 0.8rem; } }
+    .public-note-item { padding: 1.8rem; .note-text { font-size: 1.1rem; } }
 }
