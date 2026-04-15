@@ -28,7 +28,7 @@ export const AuthContextProvider = ({ children }) => {
         progressArray.forEach(p => {
             const dateStr = typeof p.date === 'string' ? p.date.split('T')[0] : p.date.toISOString().split('T')[0];
             if (!formatted[dateStr]) formatted[dateStr] = {};
-            formatted[dateStr][p.habit_id] = true;
+            formatted[dateStr][p.habit_id] = !!p.is_completed;
         });
         return formatted;
     };
@@ -213,15 +213,20 @@ export const AuthContextProvider = ({ children }) => {
         }
     };
 
-    const activateHabitForDay = (date, habitId) => {
-        // Marcamos como false en local para que aparezca en la lista desmarcado
-        setProgress(prev => {
-            const dayProgress = prev[date] || {};
-            if (dayProgress[habitId] === undefined) {
-                return { ...prev, [date]: { ...dayProgress, [habitId]: false } };
-            }
-            return prev;
-        });
+    const activateHabitForDay = async (date, habitId) => {
+        try {
+            await fetchData("/progress/activate", "POST", { habitId, date }, token);
+            // Marcamos como false en local para que aparezca en la lista desmarcado
+            setProgress(prev => {
+                const dayProgress = prev[date] || {};
+                if (dayProgress[habitId] === undefined) {
+                    return { ...prev, [date]: { ...dayProgress, [habitId]: false } };
+                }
+                return prev;
+            });
+        } catch (error) {
+            console.error("Error activating habit:", error);
+        }
     };
 
     const updateDayNote = async (date, content) => {

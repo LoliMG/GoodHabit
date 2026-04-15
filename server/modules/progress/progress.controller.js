@@ -12,6 +12,17 @@ class ProgressController {
         }
     };
 
+    activate = async (req, res) => {
+        try {
+            const { habitId, date } = req.body;
+            const { user_id } = req;
+            await progressDal.activateProgress([user_id, habitId, date]);
+            res.status(200).json({ message: 'Progress activated' });
+        } catch (error) {
+            res.status(500).json({ error: 'Failed to activate progress' });
+        }
+    };
+
     getByRange = async (req, res) => {
         try {
             const { start, end } = req.query;

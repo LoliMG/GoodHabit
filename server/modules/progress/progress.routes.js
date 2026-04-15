@@ -5,6 +5,7 @@ import { verifyToken } from '../../middlewares/verifyToken.js';
 const router = express.Router();
 
 router.post('/toggle', verifyToken, progressController.toggle);
+router.post('/activate', verifyToken, progressController.activate);
 router.get('/range', verifyToken, progressController.getByRange);
 router.get('/stats/:habitId', verifyToken, progressController.getStats);
 
