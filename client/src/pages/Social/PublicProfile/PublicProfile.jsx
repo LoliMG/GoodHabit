@@ -5,7 +5,7 @@ import UserProfileHeader from '../../../components/User/UserProfileHeader/UserPr
 import './PublicProfile.css';
 
 const PublicProfile = () => {
-    const { id } = useParams();
+    const { userId } = useParams();
     const [publicUser, setPublicUser] = useState(null);
     const [publicHabits, setPublicHabits] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -13,7 +13,7 @@ const PublicProfile = () => {
     useEffect(() => {
         const fetchPublicUser = async () => {
             try {
-                const res = await fetchData(`/user/public/${id}`, 'GET');
+                const res = await fetchData(`/user/public/${userId}`, 'GET');
                 setPublicUser(res.data.user);
                 setPublicHabits(res.data.habits || []);
             } catch (error) {
@@ -23,7 +23,7 @@ const PublicProfile = () => {
             }
         };
         fetchPublicUser();
-    }, [id]);
+    }, [userId]);
 
     if (loading) return <div className="loading-state">Cargando perfil...</div>;
     if (!publicUser) return <div className="error-state">Usuario no encontrado</div>;
