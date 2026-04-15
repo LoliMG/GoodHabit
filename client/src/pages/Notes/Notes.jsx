@@ -3,7 +3,7 @@ import { AuthContext } from '../../contexts/AuthContext';
 import DatePicker, { registerLocale } from 'react-datepicker';
 import es from 'date-fns/locale/es';
 import "react-datepicker/dist/react-datepicker.css";
-import { fetchData } from '../../utils/axiosHelper';
+import { fetchData } from '../../helpers/axiosHelper';
 import Modal from '../../components/Modal/Modal';
 import './Notes.css';
 
