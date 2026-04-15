@@ -14,6 +14,8 @@ const Profile = lazy(() => import("../pages/Profile/Profile"));
 const Notes = lazy(() => import("../pages/Notes/Notes"));
 const Community = lazy(() => import("../pages/Social/Community/Community"));
 const PublicProfile = lazy(() => import("../pages/Social/PublicProfile/PublicProfile"));
+const ForgotPassword = lazy(() => import("../pages/ForgotPassword/ForgotPassword"));
+const ResetPassword = lazy(() => import("../pages/ResetPassword/ResetPassword"));
 
 const AppRoutes = () => {
     return (
@@ -27,6 +29,8 @@ const AppRoutes = () => {
                         <Route element={<PublicRoute />}>
                             <Route path="/login" element={<Login />} />
                             <Route path="/register" element={<Register />} />
+                            <Route path="/forgot-password" element={<ForgotPassword />} />
+                            <Route path="/reset-password" element={<ResetPassword />} />
                         </Route>
                     </Route>
 

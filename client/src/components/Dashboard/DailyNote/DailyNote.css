@@ -1,0 +1,84 @@
+.daily-note-section {
+    padding: 2rem;
+    border-radius: 24px;
+    background: hsla(220, 40%, 15%, 0.4);
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+
+    .note-textarea {
+      width: 100%;
+      min-height: 250px;
+      background: hsla(0, 0%, 0%, 0.2);
+      border: 1px solid var(--glass-border);
+      border-radius: 16px;
+      padding: 1.2rem;
+      font-size: 1.1rem;
+      color: white;
+      resize: vertical;
+      transition: var(--transition-fast);
+
+      &::placeholder {
+        color: hsla(0, 0%, 100%, 0.3);
+      }
+
+      &:focus {
+        border-color: var(--primary);
+        background: hsla(220, 40%, 20%, 0.6);
+        outline: none;
+      }
+    }
+
+    .note-actions {
+        display: flex;
+        gap: 1rem;
+        justify-content: flex-end;
+
+        button {
+            padding: 0.8rem 1.5rem;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: var(--transition-fast);
+        }
+
+        .btn-save-note {
+            background: var(--primary);
+            color: #0f172a;
+            border: none;
+
+            &:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 5px 15px hsla(174, 100%, 41%, 0.3);
+            }
+        }
+
+        .btn-delete-note {
+            background: hsla(0, 84%, 60%, 0.15);
+            color: #ff4757;
+            border: 1px solid hsla(0, 84%, 60%, 0.3);
+
+            &:hover {
+                background: #ff4757;
+                color: white;
+            }
+        }
+    }
+}
+
+@media (max-width: 768px) {
+    .daily-note-section {
+      padding: 1.2rem;
+
+      .note-textarea {
+        font-size: 1rem;
+        min-height: 400px;
+      }
+
+      .note-actions button {
+        font-size: 0.9rem;
+        padding: 0.7rem 1.2rem;
+      }
+    }
+}

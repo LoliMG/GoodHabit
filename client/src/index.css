@@ -72,6 +72,8 @@ body {
   border: none;
   cursor: pointer;
   overflow: hidden;
+  text-decoration: none;
+  display: inline-block;
   transition: var(--transition-fast);
   z-index: 1;
 

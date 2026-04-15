@@ -1,0 +1,42 @@
+.mobile-selector-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1rem 0;
+
+    .selector-btn {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      padding: 1.5rem 2rem;
+      border-radius: 20px;
+      background: hsla(220, 40%, 15%, 0.6);
+      border: 1px solid var(--glass-border);
+      color: white;
+      cursor: pointer;
+      transition: var(--transition-fast);
+      text-align: left;
+      width: 100%;
+
+      .icon {
+        font-size: 1.8rem;
+      }
+
+      .label {
+        font-size: 1.1rem;
+        font-weight: 600;
+      }
+
+      &:hover {
+        background: var(--primary);
+        color: #0f172a;
+        transform: translateY(-3px);
+        box-shadow: 0 10px 20px hsla(171, 100%, 50%, 0.2);
+        border-color: white;
+      }
+
+      &:active {
+        transform: scale(0.98);
+      }
+    }
+}
