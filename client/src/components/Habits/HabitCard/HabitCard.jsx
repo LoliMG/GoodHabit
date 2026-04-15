@@ -2,38 +2,31 @@ import React from 'react';
 import './HabitCard.css';
 
 const HabitCard = ({ habit, onDelete }) => {
-    // Cálculo de éxito (simulado si no viene del backend aún)
-    const successRate = 100; // Podríamos calcularlo con habit.repetition_count / algo
+    // Simulamos los datos históricos para que se vea el diseño (|)
+    const weekCount = habit.repetition_count || 0; // Aquí iría la lógica de semana
+    const monthCount = habit.repetition_count || 0; // Aquí iría la lógica de mes
+    const totalCount = habit.repetition_count || 0;
 
     return (
         <div className="habit-card-item glass-card">
-            <div className="habit-top">
-                <span className="habit-emoji-big">{habit.icon}</span>
-                <button 
-                    className="btn-delete-habit" 
-                    onClick={() => onDelete(habit.id)}
-                    title="Eliminar hábito"
-                >
-                    🗑️
-                </button>
-            </div>
+            <button 
+                className="btn-delete-habit" 
+                onClick={() => onDelete(habit.id)}
+                title="Eliminar hábito"
+            >
+                🗑️
+            </button>
             
-            <div className="habit-body">
-                <h3>{habit.name}</h3>
+            <div className="habit-content-wrapper">
+                <span className="habit-icon-main">{habit.icon}</span>
+                <h3 className="habit-name-title">{habit.name}</h3>
                 
-                <div className="habit-stats-row">
-                    <div className="stat-box">
-                        <span className="stat-value">{habit.repetition_count || 0}</span>
-                        <span className="stat-label">🔥 Total</span>
-                    </div>
-                    <div className="stat-box">
-                        <span className="stat-value">5</span>
-                        <span className="stat-label">⚡ Racha</span>
-                    </div>
-                    <div className="stat-box">
-                        <span className="stat-value">{successRate}%</span>
-                        <span className="stat-label">📈 Éxito</span>
-                    </div>
+                <div className="habit-stats-minimal">
+                    <span className="stat-value">{weekCount} esta semana</span>
+                    <span className="divider">|</span>
+                    <span className="stat-value">{monthCount} este mes</span>
+                    <span className="divider">|</span>
+                    <span className="stat-value">{totalCount} totales</span>
                 </div>
             </div>
         </div>

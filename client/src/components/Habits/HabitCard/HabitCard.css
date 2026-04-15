@@ -1,91 +1,100 @@
 .habit-card-item {
     position: relative;
-    padding: 2.2rem;
+    padding: 3.5rem 2rem;
     display: flex;
     flex-direction: column;
-    gap: 1.8rem;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
     transition: var(--transition-fast);
-    overflow: hidden;
-
+    
     &:hover {
-        transform: translateY(-8px);
-        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4), 0 0 20px hsla(174, 100%, 41%, 0.1);
+        transform: translateY(-5px);
         border-color: var(--primary);
-
-        .habit-top .btn-delete-habit { opacity: 1; transform: translateY(0); }
-    }
-
-    .habit-top {
-        display: flex;
-        justify-content: space-between;
-        align-items: flex-start;
-
-        .habit-emoji-big { font-size: 4.5rem; filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.1)); }
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
         
-        .btn-delete-habit {
-            background: hsla(354, 70%, 54%, 0.1);
-            border: 1px solid hsla(354, 70%, 54%, 0.2);
-            color: #ff4757;
-            padding: 0.6rem;
-            border-radius: 12px;
-            cursor: pointer;
-            opacity: 0;
-            transform: translateY(10px);
-            transition: var(--transition-fast);
-
-            &:hover { background: #ff4757; color: white; transform: scale(1.1); }
-        }
+        .btn-delete-habit { opacity: 1; transform: translateY(0); }
     }
 
-    .habit-body {
-        h3 {
-            font-size: 1.8rem;
+    .btn-delete-habit {
+        position: absolute;
+        top: 1.5rem;
+        right: 1.5rem;
+        background: hsla(354, 70%, 54%, 0.1);
+        border: 1px solid hsla(354, 70%, 54%, 0.2);
+        color: #ff4757;
+        padding: 0.6rem;
+        border-radius: 12px;
+        cursor: pointer;
+        opacity: 0;
+        transform: translateY(10px);
+        transition: var(--transition-fast);
+
+        &:hover { background: #ff4757; color: white; transform: scale(1.1); }
+    }
+
+    .habit-content-wrapper {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+
+        .habit-icon-main {
+            font-size: 5rem;
+            margin-bottom: 2rem;
+            filter: drop-shadow(0 10px 15px rgba(0, 0, 0, 0.3));
+        }
+
+        .habit-name-title {
+            font-size: 2.2rem;
             font-weight: 800;
-            margin-bottom: 2.2rem;
-            letter-spacing: -1px;
+            margin-bottom: 3.5rem;
+            letter-spacing: -1.5px;
             color: white;
             text-align: center;
         }
 
-        .habit-stats-row {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
+        .habit-stats-minimal {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
             gap: 1.25rem;
             padding-top: 1.5rem;
             border-top: 1px solid hsla(0, 0%, 100%, 0.05);
+            color: var(--text-dim);
+            font-size: 1.15rem;
+            font-weight: 600;
 
-            .stat-box {
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                gap: 0.4rem;
-                text-align: center;
+            .stat-value {
+                white-space: nowrap;
+            }
 
-                .stat-value {
-                    font-size: 1.5rem;
-                    font-weight: 800;
-                    color: white;
-                }
+            .divider {
+                color: hsla(0, 0%, 100%, 0.1);
+                font-size: 1.5rem;
+                font-weight: 400;
+            }
 
-                .stat-label {
-                    font-size: 0.75rem;
-                    font-weight: 700;
-                    color: var(--text-dim);
-                    text-transform: uppercase;
-                    letter-spacing: 0.5px;
-                }
-
-                &:nth-child(2) .stat-value { color: var(--primary); }
+            span:last-of-type {
+                color: var(--primary); /* El total resalta suavemente */
             }
         }
     }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 900px) {
     .habit-card-item {
-        padding: 1.8rem;
-        .habit-top .habit-emoji-big { font-size: 3.5rem; }
-        .habit-body h3 { font-size: 1.5rem; }
-        .habit-stats-row { gap: 0.8rem; .stat-value { font-size: 1.2rem; } }
+        padding: 2.5rem 1.5rem;
+        .habit-content-wrapper {
+            .habit-icon-main { font-size: 3.5rem; }
+            .habit-name-title { font-size: 1.6rem; margin-bottom: 2.5rem; }
+            .habit-stats-minimal {
+                flex-direction: column;
+                gap: 0.5rem;
+                .divider { display: none; }
+                font-size: 1rem;
+            }
+        }
     }
 }
