@@ -13,8 +13,7 @@ const PublicProfile = () => {
     const [publicHabits, setPublicHabits] = useState([]);
     const [publicNotes, setPublicNotes] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [activeTab, setActiveTab] = useState('habits'); // 'habits' o 'notes'
-    const [likesData, setLikesData] = useState({}); // { date: { likes_count, liked_by_user } }
+    const [activeTab, setActiveTab] = useState('habits'); 
     const [toast, setToast] = useState("");
 
     useEffect(() => {
@@ -24,7 +23,6 @@ const PublicProfile = () => {
                 setPublicUser(res.data.user);
                 setPublicHabits(res.data.habits || []);
                 setPublicNotes(res.data.notes || []);
-                setLikesData(res.data.noteLikes || {});
             } catch (error) {
                 console.error("Error al cargar perfil público:", error);
             } finally {
@@ -44,18 +42,17 @@ const PublicProfile = () => {
         }
     };
 
-    const handleToggleLike = async (date) => {
+    const handleToggleLike = async (noteId) => {
         if (!token) return navigate('/login');
         try {
-            const res = await fetchData(`/note/like/${userId}/${date}`, 'POST', null, token);
+            const res = await fetchData(`/note/likes/${noteId}`, 'PUT', null, token);
             if (res.success) {
-                setLikesData(prev => ({
-                    ...prev,
-                    [date]: {
-                        likes_count: res.data.likes_count,
-                        liked_by_user: res.data.liked_by_user
-                    }
-                }));
+                // Actualizar localmente la nota que recibió el like
+                setPublicNotes(prev => prev.map(n => 
+                    n.id === noteId 
+                        ? { ...n, likes_count: res.data.likes_count, liked_by_user: res.data.liked_by_user } 
+                        : n
+                ));
             }
         } catch (error) {
             console.error("Error toggling like:", error);
@@ -131,26 +128,23 @@ const PublicProfile = () => {
                     <section className="notes-view animate-fade-in">
                         <div className="public-notes-stack">
                             {publicNotes.length > 0 ? (
-                                publicNotes.map(note => {
-                                    const noteStats = likesData[note.date] || { likes_count: 0, liked_by_user: false };
-                                    return (
-                                        <div key={note.date} className="public-note-item glass-card">
-                                            <div className="note-header">
-                                                <span className="date-tag">
-                                                    {new Date(note.date).toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' })}
-                                                </span>
-                                                <button 
-                                                    className={`like-btn ${noteStats.liked_by_user ? 'liked' : ''}`}
-                                                    onClick={() => handleToggleLike(note.date)}
-                                                >
-                                                    <span className="heart-icon">{noteStats.liked_by_user ? '❤️' : '🤍'}</span>
-                                                    <span className="like-count">{noteStats.likes_count}</span>
-                                                </button>
-                                            </div>
-                                            <p className="note-text">{note.content}</p>
+                                publicNotes.map(note => (
+                                    <div key={note.id} className="public-note-item glass-card">
+                                        <div className="note-header">
+                                            <span className="date-tag">
+                                                {new Date(note.date).toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' })}
+                                            </span>
+                                            <button 
+                                                className={`like-btn ${note.liked_by_user ? 'liked' : ''}`}
+                                                onClick={() => handleToggleLike(note.id)}
+                                            >
+                                                <span className="heart-icon">{note.liked_by_user ? '❤️' : '🤍'}</span>
+                                                <span className="like-count">{note.likes_count}</span>
+                                            </button>
                                         </div>
-                                    )
-                                })
+                                        <p className="note-text">{note.content}</p>
+                                    </div>
+                                ))
                             ) : (
                                 <p className="empty-msg">No hay notas públicas para mostrar.</p>
                             )}

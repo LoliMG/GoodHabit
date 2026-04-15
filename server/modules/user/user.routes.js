@@ -14,6 +14,6 @@ router.get('/userByToken', verifyToken, userController.userByToken);
 router.put('/editUser', verifyToken, userController.editUser);
 router.put('/editImage', verifyToken, uploadImage('users'), userController.editImage);
 router.get('/public-users', userController.getPublicUsers);
-router.get('/public-user/:target_user_id', userController.getPublicUserContent);
+router.get('/public-user/:target_user_id', optionalVerifyToken, userController.getPublicUserContent);
 
 export default router;

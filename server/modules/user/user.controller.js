@@ -273,6 +273,30 @@ class UserController {
             const notes = await noteDal.getNotesByDateRange(target_user_id, '1970-01-01', '2100-01-01');
             const habits = await habitDal.getHabitsByUserId(target_user_id);
             
+            // Fetch likes for each note
+            const notesWithLikes = await Promise.all(notes.map(async (note) => {
+                const { count } = await supabase
+                    .from('note_likes')
+                    .select('*', { count: 'exact', head: true })
+                    .eq('note_id', note.id);
+                
+                let likedByUser = false;
+                if (req.user_id) {
+                    const { data } = await supabase
+                        .from('note_likes')
+                        .select('*')
+                        .eq('note_id', note.id)
+                        .eq('user_id', req.user_id);
+                    likedByUser = data && data.length > 0;
+                }
+
+                return {
+                    ...note,
+                    likes_count: count || 0,
+                    liked_by_user: likedByUser
+                };
+            }));
+
             // Fetch moods safely
             let userMoods = {};
             try {
@@ -284,7 +308,7 @@ class UserController {
 
             res.status(200).json({ 
                 user: { id: user.id, name: user.name, created_at: user.created_at, image: user.image },
-                notes,
+                notes: notesWithLikes,
                 habits,
                 moods: userMoods
             });
