@@ -146,40 +146,6 @@
                 gap: 1rem;
             }
 
-            .note-likes-stat {
-                position: relative;
-                width: 45px;
-                height: 45px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-
-                .heart-icon {
-                    font-size: 2.2rem;
-                    filter: grayscale(1) opacity(0.2);
-                    transition: var(--transition-medium);
-                }
-
-                .likes-count {
-                    position: absolute;
-                    top: 51%;
-                    left: 50%;
-                    transform: translate(-50%, -50%);
-                    font-size: 0.75rem;
-                    font-weight: 900;
-                    color: hsla(0, 0%, 100%, 0.6);
-                    text-shadow: 0 1px 2px rgba(0,0,0,0.5);
-                }
-
-                &.has-likes {
-                    .heart-icon { 
-                        filter: grayscale(0) opacity(1); 
-                        filter: drop-shadow(0 0 8px rgba(255, 71, 87, 0.3));
-                    }
-                    .likes-count { color: white; }
-                }
-            }
-
             .note-actions {
                 display: flex;
                 gap: 0.8rem;

@@ -1,0 +1,94 @@
+.heart-button-container {
+    position: relative;
+    width: 50px;
+    height: 50px;
+    padding: 0;
+    background: none;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    user-select: none;
+    outline: none;
+}
+
+.heart-button-container.readonly {
+    cursor: default;
+    pointer-events: none;
+}
+
+.heart-button-container .heart-icon {
+    font-size: 2.6rem;
+    filter: grayscale(1) opacity(0.2);
+    transition: inherit;
+}
+
+.heart-button-container .likes-count {
+    position: absolute;
+    top: 52%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 0.85rem;
+    font-weight: 900;
+    color: hsla(0, 0%, 100%, 0.6);
+    text-shadow: 0 1px 3px rgba(0,0,0,0.5);
+    pointer-events: none;
+    transition: inherit;
+}
+
+/* Hover effects (only for non-readonly) */
+.heart-button-container:not(.readonly):hover .heart-icon {
+    filter: grayscale(0.5) opacity(0.4);
+    transform: scale(1.1);
+}
+
+/* Liked state */
+.heart-button-container.liked .heart-icon {
+    filter: grayscale(0) opacity(1);
+    filter: drop-shadow(0 0 10px rgba(255, 71, 87, 0.3));
+}
+
+.heart-button-container.liked .likes-count {
+    color: white;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.4);
+}
+
+/* Desktop Styles (keeping the button clear but styled) */
+@media (min-width: 769px) {
+    .heart-button-container {
+        width: auto;
+        height: auto;
+        padding: 0.6rem 1.2rem;
+        background: hsla(0, 0%, 100%, 0.05);
+        border: 1px solid var(--glass-border);
+        border-radius: 50px;
+        gap: 0.6rem;
+    }
+
+    .heart-button-container.readonly {
+        background: hsla(0, 0%, 100%, 0.03);
+    }
+
+    .heart-button-container .heart-icon {
+        font-size: 1.2rem;
+        filter: grayscale(1) opacity(0.5);
+    }
+
+    .heart-button-container .likes-count {
+        position: static;
+        transform: none;
+        font-size: 1rem;
+        text-shadow: none;
+    }
+
+    .heart-button-container.liked {
+        background: hsla(350, 84%, 60%, 0.15);
+        border-color: #ff4757;
+    }
+
+    .heart-button-container.liked .heart-icon {
+        filter: grayscale(0) opacity(1);
+    }
+}

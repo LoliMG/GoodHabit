@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../../contexts/AuthContext';
 import { fetchData } from '../../../helpers/axiosHelper';
 import Button from '../../../components/UI/Button/Button';
+import HeartButton from '../../../components/UI/HeartButton/HeartButton';
 import './PublicProfile.css';
 
 const PublicProfile = () => {
@@ -138,13 +139,11 @@ const PublicProfile = () => {
                                             <span className="date-tag">
                                                 {new Date(note.date).toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' })}
                                             </span>
-                                            <button
-                                                className={`like-btn ${note.liked_by_user ? 'liked' : ''}`}
+                                            <HeartButton 
+                                                count={note.likes_count}
+                                                isLiked={note.liked_by_user}
                                                 onClick={() => handleToggleLike(note.id)}
-                                            >
-                                                <span className="heart-icon">❤️</span>
-                                                <span className="likes-count">{note.likes_count || 0}</span>
-                                            </button>
+                                            />
                                         </div>
                                         <p className="note-text">{note.content}</p>
                                     </div>

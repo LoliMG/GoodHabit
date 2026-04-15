@@ -4,6 +4,7 @@ import { fetchData } from '../../helpers/axiosHelper';
 import Modal from '../../components/UI/Modal/Modal';
 import Button from '../../components/UI/Button/Button';
 import CustomDatePicker from '../../components/UI/DatePicker/CustomDatePicker';
+import HeartButton from '../../components/UI/HeartButton/HeartButton';
 import './Notes.css';
 
 const NotesPage = () => {
@@ -139,10 +140,11 @@ const NotesPage = () => {
                                     </div>
                                     <div className="note-card-right">
                                         {user?.is_public && likeCount !== null && (
-                                            <div className={`note-likes-stat ${likeCount > 0 ? 'has-likes' : ''}`} title="Likes recibidos">
-                                                <span className="heart-icon">❤️</span>
-                                                <span className="likes-count">{likeCount}</span>
-                                            </div>
+                                            <HeartButton 
+                                                count={likeCount}
+                                                isLiked={likeCount > 0}
+                                                readonly={true}
+                                            />
                                         )}
                                     </div>
                                 </div>
