@@ -23,17 +23,16 @@ const NotesPage = () => {
     const [isEditing, setIsEditing] = useState(false);
 
     // Convert notes object to sorted array, filtering out entries that only have a mood but no content
-    const sortedNotes = Object.entries(notes)
-        .filter(([_, noteObj]) => noteObj.content && noteObj.content.trim() !== '')
-        .map(([date, noteObj]) => ({ date, content: noteObj.content, mood: moods[date] }))
-        .sort((a, b) => new Date(b.date) - new Date(a.date));
-
     // Filter by content and date
-    const filteredNotes = sortedNotes.filter(note => {
-        const matchesContent = (note.content || '').toLowerCase().includes(searchContent.toLowerCase());
-        const matchesDate = searchDate ? note.date === searchDate : true;
-        return matchesContent && matchesDate;
-    });
+    const filteredNotes = Object.entries(notes)
+        .filter(([date, note]) => {
+            const matchesContent = note.content && note.content.toLowerCase().includes(searchContent.toLowerCase());
+            const matchesDate = !searchDate || date === searchDate;
+            const isNotEmpty = note.content && note.content.trim().length > 0;
+            return matchesContent && matchesDate && isNotEmpty;
+        })
+        .map(([date, note]) => ({ date, ...note, mood: moods[date] }))
+        .sort((a, b) => new Date(b.date) - new Date(a.date));
 
     // Load likes only if profile is public
     useEffect(() => {
@@ -74,9 +73,11 @@ const NotesPage = () => {
 
     const handleSave = async (e) => {
         e.preventDefault();
-        if (!modalDate || !modalContent) return;
+        // Recortamos espacios para evitar notas 'vacías' con solo espacios
+        const trimmedContent = modalContent.trim();
+        if (!modalDate || !trimmedContent) return;
         
-        const res = await updateDayNote(modalDate, modalContent);
+        const res = await updateDayNote(modalDate, trimmedContent);
         if (res.success) {
             setIsModalOpen(false);
         }

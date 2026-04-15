@@ -23,7 +23,8 @@ const PublicProfile = () => {
                 const res = await fetchData(`/user/public-user/${userId}`, 'GET', null, token);
                 setPublicUser(res.data.user);
                 setPublicHabits(res.data.habits || []);
-                setPublicNotes(res.data.notes || []);
+                // Filtramos notas vacías aquí también por seguridad
+                setPublicNotes((res.data.notes || []).filter(n => n.content && n.content.trim().length > 0));
             } catch (error) {
                 console.error("Error al cargar perfil público:", error);
             } finally {

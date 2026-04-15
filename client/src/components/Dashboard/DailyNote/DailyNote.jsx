@@ -1,7 +1,9 @@
-import React from 'react';
+import Button from '../../UI/Button/Button';
 import './DailyNote.css';
 
 const DailyNote = ({ currentNote, setCurrentNote, onSave, onDelete, hasNote }) => {
+    const isNoteEmpty = !currentNote || currentNote.trim().length === 0;
+
     return (
         <div className="daily-note-section glass-card" style={{ marginTop: 0 }}>
             <textarea
@@ -12,19 +14,19 @@ const DailyNote = ({ currentNote, setCurrentNote, onSave, onDelete, hasNote }) =
             />
             <div className="note-actions">
                 {hasNote && (
-                    <button
-                        className="btn-delete-note"
+                    <Button
+                        variant="danger"
                         onClick={onDelete}
                     >
                         Eliminar
-                    </button>
+                    </Button>
                 )}
-                <button
-                    className="btn-save-note"
+                <Button
                     onClick={onSave}
+                    disabled={isNoteEmpty}
                 >
                     Guardar Nota
-                </button>
+                </Button>
             </div>
         </div>
     );
