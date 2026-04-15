@@ -56,9 +56,9 @@
 
             .dropdown-options {
                 position: absolute;
-                top: 115%;
+                top: calc(100% + 10px);
                 left: 0;
-                width: 100%;
+                right: 0;
                 max-height: 220px;
                 overflow-y: auto;
                 background: hsla(220, 45%, 12%, 0.98);
@@ -67,9 +67,9 @@
                 box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
                 backdrop-filter: blur(30px);
                 padding: 1.2rem;
-                z-index: 100;
+                z-index: 1000;
                 display: grid;
-                grid-template-columns: repeat(auto-fill, minmax(50px, 1fr));
+                grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
                 gap: 0.8rem;
 
                 /* Custom Scrollbar */
