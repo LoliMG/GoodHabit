@@ -49,9 +49,9 @@ const PublicProfile = () => {
         try {
             const res = await fetchData(`/note/likes/${noteId}`, 'PUT', null, token);
             if (res.status === 200) {
-                // Actualizar localmente la nota que recibió el like
+                // Actualización inmediata y robusta del estado local
                 setPublicNotes(prev => prev.map(n =>
-                    n.id === noteId
+                    String(n.id) === String(noteId)
                         ? { ...n, likes_count: res.data.likes_count, liked_by_user: res.data.liked_by_user }
                         : n
                 ));
