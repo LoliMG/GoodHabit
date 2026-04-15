@@ -120,6 +120,7 @@ const Dashboard = () => {
                     setOtName={setOtName}
                     onAddOT={handleAddOT}
                     onToggle={(id, isOT) => toggleHabitProgress(selectedDate, id, isOT)}
+                    onActivate={(id) => activateHabitForDay(selectedDate, id)}
                     onDeleteOT={(id) => deleteOneTimeHabit(selectedDate, id)}
                 />
             </Modal>

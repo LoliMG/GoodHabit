@@ -1,19 +1,26 @@
 import React, { useState } from 'react';
 import './DailyPlan.css';
 
-const DailyPlan = ({ habits, allGlobalHabits, otName, setOtName, onAddOT, onToggle, onDeleteOT }) => {
+const DailyPlan = ({ habits, allGlobalHabits, otName, setOtName, onAddOT, onToggle, onActivate, onDeleteOT }) => {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
-    // Mostramos los hábitos completados Y todas las tareas únicas (aunque no estén hechas)
-    const visibleHabits = habits.filter(h => h.isDone || h.isOneTime);
+    // Mostramos los hábitos que tengan algún estado (true o false) o sean tareas únicas
+    // Ordenamos: pendientes (isDone === false) primero
+    const visibleHabits = habits
+        .filter(h => h.isDone !== undefined || h.isOneTime)
+        .sort((a, b) => {
+            // Si uno está hecho y el otro no, el no hecho va arriba
+            if (a.isDone === b.isDone) return 0;
+            return a.isDone ? 1 : -1;
+        });
 
-    // Filtramos para el select: hábitos globales que NO están en la lista de completados
+    // Filtramos para el select: hábitos globales que NO están en la lista visible
     const availableGlobalHabits = allGlobalHabits.filter(gh => 
         !visibleHabits.some(ch => !ch.isOneTime && ch.id === gh.id)
     );
 
     const handleSelectHabit = (id) => {
-        onToggle(id, false);
+        onActivate(id);
         setIsDropdownOpen(false);
     };
 

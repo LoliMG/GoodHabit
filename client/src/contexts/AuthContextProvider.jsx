@@ -213,6 +213,17 @@ export const AuthContextProvider = ({ children }) => {
         }
     };
 
+    const activateHabitForDay = (date, habitId) => {
+        // Marcamos como false en local para que aparezca en la lista desmarcado
+        setProgress(prev => {
+            const dayProgress = prev[date] || {};
+            if (dayProgress[habitId] === undefined) {
+                return { ...prev, [date]: { ...dayProgress, [habitId]: false } };
+            }
+            return prev;
+        });
+    };
+
     const updateDayNote = async (date, content) => {
         try {
             await fetchData("/note/save", "POST", { date, content }, token);
@@ -279,7 +290,7 @@ export const AuthContextProvider = ({ children }) => {
             user, setUser, token, setToken, logout, login, loginWithGoogle, register, updateUserProfile, updateUserImage,
             habits, setHabits, addHabit, updateHabit, deleteHabit,
             oneTimeHabits, setOneTimeHabits, addOneTimeHabit, deleteOneTimeHabit,
-            progress, setProgress, toggleHabitProgress, isAuthLoading,
+            progress, setProgress, toggleHabitProgress, activateHabitForDay, isAuthLoading,
             notes, updateDayNote, deleteDayNote,
             moods, updateDayMood
         }}>

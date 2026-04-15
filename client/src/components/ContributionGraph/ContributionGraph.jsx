@@ -2,7 +2,6 @@ import React from 'react';
 import './ContributionGraph.css';
 
 const ContributionGraph = ({ data = {} }) => {
-    // Generate empty grid for a year (roughly 52 weeks)
     const weeks = Array.from({ length: 53 }, (_, i) => i);
     const dayLabels = ['', 'Mon', '', 'Wed', '', 'Fri', ''];
     const monthLabels = ['Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec', 'Jan', 'Feb', 'Mar'];
@@ -23,8 +22,8 @@ const ContributionGraph = ({ data = {} }) => {
                                 // Dummy intensity for demo
                                 const intensity = Math.floor(Math.random() * 5);
                                 return (
-                                    <div 
-                                        key={d} 
+                                    <div
+                                        key={d}
                                         className={`cell lvl-${intensity}`}
                                         title={`Week ${w}, Day ${d}`}
                                     />
