@@ -1,56 +1,199 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { AuthContext } from '../../contexts/AuthContext';
-import NotesDateSelector from '../../components/Notes/NotesDateSelector/NotesDateSelector';
-import NotesEditor from '../../components/Notes/NotesEditor/NotesEditor';
+import DatePicker, { registerLocale } from 'react-datepicker';
+import es from 'date-fns/locale/es';
+import "react-datepicker/dist/react-datepicker.css";
+import { fetchData } from '../../utils/axiosHelper';
+import Modal from '../../components/Modal/Modal';
 import './Notes.css';
 
+registerLocale('es', es);
+
 const Notes = () => {
-    const { notes, updateDayNote, deleteDayNote } = useContext(AuthContext);
-    const [selectedDate, setSelectedDate] = useState(new Date());
-    const [currentNote, setCurrentNote] = useState("");
+    const { user, token, notes, deleteDayNote, updateDayNote, moods } = useContext(AuthContext);
+    const [searchContent, setSearchContent] = useState('');
+    const [searchDate, setSearchDate] = useState('');
+    const [noteLikes, setNoteLikes] = useState({});
 
-    const dateStr = selectedDate.toISOString().split('T')[0];
+    // Modal state
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [modalDate, setModalDate] = useState('');
+    const [modalContent, setModalContent] = useState('');
+    const [isEditing, setIsEditing] = useState(false);
 
+    // Convert notes object to sorted array, filtering out entries that only have a mood but no content
+    const sortedNotes = Object.entries(notes)
+        .filter(([_, noteObj]) => noteObj.content && noteObj.content.trim() !== '')
+        .map(([date, noteObj]) => ({ date, content: noteObj.content, mood: moods[date] }))
+        .sort((a, b) => new Date(b.date) - new Date(a.date));
+
+    // Filter by content and date
+    const filteredNotes = sortedNotes.filter(note => {
+        const matchesContent = (note.content || '').toLowerCase().includes(searchContent.toLowerCase());
+        const matchesDate = searchDate ? note.date === searchDate : true;
+        return matchesContent && matchesDate;
+    });
+
+    // Load likes only if profile is public
     useEffect(() => {
-        setCurrentNote(notes[dateStr]?.content || "");
-    }, [dateStr, notes]);
+        if (!user?.is_public || !token) return;
 
-    const handleSave = () => {
-        updateDayNote(dateStr, currentNote);
+        const fetchLikes = async () => {
+            try {
+                const res = await fetchData('/note/my-likes', 'GET', null, token);
+                setNoteLikes(res.data);
+            } catch (err) {
+                console.error('Error fetching note likes:', err);
+            }
+        };
+        fetchLikes();
+    }, [user?.is_public, token]);
+
+    const handleOpenCreate = () => {
+        const today = new Date().toISOString().split('T')[0];
+        setModalDate(today);
+        setModalContent('');
+        setIsEditing(false);
+        setIsModalOpen(true);
     };
 
-    const handleDelete = () => {
-        if (window.confirm("¿Estás seguro de que quieres eliminar esta entrada?")) {
-            deleteDayNote(dateStr).then(() => setCurrentNote(""));
+    const handleOpenEdit = (note) => {
+        setModalDate(note.date);
+        setModalContent(note.content || '');
+        setIsEditing(true);
+        setIsModalOpen(true);
+    };
+
+    const handleDelete = async (date) => {
+        if (window.confirm('¿Estás seguro de que quieres eliminar esta nota?')) {
+            await deleteDayNote(date);
+        }
+    };
+
+    const handleSave = async (e) => {
+        e.preventDefault();
+        if (!modalDate || !modalContent) return;
+        
+        const res = await updateDayNote(modalDate, modalContent);
+        if (res.success) {
+            setIsModalOpen(false);
         }
     };
 
     return (
         <div className="notes-page-container">
             <header className="notes-header">
-                <h1 className="notes-title">Tu <span className="gradient-text">Diario</span> Personal</h1>
-                <p className="subtitle">Documenta tu viaje hacia el éxito una nota a la vez.</p>
+                <h2 className="animate-fade-in">Tu Historial de <span className="gradient-text">Reflexiones</span> 📝</h2>
+                <p className="animate-fade-in" style={{ animationDelay: '0.1s' }}>Repasa tus pensamientos y progreso a lo largo del tiempo.</p>
+                <div className="header-actions animate-fade-in" style={{ animationDelay: '0.15s' }}>
+                    <button className="btn-primary" onClick={handleOpenCreate}>+ Crear Nueva Nota</button>
+                </div>
             </header>
 
-            <main className="notes-immersive-area">
-                <div className="notes-controls-top">
-                    <NotesDateSelector 
-                        selectedDate={selectedDate} 
-                        setSelectedDate={setSelectedDate} 
+            <div className="notes-controls glass-card animate-fade-in" style={{ animationDelay: '0.2s' }}>
+                <div className="search-group content-search">
+                    <span className="search-icon">🔍</span>
+                    <input 
+                        type="text" 
+                        placeholder="Buscar por contenido..." 
+                        value={searchContent}
+                        onChange={(e) => setSearchContent(e.target.value)}
                     />
                 </div>
-                
-                <div className="notes-editor-wrapper">
-                    <NotesEditor 
-                        selectedDate={selectedDate}
-                        currentNote={currentNote}
-                        setCurrentNote={setCurrentNote}
-                        onSave={handleSave}
-                        onDelete={handleDelete}
-                        hasNote={!!notes[dateStr]?.content}
+                <div className="search-group date-search">
+                    <span className="search-icon">📅</span>
+                    <DatePicker
+                        selected={searchDate ? new Date(searchDate + 'T00:00:00') : null}
+                        onChange={(date) => setSearchDate(date ? date.toISOString().split('T')[0] : '')}
+                        locale="es"
+                        dateFormat="dd/MM/yyyy"
+                        placeholderText="Filtrar por fecha..."
+                        isClearable
+                        calendarClassName="custom-dark-calendar"
+                        wrapperClassName="date-picker-wrapper"
                     />
                 </div>
-            </main>
+            </div>
+
+            <div className="notes-grid">
+                {filteredNotes.length === 0 ? (
+                    <div className="no-notes glass-card animate-fade-in">
+                        <p>No se encontraron notas con ese criterio.</p>
+                    </div>
+                ) : (
+                    filteredNotes.map((note, idx) => {
+                        const likeCount = noteLikes[note.date] ?? null;
+                        return (
+                            <div 
+                                key={note.date} 
+                                className="note-card glass-card animate-fade-in" 
+                                style={{ animationDelay: `${0.3 + idx * 0.05}s` }}
+                            >
+                                <div className="note-card-header">
+                                    <div className="date-mood-row">
+                                        <span className="note-date">
+                                            {new Date(note.date).toLocaleDateString('es-ES', { 
+                                                weekday: 'long', 
+                                                day: 'numeric', 
+                                                month: 'long', 
+                                                year: 'numeric' 
+                                            })}
+                                        </span>
+                                        {note.mood && <span className="note-mood-emoji">{note.mood}</span>}
+                                    </div>
+                                    <div className="note-card-right">
+                                        {user?.is_public && likeCount !== null && (
+                                            <span className="note-likes-badge" title="Likes de otros usuarios">
+                                                ❤️ {likeCount}
+                                            </span>
+                                        )}
+                                        <div className="note-actions">
+                                            <button className="btn-note-edit" onClick={() => handleOpenEdit(note)}>✏️</button>
+                                            <button className="btn-note-delete" onClick={() => handleDelete(note.date)}>🗑️</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="note-content">
+                                    {note.content}
+                                </div>
+                            </div>
+                        );
+                    })
+                )}
+            </div>
+
+            <Modal
+                isOpen={isModalOpen}
+                onClose={() => setIsModalOpen(false)}
+                title={isEditing ? "Editar Nota" : "Crear Nueva Nota"}
+                maxWidth="600px"
+            >
+                <form className="note-modal-form" onSubmit={handleSave}>
+                    <div className="form-group">
+                        <label>Fecha</label>
+                        <input 
+                            type="date" 
+                            value={modalDate} 
+                            onChange={(e) => setModalDate(e.target.value)}
+                            disabled={isEditing}
+                            required
+                        />
+                    </div>
+                    <div className="form-group">
+                        <label>Tu reflexión</label>
+                        <textarea 
+                            value={modalContent} 
+                            onChange={(e) => setModalContent(e.target.value)}
+                            placeholder="¿Qué tienes en mente hoy?"
+                            required
+                        />
+                    </div>
+                    <div className="modal-actions">
+                        <button type="button" className="btn-secondary" onClick={() => setIsModalOpen(false)}>Cancelar</button>
+                        <button type="submit" className="btn-primary">Guardar Nota</button>
+                    </div>
+                </form>
+            </Modal>
         </div>
     );
 };

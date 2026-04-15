@@ -1,5 +1,6 @@
 import { hashPassword, comparePassword } from '../../utils/bcryptUtils.js';
-import { generateToken } from '../../utils/jwtUtils.js';
+import { generateToken, generateResetToken, verifyResetToken } from '../../utils/jwtUtils.js';
+import { sendResetPasswordEmail } from '../../utils/emailService.js';
 import userDal from './user.dal.js';
 import habitDal from '../habit/habit.dal.js';
 import progressDal from '../progress/progress.dal.js';
@@ -37,11 +38,11 @@ class UserController {
             let result = await userDal.findUserByEmail(email);
 
             if (result.length === 0) {
-                res.status(401).json({ message: 'Email does not exist' });
+                res.status(401).json({ message: 'Datos incorrectos' });
             } else {
                 let match = await comparePassword(password, result[0].password);
                 if (!match) {
-                    res.status(401).json({ message: 'Incorrect password' });
+                    res.status(401).json({ message: 'Datos incorrectos' });
                 } else {
                     const userId = result[0].id;
                     const token = generateToken(userId);
@@ -290,6 +291,49 @@ class UserController {
         } catch (error) {
             console.error(error);
             res.status(500).json({ error: 'Failed to fetch user content' });
+        }
+    };
+
+    forgotPassword = async (req, res) => {
+        const { email } = req.body;
+        try {
+            const result = await userDal.findUserByEmail(email);
+            if (result.length === 0) {
+                // Return success anyway to avoid leaks
+                return res.status(200).json({ message: 'Si el correo está registrado, recibirás un enlace de recuperación' });
+            }
+
+            const token = generateResetToken(result[0].id);
+            const resetLink = `${process.env.FRONTEND_URL || 'http://localhost:5173'}/reset-password?token=${token}`;
+            
+            const sent = await sendResetPasswordEmail(email, resetLink);
+            
+            if (!sent) {
+                return res.status(500).json({ message: 'Error enviando el email de recuperación' });
+            }
+
+            res.status(200).json({ message: 'Email de recuperación enviado correctamente' });
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ message: 'Error en el proceso de recuperación' });
+        }
+    };
+
+    resetPassword = async (req, res) => {
+        const { token, newPassword } = req.body;
+        try {
+            const decoded = verifyResetToken(token);
+            if (!decoded) {
+                return res.status(401).json({ message: 'Token de recuperación inválido o expirado' });
+            }
+
+            const hashedPass = await hashPassword(newPassword);
+            await userDal.updatePassword(hashedPass, decoded.user_id);
+
+            res.status(200).json({ message: 'Contraseña actualizada correctamente' });
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ message: 'Error al actualizar la contraseña' });
         }
     };
 }

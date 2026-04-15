@@ -58,6 +58,15 @@ class UserDal {
             throw error;
         }
     };
+
+    updatePassword = async (password, userId) => {
+        try {
+            let sql = 'UPDATE users SET user_password=$1 WHERE user_id=$2';
+            await executeQuery(sql, [password, userId]);
+        } catch (error) {
+            throw error;
+        }
+    };
 }
 
 export default new UserDal();
