@@ -1,6 +1,6 @@
 import express from 'express';
 import userController from './user.controller.js';
-import { verifyToken } from '../../middlewares/verifyToken.js';
+import { verifyToken, optionalVerifyToken } from '../../middlewares/verifyToken.js';
 import { uploadImage } from '../../middlewares/multer.js';
 
 const router = express.Router();
