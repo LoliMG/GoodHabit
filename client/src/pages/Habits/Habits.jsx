@@ -1,4 +1,4 @@
-import React, { useState, useContext, useRef, useEffect } from 'react';
+import { useState, useContext, useRef, useEffect } from 'react';
 import { AuthContext } from '../../contexts/AuthContext';
 import Modal from '../../components/Modal/Modal';
 import './Habits.css';
@@ -86,8 +86,7 @@ const Habits = () => {
                                 <span className="icon">{habit.icon}</span>
                                 <h3>{habit.name}</h3>
                             </div>
-                            
-                            {/* ESTA ES LA ESTRUCTURA TEXTUAL QUE ME HAS DESCRITO */}
+
                             <div className="habit-stats-summary">
                                 {stats.thisWeek} completadas esta semana | {stats.thisMonth} este mes | {stats.allTime} totales
                             </div>
@@ -100,7 +99,7 @@ const Habits = () => {
                 <form className="edit-habit-form" onSubmit={(e) => { e.preventDefault(); updateHabit(selectedHabit.id, editName, editIcon); setSelectedHabit(null); }}>
                     <div className="form-group"><label>Nombre</label><input type="text" value={editName} onChange={(e) => setEditName(e.target.value)} /></div>
                     <div className="modal-actions">
-                        <button type="button" className="btn-danger" onClick={() => { if(window.confirm("¿Eliminar?")) { deleteHabit(selectedHabit.id); setSelectedHabit(null); } }}>Eliminar</button>
+                        <button type="button" className="btn-danger" onClick={() => { if (window.confirm("¿Eliminar?")) { deleteHabit(selectedHabit.id); setSelectedHabit(null); } }}>Eliminar</button>
                         <button type="submit" className="btn-primary">Guardar</button>
                     </div>
                 </form>

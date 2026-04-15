@@ -1,32 +1,28 @@
 import React from 'react';
 import './HabitCard.css';
 
-const HabitCard = ({ habit, onDelete }) => {
-    // Simulamos los datos históricos para que se vea el diseño (|)
-    const weekCount = habit.repetition_count || 0; // Aquí iría la lógica de semana
-    const monthCount = habit.repetition_count || 0; // Aquí iría la lógica de mes
-    const totalCount = habit.repetition_count || 0;
-
+const HabitCard = ({ habit, stats, onOpenEdit }) => {
     return (
-        <div className="habit-card-item glass-card">
-            <button 
-                className="btn-delete-habit" 
-                onClick={() => onDelete(habit.id)}
-                title="Eliminar hábito"
-            >
-                🗑️
-            </button>
+        <div className="habit-card glass-card" onClick={() => onOpenEdit(habit)}>
+            <div className="habit-card-header">
+                <span className="icon">{habit.icon}</span>
+                <h3>{habit.name}</h3>
+            </div>
             
-            <div className="habit-content-wrapper">
-                <span className="habit-icon-main">{habit.icon}</span>
-                <h3 className="habit-name-title">{habit.name}</h3>
-                
-                <div className="habit-stats-minimal">
-                    <span className="stat-value">{weekCount} esta semana</span>
-                    <span className="divider">|</span>
-                    <span className="stat-value">{monthCount} este mes</span>
-                    <span className="divider">|</span>
-                    <span className="stat-value">{totalCount} totales</span>
+            <div className="habit-card-divider"></div>
+
+            <div className="habit-card-stats-grid">
+                <div className="stat-item">
+                    <span className="stat-number">{stats.thisWeek}</span>
+                    <span className="stat-text">Este semana</span>
+                </div>
+                <div className="stat-item">
+                    <span className="stat-number">{stats.thisMonth}</span>
+                    <span className="stat-text">Este mes</span>
+                </div>
+                <div className="stat-item">
+                    <span className="stat-number">{stats.allTime}</span>
+                    <span className="stat-text">Totales</span>
                 </div>
             </div>
         </div>
