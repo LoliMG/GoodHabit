@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { fetchData } from '../../helpers/axiosHelper';
 import AuthLayout from '../../components/Auth/AuthLayout';
+import Button from '../../components/UI/Button/Button';
 
 const ForgotPassword = () => {
     const [email, setEmail] = useState('');
@@ -42,9 +43,9 @@ const ForgotPassword = () => {
                     <label>Correo Electrónico</label>
                     <input type="email" placeholder="nombre@ejemplo.com" value={email} onChange={(e) => setEmail(e.target.value)} required />
                 </div>
-                <button type="submit" className="btn-primary w-full" disabled={loading}>
+                <Button type="submit" className="w-full" disabled={loading}>
                     {loading ? 'Enviando...' : 'Enviar enlace'}
-                </button>
+                </Button>
             </form>
 
             <div className="auth-footer">

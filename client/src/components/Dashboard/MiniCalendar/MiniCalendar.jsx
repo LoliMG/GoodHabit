@@ -1,20 +1,19 @@
-import React from 'react';
 import DayCell from './DayCell';
 import './MiniCalendar.css';
 
-const MiniCalendar = ({ 
-    viewDate, 
-    changeMonth, 
-    calendarCells, 
-    today, 
-    currentYear, 
-    moods, 
-    notes, 
-    getDayStatus, 
-    handleDayClick, 
-    handleMoodClick, 
-    setIsNoteModalOpen, 
-    setSelectedDate 
+const MiniCalendar = ({
+    viewDate,
+    changeMonth,
+    calendarCells,
+    today,
+    currentYear,
+    moods,
+    notes,
+    getDayStatus,
+    handleDayClick,
+    handleMoodClick,
+    setIsNoteModalOpen,
+    setSelectedDate
 }) => {
     const days = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
     const currentMonthLabel = viewDate.toLocaleString('es-ES', { month: 'long' });
@@ -40,8 +39,8 @@ const MiniCalendar = ({
                     const moodEmoji = dateStr ? moods[dateStr] : null;
 
                     return (
-                        <DayCell 
-                            key={day ? `day-${day}` : `empty-${idx}`} 
+                        <DayCell
+                            key={day ? `day-${day}` : `empty-${idx}`}
                             day={day}
                             dateStr={dateStr}
                             status={status}

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useSearchParams, Link, useNavigate } from 'react-router-dom';
 import { fetchData } from '../../helpers/axiosHelper';
 import AuthLayout from '../../components/Auth/AuthLayout';
+import Button from '../../components/UI/Button/Button';
 
 const ResetPassword = () => {
     const [searchParams] = useSearchParams();
@@ -61,9 +62,9 @@ const ResetPassword = () => {
                         <label>Confirmar Contraseña</label>
                         <input type="password" placeholder="••••••••" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} required />
                     </div>
-                    <button type="submit" className="btn-primary w-full" disabled={loading}>
-                        {loading ? 'Actualizando...' : 'Cambiar Contraseña'}
-                    </button>
+                    <Button type="submit" className="w-full" disabled={loading}>
+                        {loading ? 'Restableciendo...' : 'Restablecer Contraseña'}
+                    </Button>
                 </form>
             )}
 

@@ -5,6 +5,7 @@ import { useGoogleLogin } from '@react-oauth/google';
 import { registerSchema } from '../../schemas/RegisterSchema';
 import AuthLayout from '../../components/Auth/AuthLayout';
 import GoogleButton from '../../components/Auth/GoogleButton';
+import Button from '../../components/UI/Button/Button';
 
 const Register = () => {
   const { register, loginWithGoogle } = useContext(AuthContext);
@@ -82,7 +83,7 @@ const Register = () => {
             </button>
           </div>
         </div>
-        <button type="submit" className="btn-primary w-full">Crear Cuenta</button>
+        <Button type="submit" className="w-full">Crear Cuenta</Button>
       </form>
       <div className="auth-footer">
         <p>¿Ya tienes cuenta? <Link to="/login" className="gradient-text">Iniciar Sesión</Link></p>

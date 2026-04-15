@@ -4,6 +4,7 @@ import { AuthContext } from '../../contexts/AuthContext';
 import { useGoogleLogin } from '@react-oauth/google';
 import AuthLayout from '../../components/Auth/AuthLayout';
 import GoogleButton from '../../components/Auth/GoogleButton';
+import Button from '../../components/UI/Button/Button';
 
 const Login = () => {
   const { login, loginWithGoogle } = useContext(AuthContext);
@@ -62,7 +63,7 @@ const Login = () => {
             </button>
           </div>
         </div>
-        <button type="submit" className="btn-primary w-full">Iniciar Sesión</button>
+        <Button type="submit" className="w-full">Iniciar Sesión</Button>
       </form>
 
       <div className="auth-footer">
