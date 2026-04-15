@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import './DailyPlan.css';
 
 const DailyPlan = ({ habits, allGlobalHabits, otName, setOtName, onAddOT, onToggle, onDeleteOT }) => {
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
     // Solo mostramos los que están completados o son OneTime
     const completedHabits = habits.filter(h => h.isDone);
 
@@ -10,35 +12,52 @@ const DailyPlan = ({ habits, allGlobalHabits, otName, setOtName, onAddOT, onTogg
         !completedHabits.some(ch => !ch.isOneTime && ch.id === gh.id)
     );
 
+    const handleSelectHabit = (id) => {
+        onToggle(id, false);
+        setIsDropdownOpen(false);
+    };
+
     return (
         <div className="daily-context">
-            {/* Nuevo Selector de Hábitos Globales */}
-            <div className="habit-selector-group">
-                <label>¿Qué has hecho hoy?</label>
-                <div className="custom-select-wrapper">
-                    <select 
-                        value="" 
-                        onChange={(e) => {
-                            if (e.target.value) onToggle(Number(e.target.value), false);
-                        }}
-                    >
-                        <option value="" disabled>Añadir un hábito...</option>
-                        {availableGlobalHabits.map(gh => (
-                            <option key={gh.id} value={gh.id}>
-                                {gh.icon} {gh.name}
-                            </option>
-                        ))}
-                    </select>
+            {/* Nuevo Custom Selector de Hábitos Globales */}
+            <div className="custom-dropdown-container">
+                <label className="dropdown-label">¿QUÉ HAS HECHO HOY?</label>
+                <div className={`custom-dropdown ${isDropdownOpen ? 'active' : ''}`}>
+                    <div className="dropdown-trigger" onClick={() => setIsDropdownOpen(!isDropdownOpen)}>
+                        <span className="placeholder">
+                            {isDropdownOpen ? 'Elegir hábito...' : 'Añadir un hábito...'}
+                        </span>
+                        <span className="arrow">▼</span>
+                    </div>
+
+                    {isDropdownOpen && (
+                        <div className="dropdown-options glass-card">
+                            {availableGlobalHabits.length > 0 ? (
+                                availableGlobalHabits.map(gh => (
+                                    <div 
+                                        key={gh.id} 
+                                        className="option-item"
+                                        onClick={() => handleSelectHabit(gh.id)}
+                                    >
+                                        <span className="icon">{gh.icon}</span>
+                                        <span className="name">{gh.name}</span>
+                                    </div>
+                                ))
+                            ) : (
+                                <div className="no-options">Ya has completado todos tus hábitos ✨</div>
+                            )}
+                        </div>
+                    )}
                 </div>
             </div>
 
             <form className="ot-input-group" onSubmit={onAddOT}>
-                <input type="text" placeholder="Añadir tarea única (ej: Ir al médico)" value={otName} onChange={(e) => setOtName(e.target.value)} />
+                <input type="text" placeholder="Añadir tarea única..." value={otName} onChange={(e) => setOtName(e.target.value)} />
                 <button type="submit" className="btn-add-ot">+</button>
             </form>
 
             <div className="habits-list">
-                {completedHabits.length === 0 && <p className="no-habits">Aún no has registrado actividad para este día.</p>}
+                {completedHabits.length === 0 && <p className="no-habits">Aún no hay actividad registrada.</p>}
                 
                 {completedHabits.map(habit => (
                     <div 
@@ -49,7 +68,7 @@ const DailyPlan = ({ habits, allGlobalHabits, otName, setOtName, onAddOT, onTogg
                         <span className="habit-icon">{habit.icon}</span>
                         <div className="habit-info">
                             <span className="habit-name">{habit.name}</span>
-                            {habit.isOneTime && <span className="ot-badge">Una vez</span>}
+                            {habit.isOneTime && <span className="ot-badge">Tarea única</span>}
                         </div>
                         <div className="habit-actions">
                             <div className={`checkbox ${habit.isDone ? 'checked' : ''}`}>{habit.isDone && '✓'}</div>
