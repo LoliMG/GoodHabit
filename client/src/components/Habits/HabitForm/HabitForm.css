@@ -29,74 +29,50 @@
             &:focus { border-color: var(--primary); background: hsla(0, 0%, 0%, 0.3); }
         }
 
-        /* CUSTOM DROPDOWN INTERNO */
-        .custom-dropdown {
-            position: relative;
-            user-select: none;
+        /* SELECTOR DE ICONOS INTEGRADO */
+        .icon-selector-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(65px, 1fr));
+            gap: 1rem;
+            max-height: 250px;
+            overflow-y: auto;
+            background: hsla(0, 0%, 0%, 0.2);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 1.5rem;
+            transition: var(--transition-fast);
 
-            .dropdown-selected {
-                background: hsla(0, 0%, 0%, 0.2);
-                border: 1px solid var(--glass-border);
-                border-radius: 16px;
-                padding: 1rem;
-                font-size: 2.5rem;
-                text-align: center;
-                cursor: pointer;
-                transition: var(--transition-fast);
+            /* Custom Scrollbar Premium */
+            &::-webkit-scrollbar { width: 6px; }
+            &::-webkit-scrollbar-track { background: transparent; }
+            &::-webkit-scrollbar-thumb { 
+                background: hsla(0, 0%, 100%, 0.1); 
+                border-radius: 10px; 
+            }
+            &::-webkit-scrollbar-thumb:hover { background: var(--primary); }
+
+            .icon-grid-item {
+                aspect-ratio: 1;
                 display: flex;
                 align-items: center;
                 justify-content: center;
+                font-size: 2rem;
+                cursor: pointer;
+                border-radius: 16px;
+                transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+                background: hsla(0, 0%, 100%, 0.03);
+                border: 1px solid transparent;
 
                 &:hover {
+                    background: hsla(0, 0%, 100%, 0.08);
+                    transform: scale(1.05);
+                }
+
+                &.active {
+                    background: hsla(174, 100%, 41%, 0.15);
                     border-color: var(--primary);
-                    background: hsla(0, 0%, 0%, 0.3);
-                    box-shadow: 0 0 20px hsla(174, 100%, 41%, 0.15);
-                }
-            }
-
-            .dropdown-options {
-                position: absolute;
-                top: calc(100% + 10px);
-                left: 0;
-                right: 0;
-                max-height: 220px;
-                overflow-y: auto;
-                background: hsla(220, 45%, 12%, 0.98);
-                border: 1px solid var(--glass-border);
-                border-radius: 20px;
-                box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
-                backdrop-filter: blur(30px);
-                padding: 1.2rem;
-                z-index: 1000;
-                display: grid;
-                grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
-                gap: 0.8rem;
-
-                /* Custom Scrollbar */
-                &::-webkit-scrollbar { width: 6px; }
-                &::-webkit-scrollbar-track { background: transparent; }
-                &::-webkit-scrollbar-thumb { 
-                    background: hsla(0, 0%, 100%, 0.1); 
-                    border-radius: 10px; 
-                }
-                &::-webkit-scrollbar-thumb:hover { background: var(--primary); }
-
-                .dropdown-option {
-                    aspect-ratio: 1;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    font-size: 1.8rem;
-                    cursor: pointer;
-                    border-radius: 12px;
-                    transition: all 0.2s ease;
-                    background: hsla(0, 0%, 100%, 0.03);
-
-                    &:hover { 
-                        background: hsla(174, 100%, 41%, 0.2); 
-                        transform: scale(1.1);
-                        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-                    }
+                    box-shadow: 0 0 15px hsla(174, 100%, 41%, 0.2);
+                    transform: scale(1.05);
                 }
             }
         }

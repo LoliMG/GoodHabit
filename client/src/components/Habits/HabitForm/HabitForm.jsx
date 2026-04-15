@@ -28,30 +28,16 @@ const HabitForm = ({
 
             <div className="form-group">
                 <label>Icono</label>
-                <div
-                    className="custom-dropdown"
-                    ref={dropdownRef}
-                    style={{ width: '100%' }}
-                    onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                >
-                    <div className="dropdown-selected">{icon}</div>
-                    {isDropdownOpen && (
-                        <div className="dropdown-options">
-                            {availableIcons.map(iconItem => (
-                                <div
-                                    key={iconItem}
-                                    className="dropdown-option"
-                                    onClick={(e) => {
-                                        e.stopPropagation();
-                                        setIcon(iconItem);
-                                        setIsDropdownOpen(false);
-                                    }}
-                                >
-                                    {iconItem}
-                                </div>
-                            ))}
+                <div className="icon-selector-grid">
+                    {availableIcons.map(iconItem => (
+                        <div
+                            key={iconItem}
+                            className={`icon-grid-item ${icon === iconItem ? 'active' : ''}`}
+                            onClick={() => setIcon(iconItem)}
+                        >
+                            {iconItem}
                         </div>
-                    )}
+                    ))}
                 </div>
             </div>
 
