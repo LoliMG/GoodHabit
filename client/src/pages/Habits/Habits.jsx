@@ -1,6 +1,7 @@
-import { useState, useContext, useRef, useEffect } from 'react';
+import React, { useState, useContext, useRef, useEffect } from 'react';
 import { AuthContext } from '../../contexts/AuthContext';
 import Modal from '../../components/Modal/Modal';
+import HabitCard from '../../components/Habits/HabitCard/HabitCard';
 import './Habits.css';
 
 const Habits = () => {
@@ -15,7 +16,7 @@ const Habits = () => {
     const addDropdownRef = useRef(null);
     const editDropdownRef = useRef(null);
 
-    const AVAILABLE_ICONS = ['🔥', '🏃‍♂️', '🧘', '💧', '📚', '🍎', '🏋️', '👟', '⚽', '🤸‍♂️', '🌈', '✨', '🔋'];
+    const AVAILABLE_ICONS = ['🔥', '跑', '🧘', '💧', '📚', '🍎', '🏋️', '👟', '⚽', '🤸‍♂️', '🌈', '✨', '🔋'];
 
     useEffect(() => {
         const handleClickOutside = (event) => {
@@ -25,6 +26,12 @@ const Habits = () => {
         document.addEventListener('mousedown', handleClickOutside);
         return () => document.removeEventListener('mousedown', handleClickOutside);
     }, []);
+
+    const handleOpenEdit = (habit) => {
+        setSelectedHabit(habit);
+        setEditName(habit.name);
+        setEditIcon(habit.icon);
+    };
 
     const getHabitStats = (habitId) => {
         const now = new Date();
@@ -45,12 +52,6 @@ const Habits = () => {
             }
         });
         return { allTime, thisMonth, thisWeek };
-    };
-
-    const handleOpenEdit = (habit) => {
-        setSelectedHabit(habit);
-        setEditName(habit.name);
-        setEditIcon(habit.icon);
     };
 
     return (
@@ -78,28 +79,21 @@ const Habits = () => {
             </form>
 
             <div className="habits-grid">
-                {habits.map(habit => {
-                    const stats = getHabitStats(habit.id);
-                    return (
-                        <div key={habit.id} className="habit-card glass-card" onClick={() => handleOpenEdit(habit)}>
-                            <div className="habit-card-header">
-                                <span className="icon">{habit.icon}</span>
-                                <h3>{habit.name}</h3>
-                            </div>
-
-                            <div className="habit-stats-summary">
-                                {stats.thisWeek} completadas esta semana | {stats.thisMonth} este mes | {stats.allTime} totales
-                            </div>
-                        </div>
-                    );
-                })}
+                {habits.map(habit => (
+                    <HabitCard 
+                        key={habit.id} 
+                        habit={habit} 
+                        stats={getHabitStats(habit.id)} 
+                        onOpenEdit={handleOpenEdit} 
+                    />
+                ))}
             </div>
 
             <Modal isOpen={!!selectedHabit} onClose={() => setSelectedHabit(null)} title="Editar Hábito">
                 <form className="edit-habit-form" onSubmit={(e) => { e.preventDefault(); updateHabit(selectedHabit.id, editName, editIcon); setSelectedHabit(null); }}>
                     <div className="form-group"><label>Nombre</label><input type="text" value={editName} onChange={(e) => setEditName(e.target.value)} /></div>
                     <div className="modal-actions">
-                        <button type="button" className="btn-danger" onClick={() => { if (window.confirm("¿Eliminar?")) { deleteHabit(selectedHabit.id); setSelectedHabit(null); } }}>Eliminar</button>
+                        <button type="button" className="btn-danger" onClick={() => { if(window.confirm("¿Eliminar?")) { deleteHabit(selectedHabit.id); setSelectedHabit(null); } }}>Eliminar</button>
                         <button type="submit" className="btn-primary">Guardar</button>
                     </div>
                 </form>
