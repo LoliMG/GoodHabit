@@ -1,14 +1,10 @@
 import { useState, useContext, useEffect } from 'react';
 import { AuthContext } from '../../contexts/AuthContext';
-import DatePicker, { registerLocale } from 'react-datepicker';
-import es from 'date-fns/locale/es';
-import "react-datepicker/dist/react-datepicker.css";
 import { fetchData } from '../../helpers/axiosHelper';
 import Modal from '../../components/Modal/Modal';
 import Button from '../../components/UI/Button/Button';
+import CustomDatePicker from '../../components/UI/DatePicker/CustomDatePicker';
 import './Notes.css';
-
-registerLocale('es', es);
 
 const NotesPage = () => {
     const { user, token, notes, deleteDayNote, updateDayNote, moods } = useContext(AuthContext);
@@ -105,16 +101,11 @@ const NotesPage = () => {
                 </div>
                 <div className="search-group date-search">
                     <span className="search-icon">📅</span>
-                    <DatePicker
+                    <CustomDatePicker
                         selected={searchDate ? new Date(searchDate + 'T00:00:00') : null}
                         onChange={(date) => setSearchDate(date ? date.toISOString().split('T')[0] : '')}
-                        locale="es"
-                        dateFormat="dd/MM/yyyy"
-                        placeholderText="Filtrar por fecha..."
+                        placeholder="Filtrar por fecha..."
                         isClearable
-                        calendarClassName="custom-dark-calendar"
-                        wrapperClassName="date-picker-wrapper"
-                        portalId="root"
                     />
                 </div>
             </div>
