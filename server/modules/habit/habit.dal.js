@@ -14,11 +14,10 @@ class HabitDal {
                 h.habit_name AS name, 
                 h.habit_icon AS icon, 
                 h.habit_created_at AS created_at,
-                COUNT(p.progress_id) FILTER (WHERE p.progress_is_completed = true) AS total_completions
+                (SELECT COUNT(*) FROM progress p WHERE p.habit_id = h.habit_id AND p.progress_is_completed = true) AS total_completions
             FROM habits h
-            LEFT JOIN progress p ON h.habit_id = p.habit_id
             WHERE h.user_id = $1
-            GROUP BY h.habit_id, h.user_id, h.habit_name, h.habit_icon, h.habit_created_at
+            ORDER BY h.habit_created_at ASC
         `;
         return await executeQuery(sql, [userId]);
     };
