@@ -78,7 +78,6 @@ const DailyPlan = ({ habits, allGlobalHabits, otName, setOtName, onAddOT, onTogg
                             {habit.isOneTime && <span className="ot-badge">Tarea única</span>}
                         </div>
                         <div className="habit-actions">
-                            <div className={`checkbox ${habit.isDone ? 'checked' : ''}`}>{habit.isDone && '✓'}</div>
                             <button
                                 className="btn-delete-ot"
                                 onClick={(e) => {
@@ -88,6 +87,7 @@ const DailyPlan = ({ habits, allGlobalHabits, otName, setOtName, onAddOT, onTogg
                             >
                                 🗑️
                             </button>
+                            <div className={`checkbox ${habit.isDone ? 'checked' : ''}`}>{habit.isDone && '✓'}</div>
                         </div>
                     </div>
                 ))}
