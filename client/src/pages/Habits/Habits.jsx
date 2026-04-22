@@ -37,22 +37,34 @@ const Habits = () => {
 
     const getHabitStats = (habitId) => {
         const now = new Date();
+        const currentMonth = now.getMonth();
+        const currentYear = now.getFullYear();
+        
         const startOfWeek = new Date(now);
         startOfWeek.setDate(now.getDate() - ((now.getDay() + 6) % 7));
         startOfWeek.setHours(0, 0, 0, 0);
 
         let allTime = 0, thisMonth = 0, thisWeek = 0;
-        const currentMonth = now.getMonth();
-        const currentYear = now.getFullYear();
 
         Object.entries(progress).forEach(([dateStr, dayProgress]) => {
             if (dayProgress[habitId]) {
+                // El total se suma siempre que exista el registro completado
                 allTime++;
-                const date = new Date(dateStr);
-                if (date.getMonth() === currentMonth && date.getFullYear() === currentYear) thisMonth++;
-                if (date >= startOfWeek) thisWeek++;
+
+                // Para semana y mes, normalizamos la fecha para evitar problemas de zona horaria (UTC vs Local)
+                const [year, month, day] = dateStr.split('-').map(Number);
+                const habitDate = new Date(year, month - 1, day); // month is 0-indexed in JS
+
+                if (year === currentYear && (month - 1) === currentMonth) {
+                    thisMonth++;
+                }
+
+                if (habitDate >= startOfWeek) {
+                    thisWeek++;
+                }
             }
         });
+
         return { allTime, thisMonth, thisWeek };
     };
 
