@@ -14,7 +14,7 @@ class HabitDal {
                 h.habit_name AS name, 
                 h.habit_icon AS icon, 
                 h.habit_created_at AS created_at,
-                (SELECT COUNT(*) FROM progress p WHERE p.habit_id = h.habit_id AND p.progress_is_completed = true) AS total_completions
+                (SELECT COUNT(*) FROM progress p WHERE p.habit_id = h.habit_id) AS total_completions
             FROM habits h
             WHERE h.user_id = $1
             ORDER BY h.habit_created_at ASC
