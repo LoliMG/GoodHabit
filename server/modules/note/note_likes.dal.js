@@ -3,22 +3,35 @@ import executeQuery from '../../config/db.js';
 class NoteLikesDal {
     toggleLike = async (userId, noteId) => {
         // Check if like already exists
-        const checkSql = 'SELECT 1 FROM note_likes WHERE user_id = $1 AND note_id = $2';
+        const checkSql = `
+            SELECT 1 FROM note_likes 
+            WHERE user_id = $1 AND note_id = $2
+        `;
         const existing = await executeQuery(checkSql, [userId, noteId]);
 
         let liked = false;
         if (existing.length > 0) {
             // Remove like
-            await executeQuery('DELETE FROM note_likes WHERE user_id = $1 AND note_id = $2', [userId, noteId]);
+            await executeQuery(`
+                DELETE FROM note_likes 
+                WHERE user_id = $1 AND note_id = $2
+            `, [userId, noteId]);
             liked = false;
         } else {
             // Add like
-            await executeQuery('INSERT INTO note_likes (user_id, note_id) VALUES ($1, $2)', [userId, noteId]);
+            await executeQuery(`
+                INSERT INTO note_likes (user_id, note_id) 
+                VALUES ($1, $2)
+            `, [userId, noteId]);
             liked = true;
         }
 
         // Get updated count
-        const countSql = 'SELECT COUNT(*) as likes_count FROM note_likes WHERE note_id = $1';
+        const countSql = `
+            SELECT COUNT(*) as likes_count 
+            FROM note_likes 
+            WHERE note_id = $1
+        `;
         const countRes = await executeQuery(countSql, [noteId]);
         const likes_count = parseInt(countRes[0].likes_count);
 

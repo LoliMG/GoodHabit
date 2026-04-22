@@ -2,7 +2,15 @@ import executeQuery from '../../config/db.js';
 
 class MoodDal {
     getMoodsByUserId = async (userId) => {
-        const sql = "SELECT mood_id AS id, user_id, TO_CHAR(mood_date, 'YYYY-MM-DD') AS date, mood_emoji AS emoji FROM daily_moods WHERE user_id = $1";
+        const sql = `
+            SELECT 
+                mood_id AS id, 
+                user_id, 
+                TO_CHAR(mood_date, 'YYYY-MM-DD') AS date, 
+                mood_emoji AS emoji 
+            FROM daily_moods 
+            WHERE user_id = $1
+        `;
         return await executeQuery(sql, [userId]);
     };
 
@@ -17,7 +25,10 @@ class MoodDal {
     };
 
     deleteMood = async (userId, date) => {
-        const sql = 'DELETE FROM daily_moods WHERE user_id = $1 AND mood_date = $2';
+        const sql = `
+            DELETE FROM daily_moods 
+            WHERE user_id = $1 AND mood_date = $2
+        `;
         return await executeQuery(sql, [userId, date]);
     };
 }
