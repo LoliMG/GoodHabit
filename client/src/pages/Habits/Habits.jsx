@@ -35,7 +35,7 @@ const Habits = () => {
         setEditIcon(habit.icon);
     };
 
-    const getHabitStats = (habitId) => {
+    const getHabitStats = (habit) => {
         const now = new Date();
         const currentMonth = now.getMonth();
         const currentYear = now.getFullYear();
@@ -44,16 +44,15 @@ const Habits = () => {
         startOfWeek.setDate(now.getDate() - ((now.getDay() + 6) % 7));
         startOfWeek.setHours(0, 0, 0, 0);
 
-        let allTime = 0, thisMonth = 0, thisWeek = 0;
+        // Usamos el conteo directo desde el backend para 'allTime'
+        let allTime = Number(habit.total_completions || 0);
+        let thisMonth = 0;
+        let thisWeek = 0;
 
         Object.entries(progress).forEach(([dateStr, dayProgress]) => {
-            if (dayProgress[habitId]) {
-                // El total se suma siempre que exista el registro completado
-                allTime++;
-
-                // Para semana y mes, normalizamos la fecha para evitar problemas de zona horaria (UTC vs Local)
+            if (dayProgress[habit.id]) {
                 const [year, month, day] = dateStr.split('-').map(Number);
-                const habitDate = new Date(year, month - 1, day); // month is 0-indexed in JS
+                const habitDate = new Date(year, month - 1, day);
 
                 if (year === currentYear && (month - 1) === currentMonth) {
                     thisMonth++;
@@ -104,7 +103,7 @@ const Habits = () => {
                     <HabitCard
                         key={habit.id}
                         habit={habit}
-                        stats={getHabitStats(habit.id)}
+                        stats={getHabitStats(habit)}
                         onOpenEdit={handleOpenEdit}
                     />
                 ))}
