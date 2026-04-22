@@ -13,7 +13,7 @@ import './Dashboard.css';
 const Dashboard = () => {
     const { 
         habits, oneTimeHabits, addOneTimeHabit, deleteOneTimeHabit, 
-        progress, toggleHabitProgress, activateHabitForDay, notes, updateDayNote, 
+        progress, toggleHabitProgress, activateHabitForDay, deactivateHabitForDay, notes, updateDayNote, 
         updateDayMood, deleteDayNote, moods 
     } = useContext(AuthContext);
 
@@ -121,7 +121,10 @@ const Dashboard = () => {
                     onAddOT={handleAddOT}
                     onToggle={(id, isOT) => toggleHabitProgress(selectedDate, id, isOT)}
                     onActivate={(id) => activateHabitForDay(selectedDate, id)}
-                    onDeleteOT={(id) => deleteOneTimeHabit(selectedDate, id)}
+                    onDeleteOT={(id, isOT) => {
+                        if (isOT) deleteOneTimeHabit(selectedDate, id);
+                        else deactivateHabitForDay(selectedDate, id);
+                    }}
                 />
             </Modal>
 

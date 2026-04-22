@@ -15,7 +15,7 @@ const DailyPlan = ({ habits, allGlobalHabits, otName, setOtName, onAddOT, onTogg
         });
 
     // Filtramos para el select: hábitos globales que NO están en la lista visible
-    const availableGlobalHabits = allGlobalHabits.filter(gh => 
+    const availableGlobalHabits = allGlobalHabits.filter(gh =>
         !visibleHabits.some(ch => !ch.isOneTime && ch.id === gh.id)
     );
 
@@ -41,8 +41,8 @@ const DailyPlan = ({ habits, allGlobalHabits, otName, setOtName, onAddOT, onTogg
                         <div className="dropdown-options glass-card">
                             {availableGlobalHabits.length > 0 ? (
                                 availableGlobalHabits.map(gh => (
-                                    <div 
-                                        key={gh.id} 
+                                    <div
+                                        key={gh.id}
                                         className="option-item"
                                         onClick={() => handleSelectHabit(gh.id)}
                                     >
@@ -65,11 +65,11 @@ const DailyPlan = ({ habits, allGlobalHabits, otName, setOtName, onAddOT, onTogg
 
             <div className="habits-list">
                 {visibleHabits.length === 0 && <p className="no-habits">Aún no hay actividad registrada.</p>}
-                
+
                 {visibleHabits.map(habit => (
-                    <div 
-                        key={habit.isOneTime ? `ot-${habit.id}` : `reg-${habit.id}`} 
-                        className={`habit-item glass-card ${habit.isOneTime ? 'one-time' : ''}`} 
+                    <div
+                        key={habit.isOneTime ? `ot-${habit.id}` : `reg-${habit.id}`}
+                        className={`habit-item glass-card ${habit.isOneTime ? 'one-time' : ''}`}
                         onClick={() => onToggle(habit.id, habit.isOneTime)}
                     >
                         <span className="habit-icon">{habit.icon}</span>
@@ -79,17 +79,15 @@ const DailyPlan = ({ habits, allGlobalHabits, otName, setOtName, onAddOT, onTogg
                         </div>
                         <div className="habit-actions">
                             <div className={`checkbox ${habit.isDone ? 'checked' : ''}`}>{habit.isDone && '✓'}</div>
-                            {habit.isOneTime && (
-                                <button
-                                    className="btn-delete-ot"
-                                    onClick={(e) => {
-                                        e.stopPropagation();
-                                        onDeleteOT(habit.id);
-                                    }}
-                                >
-                                    🗑️
-                                </button>
-                            )}
+                            <button
+                                className="btn-delete-ot"
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    onDeleteOT(habit.id, habit.isOneTime);
+                                }}
+                            >
+                                🗑️
+                            </button>
                         </div>
                     </div>
                 ))}

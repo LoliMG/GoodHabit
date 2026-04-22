@@ -1,5 +1,3 @@
-import React from 'react';
-
 const DayCell = ({ day, dateStr, status, isToday, moodEmoji, notes, handleDayClick, handleMoodClick, setIsNoteModalOpen, setSelectedDate }) => {
     if (!day) return <div className="day-cell empty"></div>;
 

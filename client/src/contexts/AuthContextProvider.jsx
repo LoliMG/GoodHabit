@@ -229,6 +229,20 @@ export const AuthContextProvider = ({ children }) => {
         }
     };
 
+    const deactivateHabitForDay = async (date, habitId) => {
+        try {
+            await fetchData("/progress/deactivate", "POST", { habitId, date }, token);
+            // Eliminamos del estado local para que desaparezca de la lista de ese día
+            setProgress(prev => {
+                const dayProgress = { ...(prev[date] || {}) };
+                delete dayProgress[habitId];
+                return { ...prev, [date]: dayProgress };
+            });
+        } catch (error) {
+            console.error("Error deactivating habit:", error);
+        }
+    };
+
     const updateDayNote = async (date, content) => {
         try {
             await fetchData("/note/save", "POST", { date, content }, token);
@@ -295,7 +309,7 @@ export const AuthContextProvider = ({ children }) => {
             user, setUser, token, setToken, logout, login, loginWithGoogle, register, updateUserProfile, updateUserImage,
             habits, setHabits, addHabit, updateHabit, deleteHabit,
             oneTimeHabits, setOneTimeHabits, addOneTimeHabit, deleteOneTimeHabit,
-            progress, setProgress, toggleHabitProgress, activateHabitForDay, isAuthLoading,
+            progress, setProgress, toggleHabitProgress, activateHabitForDay, deactivateHabitForDay, isAuthLoading,
             notes, updateDayNote, deleteDayNote,
             moods, updateDayMood
         }}>
