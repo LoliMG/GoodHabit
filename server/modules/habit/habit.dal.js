@@ -17,6 +17,7 @@ class HabitDal {
                     FROM progress p 
                     WHERE p.user_id = $1 
                       AND p.habit_id = h.habit_id
+                      AND p.progress_is_completed = TRUE
                 ) AS total_completions
             FROM habits h
             WHERE h.user_id = $1
