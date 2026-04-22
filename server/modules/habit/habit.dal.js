@@ -10,25 +10,14 @@ class HabitDal {
         let sql = `
             SELECT 
                 h.habit_id AS id, 
-                h.user_id, 
                 h.habit_name AS name, 
-                h.habit_icon AS icon, 
-                h.habit_created_at AS created_at,
+                h.habit_icon AS icon,
                 (
-                    -- Suma de Progresos de Hábitos Globales con este nombre
-                    (SELECT COUNT(*) 
-                     FROM progress p 
-                     JOIN habits h2 ON p.habit_id = h2.habit_id 
-                     WHERE h2.habit_name = h.habit_name 
-                       AND h2.user_id = h.user_id 
-                       AND p.progress_is_completed = true)
-                    +
-                    -- MÁS Suma de Tareas Únicas con este mismo nombre
-                    (SELECT COUNT(*) 
-                     FROM one_time_habits oth 
-                     WHERE oth.oth_name = h.habit_name 
-                       AND oth.user_id = h.user_id 
-                       AND oth.oth_is_completed = true)
+                    SELECT COUNT(*) 
+                    FROM progress p 
+                    WHERE p.user_id = $1 
+                      AND p.habit_id = h.habit_id 
+                      AND p.progress_is_completed = TRUE
                 ) AS total_completions
             FROM habits h
             WHERE h.user_id = $1
