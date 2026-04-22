@@ -23,6 +23,17 @@ class ProgressController {
         }
     };
 
+    deactivate = async (req, res) => {
+        try {
+            const { habitId, date } = req.body;
+            const { user_id } = req;
+            await progressDal.deleteProgress([user_id, habitId, date]);
+            res.status(200).json({ message: 'Progress deactivated' });
+        } catch (error) {
+            res.status(500).json({ error: 'Failed to deactivate progress' });
+        }
+    };
+
     getByRange = async (req, res) => {
         try {
             const { start, end } = req.query;

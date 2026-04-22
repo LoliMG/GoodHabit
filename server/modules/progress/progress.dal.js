@@ -31,6 +31,12 @@ class ProgressDal {
         return { message: 'Already activated' };
     };
 
+    deleteProgress = async (values) => {
+        // values = [user_id, habit_id, progress_date]
+        const sql = 'DELETE FROM progress WHERE user_id = $1 AND habit_id = $2 AND progress_date = $3';
+        return await executeQuery(sql, values);
+    };
+
     getProgressByDateRange = async (userId, startDate, endDate) => {
         const sql = "SELECT progress_id AS id, user_id, habit_id, TO_CHAR(progress_date, 'YYYY-MM-DD') AS date, progress_is_completed AS is_completed FROM progress WHERE user_id = $1 AND progress_date BETWEEN $2 AND $3";
         return await executeQuery(sql, [userId, startDate, endDate]);

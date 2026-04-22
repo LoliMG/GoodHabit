@@ -6,6 +6,7 @@ const router = express.Router();
 
 router.post('/toggle', verifyToken, progressController.toggle);
 router.post('/activate', verifyToken, progressController.activate);
+router.post('/deactivate', verifyToken, progressController.deactivate);
 router.get('/range', verifyToken, progressController.getByRange);
 router.get('/stats/:habitId', verifyToken, progressController.getStats);
 
